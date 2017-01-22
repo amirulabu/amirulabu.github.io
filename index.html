@@ -1,7 +1,7 @@
 <html>
 <head><meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
 	<title>Amirul Abu - nothing to see here</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/core.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 </head>
 <body>
 <center>
@@ -24,10 +24,11 @@ checkout what i have learned on <a href="https://www.freecodecamp.com/amirulabu"
 
 </pre>
 </center>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/core.js"></script>
 <script>
 
-$.get("https://medium.com/feed/@mirul", function (data) {
+$(function() {
+    $.get("https://medium.com/feed/@mirul", function (data) {
     $(data).find("entry").each(function () { // or "item" or whatever suits your feed
         var el = $(this);
          
@@ -38,6 +39,9 @@ $.get("https://medium.com/feed/@mirul", function (data) {
         console.log("description: " + el.find("description").text());
     });
 });
+});
+
+
 
 </script>
 
