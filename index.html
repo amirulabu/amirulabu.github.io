@@ -1,7 +1,7 @@
 <html>
 <head><meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
 	<title>Amirul Abu - nothing to see here</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
 </head>
 <body>
 <center>
@@ -11,9 +11,9 @@
 
    ___   __  __________  __  ____     ___   ___  __  __
   / _ | /  |/  /  _/ _ \/ / / / /    / _ | / _ )/ / / /
- / __ |/ /|_/ // // , _/ /_/ / /__  / __ |/ _  / /_/ / 
-/_/ |_/_/  /_/___/_/|_|\____/____/ /_/ |_/____/\____/  
-                                                       
+ / __ |/ /|_/ // // , _/ /_/ / /__  / __ |/ _  / /_/ /
+/_/ |_/_/  /_/___/_/|_|\____/____/ /_/ |_/____/\____/
+
 
 
 Hi there
@@ -22,33 +22,34 @@ checkout what i have learned on <a href="https://www.freecodecamp.com/amirulabu"
 
 <a href="mailto:&#097;&#109;&#105;&#114;&#117;&#108;&#097;&#098;&#117;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;">Email</a> | <a href="https://twitter.com/amirulabu">Twitter</a> | <a href="https://www.facebook.com/amirulabu1">Facebook</a> | <a href="https://github.com/amirulabu">Github</a>
 
------
+---
 
-Medium.com/@mirul
+<a href="/demo">Demo</a>
+
+---
+
+medium.com/@mirul
 <div id="rss">
 </div>
 
------
 
-2017 Amirul Abu 
+---
+
+2017 Amirul Abu
 </pre>
 </center>
-<script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script type="text/javascript">
 
 $(function() {
     console.log("READY");
     $.get("https://cors-anywhere.herokuapp.com/https://medium.com/feed/@mirul", function (data) {
-    $(data).find("item").each(function () { // or "item" or whatever suits your feed
+    $(data).find("item").each(function () {
         var el = $(this);
-         
         $("#rss").append("<a target='_blank' href='" + el.find("link").text() + "'>" + el.find("title").text() + "</a>\n")
     });
 });
 });
-
-
-
 </script>
-
 </body>
 </html>

@@ -1,0 +1,58 @@
+<html>
+<head><meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+	<title>Amirul Abu - nothing to see here</title>
+
+</head>
+<body>
+<center>
+<p align="left"></p>
+
+<pre style="margin-bottom: 0;">
+
+   ___   __  __________  __  ____     ___   ___  __  __
+  / _ | /  |/  /  _/ _ \/ / / / /    / _ | / _ )/ / / /
+ / __ |/ /|_/ // // , _/ /_/ / /__  / __ |/ _  / /_/ /
+/_/ |_/_/  /_/___/_/|_|\____/____/ /_/ |_/____/\____/
+
+<form id="upload">
+  <input type="file" class="imgur" accept="image/*" id="upload-image" data-max-size="5000"/>
+  <button type="button" name="button" id="upload-button">Upload</button>
+  <span id="link"></span>
+</form>
+
+-----
+
+2017 Amirul Abu
+</pre>
+</center>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script type="text/javascript">
+var form = new FormData();
+var link;
+var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "https://api.imgur.com/3/image",
+    "method": "POST",
+    "headers": {
+      "authorization": "Client-ID 45857bb3c7a0a38"
+    },
+    "processData": false,
+    "contentType": false,
+    "mimeType": "multipart/form-data"
+    }
+
+  $("#upload-button").on('click',function(e){
+    e.preventDefault();
+    console.log($("#upload-image")[0].files[0]);
+    form.append("image", $("#upload-image")[0].files[0] );
+    settings.data = form;
+    $.ajax(settings).done(function (response) {
+      link = JSON.parse(response);
+      link = link.data.link;
+      $("#link").html(link);
+    });
+});
+</script>
+</body>
+</html>
