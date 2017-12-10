@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Homestay Receipt Generator</title>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/jspdf.js"></script>
+    <style>
+      body {
+        background-color: #333;
+        color: #fff;
+      }
+      .container {
+        margin-top: 10px;
+      }
+    </style>
+
+  </head>
+  <body>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <h1>Homestay Receipt Generator</h1>
+            <p>Your homestay name: </p>
+            <input type="text" name="" id="homestayName" onkeyup="homestayName()">
+            <p>Upload your logo here: </p>
+            <input type="file" onchange="onFileSelected(event)" id="myimage">
+            <span id="list"></span>
+            <br>
+            <a class="btn btn-primary" id="dlReceipt">Download Receipt</a>
+          </div>
+      </div>
+    </div>
+
+      <script type="text/javascript">
+        var doc = new jsPDF();
+        var date = new Date();
+        console.log(date);
+        var imageDataURL = "";
+        doc.setFontSize(16);
+        function homestayName(){
+          doc.text(60, 10, $("#homestayName").val() );
+        }
+
+
+
+        function onFileSelected(event) {
+          var selectedFile = event.target.files[0];
+          var reader = new FileReader();
+          var imgtag = document.getElementById("myimage");
+          imgtag.title = selectedFile.name;
+          reader.onload = (function(theFile) {
+            return function(e) {
+              // Render thumbnail.
+              var span = document.createElement('span');
+              span.innerHTML = ['<img class="thumb" src="', e.target.result,
+                                '" title="', escape(theFile.name), '"/>'].join('');
+              document.getElementById('list').insertBefore(span, null);
+              imageDataURL = reader.result;
+              doc.addImage(imageDataURL, 'JPEG', 5, 5, 50, 50);
+            };
+          })(selectedFile);
+          reader.readAsDataURL(selectedFile);
+        }
+
+        $("#dlReceipt").click(function(){
+          doc.save('homestayreceipt.pdf');
+        });
+      </script>
+  </body>
+</html>
