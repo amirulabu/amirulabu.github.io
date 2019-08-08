@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Bitcoin Price Luno</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"
+    />
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <style>
@@ -19,58 +22,71 @@
       p {
         font-size: 20px;
       }
-      .bg-dark{
-        background-color: #1F6100;
+      .bg-dark {
+        background-color: #1f6100;
       }
       .reverse {
         unicode-bidi: bidi-override;
         direction: rtl;
       }
     </style>
-
   </head>
   <body>
-
-      <div class="container">
-        <div class="row">
-          <div class="col-md-2">
-            <h1>Luno BTCMYR price</h1>
-            <p>
-              <a href="https://www.luno.com/en/price/BTC" class="btn btn-default btn-sm" target="_blank">BTC</a>
-              <a href="https://www.luno.com/trade/XBTMYR" class="btn btn-default btn-sm" target="_blank">Trade</a>
-            </p>
-            <p>Price refresh: <span id="response"></span><span id="timer"></span></p>
-          </div>
-          <div class="col-md-10">
-            <p>1 BTC = RM <span class="bg-dark" id="myrprice"></span></p>
-            <p>0.1 BTC = RM <span class="bg-dark" id="myrprice01"></span></p>
-            <p>0.01 BTC = RM <span class="bg-dark" id="myrprice001"></span></p>
-            <p>0.001 BTC = RM <span class="bg-dark" id="myrprice0001"></span></p>
-            <hr>
-            <p>RM 1 = <span class="bg-dark" id="1rmprice"></span> BTC</p>
-            <p> = <span id="1mbtcprice"></span> mBTC</p>
-            <p> = <span id="1bitprice"></span> bit / μBTC</p>
-            <hr>
-            <p>RM 100 = <span class="bg-dark" id="100rmprice"></span> BTC</p>
-            <p> = <span id="100mbtcprice"></span> mBTC</p>
-            <p> = <span id="100bitprice"></span> bit / μBTC</p>
-            <hr>
-            <small class="text-danger">*All prices shown are approximation only. Use with caution</small><br>
-            <small>Contact me: <span class="reverse">moc.liamg@ubalurima</span></small>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-2">
+          <h1>Luno BTCMYR price</h1>
+          <p>
+            <a
+              href="https://www.luno.com/en/price/BTC"
+              class="btn btn-default btn-sm"
+              target="_blank"
+              >BTC</a
+            >
+            <a
+              href="https://www.luno.com/trade/XBTMYR"
+              class="btn btn-default btn-sm"
+              target="_blank"
+              >Trade</a
+            >
+          </p>
+          <p>
+            Price refresh: <span id="response"></span><span id="timer"></span>
+          </p>
+        </div>
+        <div class="col-md-10">
+          <p>1 BTC = RM <span class="bg-dark" id="myrprice"></span></p>
+          <p>0.1 BTC = RM <span class="bg-dark" id="myrprice01"></span></p>
+          <p>0.01 BTC = RM <span class="bg-dark" id="myrprice001"></span></p>
+          <p>0.001 BTC = RM <span class="bg-dark" id="myrprice0001"></span></p>
+          <hr />
+          <p>RM 1 = <span class="bg-dark" id="1rmprice"></span> BTC</p>
+          <p>= <span id="1mbtcprice"></span> mBTC</p>
+          <p>= <span id="1bitprice"></span> bit / μBTC</p>
+          <hr />
+          <p>RM 100 = <span class="bg-dark" id="100rmprice"></span> BTC</p>
+          <p>= <span id="100mbtcprice"></span> mBTC</p>
+          <p>= <span id="100bitprice"></span> bit / μBTC</p>
+          <hr />
+          <small class="text-danger"
+            >*All prices shown are approximation only. Use with caution</small
+          ><br />
+          <small
+            >Contact me: <span class="reverse">moc.liamg@ubalurima</span></small
+          >
         </div>
       </div>
     </div>
 
-      <script type="text/javascript">
-
+    <script type="text/javascript">
       updatePrice();
 
       var interval = null;
       var currentIncrement = 0;
       var refreshInterval = 60;
 
-      setInterval(function(){
-        if (currentIncrement >= refreshInterval ){
+      setInterval(function() {
+        if (currentIncrement >= refreshInterval) {
           updatePrice();
           currentIncrement = 0;
         }
@@ -78,42 +94,39 @@
         $("#timer").html(refreshInterval - currentIncrement);
       }, 1000);
 
-
-      function updatePrice(){
+      function updatePrice() {
         $.ajax({
-          url: 'https://cryptic-headland-94862.herokuapp.com/https://api.mybitx.com/api/1/ticker?pair=XBTMYR',
-          type: 'GET',
-          dataType: 'json',
+          url:
+            "https://cors-anywhere.herokuapp.com/https://api.mybitx.com/api/1/ticker?pair=XBTMYR",
+          type: "GET",
+          dataType: "json",
           beforeSend: function() {
-            $('#timer').hide();
-            $('#response').html('Loading...');
+            $("#timer").hide();
+            $("#response").html("Loading...");
           },
-          success: function (data, textStatus, xhr) {
-            $('#response').html('');
-            $('#timer').show();
+          success: function(data, textStatus, xhr) {
+            $("#response").html("");
+            $("#timer").show();
             $("#myrprice").html(data.ask);
-            $("#myrprice01").html((data.ask*0.1).toFixed(2));
-            $("#myrprice001").html((data.ask*0.01).toFixed(2));
-            $("#myrprice0001").html((data.ask*0.001).toFixed(2));
+            $("#myrprice01").html((data.ask * 0.1).toFixed(2));
+            $("#myrprice001").html((data.ask * 0.01).toFixed(2));
+            $("#myrprice0001").html((data.ask * 0.001).toFixed(2));
 
-            $("#1rmprice").html(((1/data.ask)).toPrecision(4));
-            calcPrice(((1/data.ask)),1);
-            $("#100rmprice").html(((1/data.ask)*100).toFixed(6));
-            calcPrice(((1/data.ask)*100),100);
-
+            $("#1rmprice").html((1 / data.ask).toPrecision(4));
+            calcPrice(1 / data.ask, 1);
+            $("#100rmprice").html(((1 / data.ask) * 100).toFixed(6));
+            calcPrice((1 / data.ask) * 100, 100);
           },
-          error: function (xhr, textStatus, errorThrown) {
-            console.log(textStatus,errorThrown);
+          error: function(xhr, textStatus, errorThrown) {
+            console.log(textStatus, errorThrown);
           }
         });
       }
 
-      function calcPrice(price,multiplier) {
-         $("#" + multiplier + "mbtcprice").html((price * 1000).toPrecision(4));
-         $("#" + multiplier + "bitprice").html((price * 1000000).toPrecision(4));
-
+      function calcPrice(price, multiplier) {
+        $("#" + multiplier + "mbtcprice").html((price * 1000).toPrecision(4));
+        $("#" + multiplier + "bitprice").html((price * 1000000).toPrecision(4));
       }
-      </script>
+    </script>
   </body>
 </html>
-
