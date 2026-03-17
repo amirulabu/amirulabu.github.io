@@ -1,17 +1,250 @@
 ---
-
+import Head from "../shared/Head.astro";
 ---
 
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>Astro</title>
+    <Head title="random">
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+      <link
+        href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&family=Source+Code+Pro:wght@400;500&display=swap"
+        rel="stylesheet"
+      />
+    </Head>
   </head>
   <body>
-    <h1>Astro</h1>
+    <main>
+      <header class="hero">
+        <div class="title-row">
+          <svg
+            class="favicon"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 128 128"
+          >
+            <path d="M44 16h40v4H44z" fill="#7c3aed"></path>
+            <path
+              d="M48 20v30l-20 50a8 8 0 0 0 7.4 11h57.2a8 8 0 0 0 7.4-11L80 50V20"
+              fill="none"
+              stroke="#7c3aed"
+              stroke-width="5"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+            <path
+              d="M34.8 97a8 8 0 0 0 7.4 11h43.6a8 8 0 0 0 7.4-11L76 60H52L34.8 97Z"
+              fill="#a78bfa"
+              opacity="0.5"></path>
+            <circle cx="56" cy="82" r="5" fill="#c4b5fd" opacity="0.8"></circle>
+            <circle cx="72" cy="74" r="3.5" fill="#c4b5fd" opacity="0.7"
+            ></circle>
+            <circle cx="64" cy="90" r="4" fill="#ddd6fe" opacity="0.6"></circle>
+            <circle cx="60" cy="64" r="2.5" fill="#c4b5fd" opacity="0.5"
+            ></circle>
+            <circle cx="70" cy="56" r="2" fill="#ddd6fe" opacity="0.4"></circle>
+            <line
+              x1="48"
+              y1="20"
+              x2="48"
+              y2="50"
+              stroke="#7c3aed"
+              stroke-width="5"
+              stroke-linecap="round"></line>
+            <line
+              x1="80"
+              y1="20"
+              x2="80"
+              y2="50"
+              stroke="#7c3aed"
+              stroke-width="5"
+              stroke-linecap="round"></line>
+          </svg>
+          <h1 class="title">random</h1>
+        </div>
+        <p class="tagline">Experiments, demos, and things I build.</p>
+      </header>
+
+      <nav class="page-grid">
+        <a href="/test-preact/" class="page-card">
+          <h2 class="card-title">Preact Demo</h2>
+          <p class="card-desc">
+            Counter, multilingual greeting, and todo list — interactive Preact
+            components in Astro.
+          </p>
+          <span class="card-arrow">&rarr;</span>
+        </a>
+
+        <a href="/car/" class="page-card">
+          <h2 class="card-title">Car Loan Calculator</h2>
+          <p class="card-desc">
+            Calculate monthly payments for Malaysian hire purchase car loans
+            with adjustable interest, tenure, and down payment.
+          </p>
+          <span class="card-arrow">&rarr;</span>
+        </a>
+      </nav>
+
+      <footer class="footer">
+        <p>
+          Built with <a
+            href="https://astro.build"
+            target="_blank"
+            rel="noopener">Astro</a
+          >
+        </p>
+      </footer>
+    </main>
   </body>
 </html>
+
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    background: #faf9f7;
+    color: #1a1a1a;
+  }
+
+  body {
+    font-family: "Source Code Pro", monospace;
+    min-height: 100vh;
+  }
+
+  main {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 8rem 2rem 3rem;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hero {
+    margin-bottom: 4rem;
+  }
+
+  .title-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .favicon {
+    width: clamp(2.4rem, 7vw, 3.8rem);
+    height: clamp(2.4rem, 7vw, 3.8rem);
+    flex-shrink: 0;
+  }
+
+  .title {
+    font-family: "Newsreader", Georgia, serif;
+    font-weight: 400;
+    font-size: clamp(2.8rem, 8vw, 4.5rem);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+  }
+
+  .title em {
+    font-style: italic;
+    color: #8b6d4f;
+  }
+
+  .tagline {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: #888;
+  }
+
+  .page-grid {
+    display: grid;
+    gap: 0.75rem;
+    flex: 1;
+    align-content: start;
+  }
+
+  .page-card {
+    display: block;
+    padding: 1.5rem;
+    background: #fff;
+    border: 1px solid #e8e6e2;
+    border-radius: 8px;
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+    transition:
+      border-color 0.25s ease,
+      box-shadow 0.25s ease;
+  }
+
+  .page-card:hover {
+    border-color: #c9c4bc;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  }
+
+  .card-title {
+    font-family: "Newsreader", Georgia, serif;
+    font-size: 1.25rem;
+    font-weight: 400;
+    margin-bottom: 0.35rem;
+  }
+
+  .card-desc {
+    font-size: 0.78rem;
+    color: #888;
+    line-height: 1.6;
+  }
+
+  .card-arrow {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    color: #8b6d4f;
+    font-size: 1.1rem;
+    opacity: 0;
+    transform: translateX(-4px);
+    transition:
+      opacity 0.25s ease,
+      transform 0.25s ease;
+  }
+
+  .page-card:hover .card-arrow {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .footer {
+    margin-top: auto;
+    padding-top: 4rem;
+    border-top: 1px solid #e8e6e2;
+    padding-top: 1.5rem;
+    margin-top: 4rem;
+  }
+
+  .footer p {
+    font-size: 0.72rem;
+    color: #aaa;
+  }
+
+  .footer a {
+    color: #888;
+    text-decoration: none;
+    border-bottom: 1px solid #ddd;
+    transition:
+      color 0.2s ease,
+      border-color 0.2s ease;
+  }
+
+  .footer a:hover {
+    color: #8b6d4f;
+    border-color: #8b6d4f;
+  }
+
+  @media (max-width: 600px) {
+    main {
+      padding: 5rem 1.25rem 2rem;
+    }
+  }
+</style>
