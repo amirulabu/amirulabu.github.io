@@ -1,5 +1,7 @@
 # build output
-dist/
+# we want dist to be committed to the repository because it is deployed to github pages
+# dist/
+
 # generated types
 .astro/
 
