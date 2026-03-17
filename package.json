@@ -13,10 +13,13 @@
     "format": "prettier . --write",
     "format:check": "prettier . --check",
     "lint": "eslint .",
+    "precommit": "npm run lint && npm run format && npm run format:check && npm run build",
     "prepare": "husky"
   },
   "dependencies": {
-    "astro": "^6.0.5"
+    "@astrojs/preact": "^5.0.1",
+    "astro": "^6.0.5",
+    "preact": "^10.29.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
