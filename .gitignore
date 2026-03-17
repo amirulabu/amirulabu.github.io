@@ -1,6 +1,7 @@
 # build output
-# we want dist to be committed to the repository because it is deployed to github pages
-# dist/
+dist/
+# we want docs to be committed to the repository because it is deployed to github pages
+# docs/
 
 # generated types
 .astro/
