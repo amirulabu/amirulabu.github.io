@@ -1,0 +1,277 @@
+---
+import TmuxCheatsheet from "../components/TmuxCheatsheet";
+import Head from "../shared/Head.astro";
+---
+
+<html lang="en">
+  <head>
+    <Head title="Tmux Cheatsheet" />
+  </head>
+  <body>
+    <main>
+      <h1>Tmux Cheatsheet</h1>
+      <p class="subtitle">Interactive quick reference for tmux shortcuts</p>
+
+      <TmuxCheatsheet client:load />
+
+      <p class="back-link"><a href="/">&larr; Back to home</a></p>
+    </main>
+  </body>
+</html>
+
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family:
+      system-ui,
+      -apple-system,
+      sans-serif;
+    background: #f5f5f5;
+    color: #1a1a1a;
+    min-height: 100vh;
+  }
+
+  main {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .subtitle {
+    color: #666;
+    margin-bottom: 2rem;
+  }
+
+  .back-link {
+    margin-top: 2rem;
+  }
+
+  .back-link a {
+    color: #4f46e5;
+    text-decoration: none;
+  }
+
+  .back-link a:hover {
+    text-decoration: underline;
+  }
+</style>
+
+<style is:global>
+  .cheatsheet {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+    background: white;
+    transition:
+      border-color 0.15s ease,
+      box-shadow 0.15s ease;
+  }
+
+  .search-input:focus {
+    outline: none;
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.15);
+  }
+
+  .section-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .section-tab {
+    padding: 0.35rem 0.7rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: white;
+    font-size: 0.8rem;
+    font-family: inherit;
+    cursor: pointer;
+    color: #555;
+    transition:
+      background 0.15s ease,
+      border-color 0.15s ease,
+      color 0.15s ease;
+  }
+
+  .section-tab:hover {
+    border-color: #bbb;
+    color: #1a1a1a;
+  }
+
+  .section-tab.active {
+    background: #4f46e5;
+    border-color: #4f46e5;
+    color: white;
+  }
+
+  .section-tab.dimmed {
+    opacity: 0.4;
+  }
+
+  .tab-count {
+    display: inline-block;
+    margin-left: 0.3rem;
+    background: rgba(0, 0, 0, 0.08);
+    border-radius: 4px;
+    padding: 0 0.35rem;
+    font-size: 0.7rem;
+  }
+
+  .section-tab.active .tab-count {
+    background: rgba(255, 255, 255, 0.25);
+  }
+
+  .result-count {
+    font-size: 0.8rem;
+    color: #888;
+  }
+
+  .section {
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #e8e6e2;
+    overflow: hidden;
+  }
+
+  .section-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #888;
+    padding: 0.75rem 1rem 0.5rem;
+    background: #fafafa;
+    border-bottom: 1px solid #e8e6e2;
+  }
+
+  .shortcut-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .shortcut-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.6rem 1rem;
+    transition: background 0.1s ease;
+  }
+
+  .shortcut-row:hover {
+    background: #f8f7ff;
+  }
+
+  .shortcut-row + .shortcut-row {
+    border-top: 1px solid #f0efed;
+  }
+
+  .shortcut-keys {
+    flex-shrink: 0;
+    min-width: 180px;
+  }
+
+  .keys {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 2px;
+  }
+
+  .keys kbd {
+    display: inline-block;
+    padding: 0.2rem 0.5rem;
+    background: #f3f3f3;
+    border: 1px solid #ddd;
+    border-bottom-width: 2px;
+    border-radius: 4px;
+    font-family: "SF Mono", "Fira Code", "Cascadia Code", monospace;
+    font-size: 0.8rem;
+    color: #333;
+    white-space: nowrap;
+  }
+
+  .key-plus {
+    color: #aaa;
+    font-size: 0.75rem;
+    margin: 0 1px;
+  }
+
+  .command {
+    font-family: "SF Mono", "Fira Code", "Cascadia Code", monospace;
+    font-size: 0.8rem;
+    background: #1a1a2e;
+    color: #7dd3fc;
+    padding: 0.2rem 0.55rem;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+
+  .shortcut-desc {
+    font-size: 0.85rem;
+    color: #555;
+  }
+
+  .no-results {
+    text-align: center;
+    padding: 2rem;
+    color: #aaa;
+    font-size: 0.9rem;
+  }
+
+  .prefix-note {
+    font-size: 0.78rem;
+    color: #999;
+    text-align: center;
+    padding-top: 0.5rem;
+  }
+
+  .prefix-note kbd {
+    display: inline-block;
+    padding: 0.15rem 0.4rem;
+    background: #f3f3f3;
+    border: 1px solid #ddd;
+    border-bottom-width: 2px;
+    border-radius: 4px;
+    font-family: "SF Mono", "Fira Code", "Cascadia Code", monospace;
+    font-size: 0.75rem;
+    color: #333;
+  }
+
+  .prefix-note .key-plus {
+    color: #aaa;
+    font-size: 0.7rem;
+    margin: 0 1px;
+  }
+
+  @media (max-width: 600px) {
+    .shortcut-keys {
+      min-width: 140px;
+    }
+
+    .shortcut-row {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.25rem;
+    }
+  }
+</style>
