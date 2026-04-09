@@ -1,0 +1,8 @@
+---
+import CarLayout from "../../layouts/CarLayout.astro";
+import { PriceToMonthlyCalc } from "../../components/CarLoanCalculator";
+---
+
+<CarLayout title="Price to Monthly - Car Loan Calculator" activeTab="price">
+  <PriceToMonthlyCalc client:visible />
+</CarLayout>

@@ -1,18 +1,18 @@
 ---
-import CarLoanCalculator from "../components/CarLoanCalculator";
+import EvChargingCalculator from "../components/EvChargingCalculator";
 import Head from "../shared/Head.astro";
 ---
 
 <html lang="en">
   <head>
-    <Head title="Car Loan Calculator" />
+    <Head title="EV Charging Calculator - Malaysia" />
   </head>
   <body>
     <main>
-      <h1>Car Loan Calculator</h1>
-      <p class="subtitle">Malaysian hire purchase (flat rate) calculator</p>
+      <h1>EV Charging Calculator</h1>
+      <p class="subtitle">Estimate your EV charging cost in Malaysia</p>
 
-      <CarLoanCalculator client:visible />
+      <EvChargingCalculator client:visible />
 
       <p class="back-link"><a href="/">&larr; Back to home</a></p>
     </main>
@@ -74,41 +74,6 @@ import Head from "../shared/Head.astro";
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   }
 
-  .tabs {
-    display: flex;
-    gap: 0.25rem;
-    margin-bottom: 1.5rem;
-    background: #f0f0f0;
-    border-radius: 6px;
-    padding: 0.25rem;
-  }
-
-  .tab {
-    flex: 1;
-    padding: 0.5rem 0.75rem;
-    border: none;
-    background: transparent;
-    border-radius: 4px;
-    font-size: 0.85rem;
-    font-family: inherit;
-    cursor: pointer;
-    color: #666;
-    transition:
-      background 0.15s ease,
-      color 0.15s ease;
-  }
-
-  .tab.active {
-    background: white;
-    color: #1a1a1a;
-    font-weight: 600;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
-  }
-
-  .tab:hover:not(.active) {
-    color: #333;
-  }
-
   .field {
     margin-bottom: 1.25rem;
   }
@@ -126,6 +91,7 @@ import Head from "../shared/Head.astro";
 
   .field input[type="number"] {
     width: 100%;
+    box-sizing: border-box;
     padding: 0.6rem 0.8rem;
     border: 1px solid #ddd;
     border-radius: 6px;
@@ -143,6 +109,24 @@ import Head from "../shared/Head.astro";
     width: 100%;
     accent-color: #4f46e5;
     cursor: pointer;
+  }
+
+  .select-input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.6rem 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    background: white;
+    cursor: pointer;
+  }
+
+  .select-input:focus {
+    outline: none;
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.15);
   }
 
   .range-labels {
@@ -191,6 +175,63 @@ import Head from "../shared/Head.astro";
 
   .result-row.monthly .value {
     font-size: 1.3rem;
+    color: #4f46e5;
+  }
+
+  .comparison {
+    margin-top: 1.5rem;
+  }
+
+  .comparison-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 0.15rem;
+  }
+
+  .comparison-subtitle {
+    font-size: 0.75rem;
+    color: #999;
+    margin-bottom: 0.75rem;
+  }
+
+  .comparison-table {
+    border: 1px solid #e8e6e2;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .comparison-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.55rem 0.85rem;
+    font-size: 0.82rem;
+    transition: background 0.1s ease;
+  }
+
+  .comparison-row + .comparison-row {
+    border-top: 1px solid #f0efed;
+  }
+
+  .comparison-row.selected {
+    background: #f8f7ff;
+  }
+
+  .comparison-name {
+    color: #555;
+  }
+
+  .comparison-row.selected .comparison-name {
+    color: #1a1a1a;
+    font-weight: 600;
+  }
+
+  .comparison-cost {
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+
+  .comparison-row.selected .comparison-cost {
     color: #4f46e5;
   }
 
