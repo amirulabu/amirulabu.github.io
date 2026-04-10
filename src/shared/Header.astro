@@ -1,0 +1,108 @@
+---
+
+---
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="/" class="brand" aria-label="Home">
+      <svg
+        class="brand-icon"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 128 128"
+        aria-hidden="true"
+      >
+        <path d="M44 16h40v4H44z" fill="#7c3aed"></path>
+        <path
+          d="M48 20v30l-20 50a8 8 0 0 0 7.4 11h57.2a8 8 0 0 0 7.4-11L80 50V20"
+          fill="none"
+          stroke="#7c3aed"
+          stroke-width="5"
+          stroke-linecap="round"
+          stroke-linejoin="round"></path>
+        <path
+          d="M34.8 97a8 8 0 0 0 7.4 11h43.6a8 8 0 0 0 7.4-11L76 60H52L34.8 97Z"
+          fill="#a78bfa"
+          opacity="0.5"></path>
+        <circle cx="56" cy="82" r="5" fill="#c4b5fd" opacity="0.8"></circle>
+        <circle cx="72" cy="74" r="3.5" fill="#c4b5fd" opacity="0.7"></circle>
+        <circle cx="64" cy="90" r="4" fill="#ddd6fe" opacity="0.6"></circle>
+        <circle cx="60" cy="64" r="2.5" fill="#c4b5fd" opacity="0.5"></circle>
+        <circle cx="70" cy="56" r="2" fill="#ddd6fe" opacity="0.4"></circle>
+      </svg>
+      <span class="brand-text">random</span>
+    </a>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    background: rgba(250, 249, 247, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(139, 109, 79, 0.12);
+  }
+
+  .header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0.75rem 1.5rem;
+    display: flex;
+    align-items: center;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: inherit;
+    flex-shrink: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  .brand:hover {
+    opacity: 0.8;
+  }
+
+  .brand-icon {
+    width: 1.75rem;
+    height: 1.75rem;
+    flex-shrink: 0;
+  }
+
+  .brand-text {
+    font-family: "Newsreader", Georgia, serif;
+    font-size: 1.25rem;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    color: #1a1a1a;
+  }
+
+  /* Mobile styles */
+  @media (max-width: 768px) {
+    .header-inner {
+      padding: 0.625rem 1rem;
+    }
+
+    .brand-icon {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+
+    .brand-text {
+      font-size: 1.15rem;
+    }
+  }
+
+  /* Desktop refinements */
+  @media (min-width: 769px) {
+    .header-inner {
+      padding: 0.875rem 2rem;
+    }
+  }
+</style>

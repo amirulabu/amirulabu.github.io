@@ -1,6 +1,7 @@
 ---
 import EvChargingCalculator from "../components/EvChargingCalculator";
 import Head from "../shared/Head.astro";
+import Header from "../shared/Header.astro";
 ---
 
 <html lang="en">
@@ -8,13 +9,12 @@ import Head from "../shared/Head.astro";
     <Head title="EV Charging Calculator - Malaysia" />
   </head>
   <body>
+    <Header />
     <main>
       <h1>EV Charging Calculator</h1>
       <p class="subtitle">Estimate your EV charging cost in Malaysia</p>
 
       <EvChargingCalculator client:visible />
-
-      <p class="back-link"><a href="/">&larr; Back to home</a></p>
     </main>
   </body>
 </html>
@@ -39,7 +39,7 @@ import Head from "../shared/Head.astro";
   main {
     max-width: 560px;
     margin: 0 auto;
-    padding: 2rem 1rem;
+    padding: 5rem 1rem 2rem;
   }
 
   h1 {
@@ -53,16 +53,7 @@ import Head from "../shared/Head.astro";
   }
 
   .back-link {
-    margin-top: 2rem;
-  }
-
-  .back-link a {
-    color: #4f46e5;
-    text-decoration: none;
-  }
-
-  .back-link a:hover {
-    text-decoration: underline;
+    display: none;
   }
 </style>
 
