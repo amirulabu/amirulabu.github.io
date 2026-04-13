@@ -62,7 +62,11 @@ import Header from "../shared/Header.astro";
           </svg>
           <h1 class="title">random</h1>
         </div>
-        <p class="tagline">Experiments, demos, and things I build.</p>
+        <p class="tagline">
+          Experiments, demos, and things <span class="slashed">I</span><span
+            class="ai">A.I.</span
+          > build.
+        </p>
       </header>
 
       <nav class="page-grid">
@@ -398,6 +402,17 @@ import Header from "../shared/Header.astro";
     font-size: 0.85rem;
     line-height: 1.6;
     color: #888;
+  }
+
+  .slashed {
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  .ai {
+    color: #7c3aed;
+    font-weight: 500;
+    margin-left: 0.15em;
   }
 
   .page-grid {
