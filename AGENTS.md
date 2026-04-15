@@ -11,3 +11,4 @@ Please do this:
 Attention for coding agents:
 
 - Codex will review your output once you are done
+- to verify your work, check http://localhost:4321/ is up before spawing dev server. most of the time the dev server is already up.
