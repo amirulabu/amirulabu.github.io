@@ -7,3 +7,7 @@ Please do this:
 
 - after completing a feature, run "npm run precommit" to check for issues
 - if you are adding a page, add the link to index.astro
+
+Attention for coding agents:
+
+- Codex will review your output once you are done
