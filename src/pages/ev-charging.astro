@@ -14,7 +14,7 @@ import Header from "../shared/Header.astro";
       <h1>EV Charging Calculator</h1>
       <p class="subtitle">Estimate your EV charging cost in Malaysia</p>
 
-      <EvChargingCalculator client:visible />
+      <EvChargingCalculator client:only="preact" />
     </main>
   </body>
 </html>
