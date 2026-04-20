@@ -1,15 +1,27 @@
 import { useState, useEffect } from "preact/hooks";
 
 interface LineItem {
+  id: number;
   label: string;
   amount: number;
 }
 
 const STORAGE_KEY = "budgetCalcData";
 
-const DEFAULT_INCOME: LineItem[] = [{ label: "Salary", amount: 5000 }];
+let nextId = 1;
+function genId() {
+  return nextId++;
+}
 
-const DEFAULT_EXPENSES: LineItem[] = [
+function withIds(items: Omit<LineItem, "id">[]): LineItem[] {
+  return items.map((item) => ({ ...item, id: genId() }));
+}
+
+const DEFAULT_INCOME: Omit<LineItem, "id">[] = [
+  { label: "Salary", amount: 5000 },
+];
+
+const DEFAULT_EXPENSES: Omit<LineItem, "id">[] = [
   { label: "Rent", amount: 1500 },
   { label: "Utilities (Electric/Water)", amount: 200 },
   { label: "Food & Groceries", amount: 800 },
@@ -21,7 +33,13 @@ const DEFAULT_EXPENSES: LineItem[] = [
 function loadSaved(): { incomes: LineItem[]; expenses: LineItem[] } | null {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) return JSON.parse(raw);
+    if (raw) {
+      const data = JSON.parse(raw);
+      return {
+        incomes: withIds(data.incomes),
+        expenses: withIds(data.expenses),
+      };
+    }
   } catch {}
   return null;
 }
@@ -44,6 +62,7 @@ function ItemRow({
       <input
         type="text"
         class="budget-label-input"
+        name={`label-${item.id}`}
         value={item.label}
         placeholder="Label"
         onInput={(e) =>
@@ -53,9 +72,10 @@ function ItemRow({
       <input
         type="number"
         class="budget-amount-input"
+        name={`amount-${item.id}`}
         value={item.amount}
         min={0}
-        step={0.01}
+        step="any"
         onInput={(e) =>
           onUpdate({
             ...item,
@@ -76,17 +96,34 @@ function ItemRow({
 }
 
 export default function BudgetCalculator() {
-  const saved = loadSaved();
-  const [incomes, setIncomes] = useState<LineItem[]>(
-    saved?.incomes ?? DEFAULT_INCOME,
+  const [incomes, setIncomes] = useState<LineItem[]>(() =>
+    withIds(DEFAULT_INCOME),
   );
-  const [expenses, setExpenses] = useState<LineItem[]>(
-    saved?.expenses ?? DEFAULT_EXPENSES,
+  const [expenses, setExpenses] = useState<LineItem[]>(() =>
+    withIds(DEFAULT_EXPENSES),
   );
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ incomes, expenses }));
-  }, [incomes, expenses]);
+    const saved = loadSaved();
+    if (saved) {
+      setIncomes(saved.incomes);
+      setExpenses(saved.expenses);
+    }
+    setLoaded(true);
+  }, []);
+
+  useEffect(() => {
+    if (loaded) {
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({
+          incomes: incomes.map(({ label, amount }) => ({ label, amount })),
+          expenses: expenses.map(({ label, amount }) => ({ label, amount })),
+        }),
+      );
+    }
+  }, [incomes, expenses, loaded]);
 
   const totalIncome = incomes.reduce((sum, i) => sum + i.amount, 0);
   const totalExpenses = expenses.reduce((sum, e) => sum + e.amount, 0);
@@ -113,16 +150,16 @@ export default function BudgetCalculator() {
   };
 
   const addIncome = () => {
-    setIncomes([...incomes, { label: "", amount: 0 }]);
+    setIncomes([...incomes, { id: genId(), label: "", amount: 0 }]);
   };
 
   const addExpense = () => {
-    setExpenses([...expenses, { label: "", amount: 0 }]);
+    setExpenses([...expenses, { id: genId(), label: "", amount: 0 }]);
   };
 
   const handleReset = () => {
-    setIncomes(DEFAULT_INCOME);
-    setExpenses(DEFAULT_EXPENSES);
+    setIncomes(withIds(DEFAULT_INCOME));
+    setExpenses(withIds(DEFAULT_EXPENSES));
   };
 
   return (
@@ -134,7 +171,7 @@ export default function BudgetCalculator() {
         </div>
         {incomes.map((item, i) => (
           <ItemRow
-            key={i}
+            key={item.id}
             item={item}
             onUpdate={(updated) => updateIncome(i, updated)}
             onRemove={() => removeIncome(i)}
@@ -152,7 +189,7 @@ export default function BudgetCalculator() {
         </div>
         {expenses.map((item, i) => (
           <ItemRow
-            key={i}
+            key={item.id}
             item={item}
             onUpdate={(updated) => updateExpense(i, updated)}
             onRemove={() => removeExpense(i)}
