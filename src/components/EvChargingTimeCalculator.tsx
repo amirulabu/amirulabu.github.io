@@ -1,14 +1,9 @@
 import { useState, useEffect } from "preact/hooks";
-import {
-  CAR_MODELS,
-  CHARGING_COST_PROVIDERS as PROVIDERS,
-  formatRM,
-  loadSaved,
-} from "../data/evData";
+import { CAR_MODELS, CHARGER_TYPES, formatRM, loadSaved } from "../data/evData";
 
 // Shared key for fields that persist across both cost & time tabs
 const SHARED_KEY = "evChargingShared";
-const OWN_KEY = "evChargingCost";
+const OWN_KEY = "evChargingTime";
 
 const SHARED_DEFAULTS = {
   modelIndex: 0,
@@ -19,10 +14,63 @@ const SHARED_DEFAULTS = {
 };
 
 const OWN_DEFAULTS = {
-  providerIndex: 0,
+  chargerIndex: 0,
 };
 
-export default function EvChargingCalculator() {
+function formatTime(hours: number): string {
+  if (hours < 1) {
+    const mins = Math.round(hours * 60);
+    return `${mins} min`;
+  }
+  const h = Math.floor(hours);
+  const m = Math.round((hours - h) * 60);
+  if (m === 0) return `${h}h`;
+  return `${h}h ${m}min`;
+}
+
+// Simple charging time model:
+// - Below 80%: charge at ~90% of max power (real-world losses)
+// - Above 80%: power tapers linearly from 90% down to ~30% at 100%
+// This gives a realistic estimate for DC fast charging taper
+function estimateChargeTime(
+  batteryKWh: number,
+  fromPercent: number,
+  toPercent: number,
+  maxKw: number,
+): number {
+  const from80 = Math.min(fromPercent, 80);
+  const to80 = Math.min(toPercent, 80);
+  const maxEfficiency = 0.9;
+
+  let totalHours = 0;
+
+  // Phase 1: fromPercent to 80% (or toPercent if < 80%)
+  if (to80 > from80) {
+    const kWh1 = batteryKWh * ((to80 - from80) / 100);
+    totalHours += kWh1 / (maxKw * maxEfficiency);
+  }
+
+  // Phase 2: 80% to toPercent (taper phase)
+  if (toPercent > 80 && toPercent > fromPercent) {
+    const from = Math.max(fromPercent, 80);
+    const to = toPercent;
+    // Split taper into small steps for more accuracy
+    const steps = 20;
+    const stepPercent = (to - from) / steps;
+    for (let i = 0; i < steps; i++) {
+      const pct = from + stepPercent * (i + 0.5);
+      // Taper: at 80% → 90% power, at 100% → ~30% power
+      const taperFactor =
+        maxEfficiency - (maxEfficiency - 0.3) * ((pct - 80) / 20);
+      const kWh = batteryKWh * (stepPercent / 100);
+      totalHours += kWh / (maxKw * taperFactor);
+    }
+  }
+
+  return totalHours;
+}
+
+export default function EvChargingTimeCalculator() {
   const [shared] = useState(() => loadSaved(SHARED_KEY, SHARED_DEFAULTS));
   const [own] = useState(() => loadSaved(OWN_KEY, OWN_DEFAULTS));
 
@@ -35,7 +83,7 @@ export default function EvChargingCalculator() {
   const [useCustomCapacity, setUseCustomCapacity] = useState(
     shared.useCustomCapacity,
   );
-  const [providerIndex, setProviderIndex] = useState(own.providerIndex);
+  const [chargerIndex, setChargerIndex] = useState(own.chargerIndex);
 
   // Persist shared fields to shared key
   useEffect(() => {
@@ -62,15 +110,24 @@ export default function EvChargingCalculator() {
   // Persist own fields to own key
   useEffect(() => {
     try {
-      localStorage.setItem(OWN_KEY, JSON.stringify({ providerIndex }));
+      localStorage.setItem(OWN_KEY, JSON.stringify({ chargerIndex }));
     } catch {}
-  }, [providerIndex]);
+  }, [chargerIndex]);
 
   const effectiveTarget = Math.max(targetPercent, currentPercent);
   const kWhNeeded =
     batteryCapacity * ((effectiveTarget - currentPercent) / 100);
-  const selectedProvider = PROVIDERS[providerIndex];
-  const estimatedCost = kWhNeeded * selectedProvider.rate;
+  const selectedCharger = CHARGER_TYPES[chargerIndex];
+
+  const estimatedTime = estimateChargeTime(
+    batteryCapacity,
+    currentPercent,
+    effectiveTarget,
+    selectedCharger.maxKw,
+  );
+
+  // Average charging power (actual)
+  const avgPower = kWhNeeded / estimatedTime;
 
   return (
     <div class="calc">
@@ -159,17 +216,17 @@ export default function EvChargingCalculator() {
       </div>
 
       <div class="field">
-        <label>Charging Provider</label>
+        <label>Charger Type</label>
         <select
           class="select-input"
-          value={providerIndex}
+          value={chargerIndex}
           onChange={(e) =>
-            setProviderIndex(parseInt((e.target as HTMLSelectElement).value))
+            setChargerIndex(parseInt((e.target as HTMLSelectElement).value))
           }
         >
-          {PROVIDERS.map((p, i) => (
+          {CHARGER_TYPES.map((c, i) => (
             <option key={i} value={i}>
-              {p.name} — {formatRM(p.rate)}/kWh
+              {c.name}
             </option>
           ))}
         </select>
@@ -177,35 +234,55 @@ export default function EvChargingCalculator() {
 
       <div class="results">
         <div class="result-row monthly">
-          <span>Estimated Cost</span>
-          <span class="value">{formatRM(estimatedCost)}</span>
+          <span>Estimated Time</span>
+          <span class="value">{formatTime(estimatedTime)}</span>
         </div>
         <div class="result-row">
           <span>Energy Needed</span>
           <span class="value">{kWhNeeded.toFixed(1)} kWh</span>
         </div>
         <div class="result-row">
-          <span>Rate</span>
-          <span class="value">{formatRM(selectedProvider.rate)}/kWh</span>
+          <span>Charger Power</span>
+          <span class="value">{selectedCharger.maxKw} kW</span>
+        </div>
+        <div class="result-row">
+          <span>Avg. Charging Power</span>
+          <span class="value">{avgPower.toFixed(1)} kW</span>
+        </div>
+        <div class="result-row">
+          <span>Avg. Charging Speed</span>
+          <span class="value">
+            {batteryCapacity > 0
+              ? ((avgPower / batteryCapacity) * 100).toFixed(1)
+              : "0"}
+            %/h
+          </span>
         </div>
       </div>
 
       <div class="comparison">
-        <h3 class="comparison-title">Cost Comparison</h3>
+        <h3 class="comparison-title">Time Comparison</h3>
         <p class="comparison-subtitle">
-          Same charge ({kWhNeeded.toFixed(1)} kWh) across all providers
+          Same charge ({kWhNeeded.toFixed(1)} kWh, {currentPercent}% →{" "}
+          {effectiveTarget}
+          %) across all charger types
         </p>
         <div class="comparison-table">
-          {PROVIDERS.map((p, i) => {
-            const cost = kWhNeeded * p.rate;
-            const isSelected = i === providerIndex;
+          {CHARGER_TYPES.map((c, i) => {
+            const time = estimateChargeTime(
+              batteryCapacity,
+              currentPercent,
+              effectiveTarget,
+              c.maxKw,
+            );
+            const isSelected = i === chargerIndex;
             return (
               <div
                 key={i}
                 class={`comparison-row ${isSelected ? "selected" : ""}`}
               >
-                <span class="comparison-name">{p.name}</span>
-                <span class="comparison-cost">{formatRM(cost)}</span>
+                <span class="comparison-name">{c.name}</span>
+                <span class="comparison-cost">{formatTime(time)}</span>
               </div>
             );
           })}
@@ -213,8 +290,9 @@ export default function EvChargingCalculator() {
       </div>
 
       <p class="note">
-        * Prices are approximate and may vary by location. Last updated April
-        2026.
+        * Times are estimates. Actual charging speed depends on battery
+        temperature, state of charge, vehicle onboard charger limits, and
+        charger derating. DC charging tapers significantly above 80%.
       </p>
     </div>
   );

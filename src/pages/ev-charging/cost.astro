@@ -1,0 +1,8 @@
+---
+import EvChargingLayout from "../../layouts/EvChargingLayout.astro";
+import EvChargingCalculator from "../../components/EvChargingCalculator";
+---
+
+<EvChargingLayout title="EV Charging Cost - Malaysia" activeTab="cost">
+  <EvChargingCalculator client:only="preact" />
+</EvChargingLayout>

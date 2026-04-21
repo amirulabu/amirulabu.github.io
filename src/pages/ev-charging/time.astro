@@ -1,0 +1,8 @@
+---
+import EvChargingLayout from "../../layouts/EvChargingLayout.astro";
+import EvChargingTimeCalculator from "../../components/EvChargingTimeCalculator";
+---
+
+<EvChargingLayout title="EV Charging Time - Malaysia" activeTab="time">
+  <EvChargingTimeCalculator client:only="preact" />
+</EvChargingLayout>
