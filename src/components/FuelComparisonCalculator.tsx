@@ -49,7 +49,7 @@ export default function FuelComparisonCalculator() {
           fuelPresetIndex,
           customFuelPrice,
           dailyDistance,
-        })
+        }),
       );
     } catch {}
   }, [
@@ -63,8 +63,7 @@ export default function FuelComparisonCalculator() {
     dailyDistance,
   ]);
 
-  const fuelPrice =
-    FUEL_PRESETS[fuelPresetIndex].price ?? customFuelPrice;
+  const fuelPrice = FUEL_PRESETS[fuelPresetIndex].price ?? customFuelPrice;
 
   // Convert to km/L for calculation (guard against zero/negative)
   const getKmPerL = (eff: number) => {
@@ -207,14 +206,14 @@ export default function FuelComparisonCalculator() {
               <input
                 type="text"
                 value={carAName}
-                onInput={(e) => setCarAName((e.target as HTMLInputElement).value)}
+                onInput={(e) =>
+                  setCarAName((e.target as HTMLInputElement).value)
+                }
                 class="text-input"
               />
             </div>
             <div class="field">
-              <label>
-                Efficiency ({unit === "kmpl" ? "km/L" : "L/100km"})
-              </label>
+              <label>Efficiency ({unit === "kmpl" ? "km/L" : "L/100km"})</label>
               <input
                 type="number"
                 value={carAEfficiency}
@@ -244,14 +243,14 @@ export default function FuelComparisonCalculator() {
               <input
                 type="text"
                 value={carBName}
-                onInput={(e) => setCarBName((e.target as HTMLInputElement).value)}
+                onInput={(e) =>
+                  setCarBName((e.target as HTMLInputElement).value)
+                }
                 class="text-input"
               />
             </div>
             <div class="field">
-              <label>
-                Efficiency ({unit === "kmpl" ? "km/L" : "L/100km"})
-              </label>
+              <label>Efficiency ({unit === "kmpl" ? "km/L" : "L/100km"})</label>
               <input
                 type="number"
                 value={carBEfficiency}
@@ -312,10 +311,20 @@ export default function FuelComparisonCalculator() {
         </div>
 
         <div class="savings-banner">
-          <svg class="savings-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>
+          <svg
+            class="savings-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M12 6v6l4 2"></path>
+          </svg>
           <span>
-            <strong>{cheaperCar}</strong>{" "}
-            saves{" "}
+            <strong>{cheaperCar}</strong> saves{" "}
             <strong>{formatRM(savings.monthly)}</strong> per month vs{" "}
             <strong>{moreExpensiveCar}</strong>
           </span>
@@ -329,10 +338,30 @@ export default function FuelComparisonCalculator() {
             <span>Savings</span>
           </div>
           {[
-            { label: "Daily", a: costA.daily, b: costB.daily, s: savings.daily },
-            { label: "Weekly", a: costA.weekly, b: costB.weekly, s: savings.weekly },
-            { label: "Monthly", a: costA.monthly, b: costB.monthly, s: savings.monthly },
-            { label: "Yearly", a: costA.yearly, b: costB.yearly, s: savings.yearly },
+            {
+              label: "Daily",
+              a: costA.daily,
+              b: costB.daily,
+              s: savings.daily,
+            },
+            {
+              label: "Weekly",
+              a: costA.weekly,
+              b: costB.weekly,
+              s: savings.weekly,
+            },
+            {
+              label: "Monthly",
+              a: costA.monthly,
+              b: costB.monthly,
+              s: savings.monthly,
+            },
+            {
+              label: "Yearly",
+              a: costA.yearly,
+              b: costB.yearly,
+              s: savings.yearly,
+            },
           ].map((row) => (
             <div class="results-row" key={row.label}>
               <span class="period">{row.label}</span>

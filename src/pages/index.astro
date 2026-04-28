@@ -1,6 +1,7 @@
 ---
 import Head from "../shared/Head.astro";
 import Header from "../shared/Header.astro";
+import Footer from "../shared/Footer.astro";
 ---
 
 <html lang="en">
@@ -290,13 +291,15 @@ import Header from "../shared/Header.astro";
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
-              ><path d="M12 2v20M2 12h20M12 2a10 10 0 0 1 10 10M12 2a10 10 0 0 0-10 10"></path></svg
+              ><path
+                d="M12 2v20M2 12h20M12 2a10 10 0 0 1 10 10M12 2a10 10 0 0 0-10 10"
+              ></path></svg
             >
             Fuel Cost Comparison
           </h2>
           <p class="card-desc">
-            Compare fuel costs between two cars with different efficiency —
-            km/L or L/100km, with Malaysian fuel price presets.
+            Compare fuel costs between two cars with different efficiency — km/L
+            or L/100km, with Malaysian fuel price presets.
           </p>
           <span class="card-arrow">&rarr;</span>
         </a>
@@ -360,6 +363,7 @@ import Header from "../shared/Header.astro";
         </p>
       </footer>
     </main>
+    <Footer />
   </body>
 </html>
 

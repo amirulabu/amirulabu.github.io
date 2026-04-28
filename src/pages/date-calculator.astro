@@ -2,6 +2,7 @@
 import DateCalculator from "../components/DateCalculator";
 import Head from "../shared/Head.astro";
 import Header from "../shared/Header.astro";
+import Footer from "../shared/Footer.astro";
 ---
 
 <html lang="en">
@@ -18,6 +19,7 @@ import Header from "../shared/Header.astro";
 
       <DateCalculator client:only="preact" />
     </main>
+    <Footer />
   </body>
 </html>
 

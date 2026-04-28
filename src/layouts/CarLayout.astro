@@ -1,6 +1,7 @@
 ---
 import Head from "../shared/Head.astro";
 import Header from "../shared/Header.astro";
+import Footer from "../shared/Footer.astro";
 
 const { title, activeTab } = Astro.props;
 ---
@@ -32,6 +33,7 @@ const { title, activeTab } = Astro.props;
 
       <slot />
     </main>
+    <Footer />
   </body>
 </html>
 
