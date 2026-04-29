@@ -1,0 +1,60 @@
+---
+import Head from "../shared/Head.astro";
+import Header from "../shared/Header.astro";
+import Footer from "../shared/Footer.astro";
+
+const { title, subtitle } = Astro.props;
+const maxWidth = Astro.props.maxWidth ?? "640px";
+---
+
+<html lang="en">
+  <head>
+    <Head title={title} />
+  </head>
+  <body>
+    <Header />
+    <main style={`--tool-max-width: ${maxWidth}`}>
+      <h1>{title}</h1>
+      {subtitle && <p class="subtitle">{subtitle}</p>}
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>
+
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family:
+      system-ui,
+      -apple-system,
+      sans-serif;
+    background: #faf9f7;
+    color: #1a1a1a;
+    min-height: 100vh;
+  }
+
+  main {
+    max-width: var(--tool-max-width, 640px);
+    margin: 0 auto;
+    padding: 5rem 1.5rem 2rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+    font-weight: 400;
+    line-height: 1.2;
+    margin-bottom: 0.25rem;
+  }
+
+  .subtitle {
+    font-size: 0.85rem;
+    color: #555555;
+    margin-bottom: 2rem;
+  }
+</style>

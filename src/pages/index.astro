@@ -25,31 +25,31 @@ import Footer from "../shared/Footer.astro";
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 128 128"
           >
-            <path d="M44 16h40v4H44z" fill="#7c3aed"></path>
+            <path d="M44 16h40v4H44z" fill="#3573c6"></path>
             <path
               d="M48 20v30l-20 50a8 8 0 0 0 7.4 11h57.2a8 8 0 0 0 7.4-11L80 50V20"
               fill="none"
-              stroke="#7c3aed"
+              stroke="#3573c6"
               stroke-width="5"
               stroke-linecap="round"
               stroke-linejoin="round"></path>
             <path
               d="M34.8 97a8 8 0 0 0 7.4 11h43.6a8 8 0 0 0 7.4-11L76 60H52L34.8 97Z"
-              fill="#a78bfa"
+              fill="#8bb5e8"
               opacity="0.5"></path>
-            <circle cx="56" cy="82" r="5" fill="#c4b5fd" opacity="0.8"></circle>
-            <circle cx="72" cy="74" r="3.5" fill="#c4b5fd" opacity="0.7"
+            <circle cx="56" cy="82" r="5" fill="#a8cbf0" opacity="0.8"></circle>
+            <circle cx="72" cy="74" r="3.5" fill="#a8cbf0" opacity="0.7"
             ></circle>
-            <circle cx="64" cy="90" r="4" fill="#ddd6fe" opacity="0.6"></circle>
-            <circle cx="60" cy="64" r="2.5" fill="#c4b5fd" opacity="0.5"
+            <circle cx="64" cy="90" r="4" fill="#c5dbf5" opacity="0.6"></circle>
+            <circle cx="60" cy="64" r="2.5" fill="#a8cbf0" opacity="0.5"
             ></circle>
-            <circle cx="70" cy="56" r="2" fill="#ddd6fe" opacity="0.4"></circle>
+            <circle cx="70" cy="56" r="2" fill="#c5dbf5" opacity="0.4"></circle>
             <line
               x1="48"
               y1="20"
               x2="48"
               y2="50"
-              stroke="#7c3aed"
+              stroke="#3573c6"
               stroke-width="5"
               stroke-linecap="round"></line>
             <line
@@ -57,7 +57,7 @@ import Footer from "../shared/Footer.astro";
               y1="20"
               x2="80"
               y2="50"
-              stroke="#7c3aed"
+              stroke="#3573c6"
               stroke-width="5"
               stroke-linecap="round"></line>
           </svg>
@@ -380,7 +380,10 @@ import Footer from "../shared/Footer.astro";
   }
 
   body {
-    font-family: "Source Code Pro", monospace;
+    font-family:
+      system-ui,
+      -apple-system,
+      sans-serif;
     min-height: 100vh;
   }
 
@@ -426,7 +429,7 @@ import Footer from "../shared/Footer.astro";
   .tagline {
     font-size: 0.85rem;
     line-height: 1.6;
-    color: #888;
+    color: #888888;
   }
 
   .slashed {
@@ -435,7 +438,8 @@ import Footer from "../shared/Footer.astro";
   }
 
   .ai {
-    color: #7c3aed;
+    color: #3573c6;
+    font-family: "Source Code Pro", monospace;
     font-weight: 500;
     margin-left: 0.15em;
   }
@@ -486,7 +490,7 @@ import Footer from "../shared/Footer.astro";
 
   .card-desc {
     font-size: 0.78rem;
-    color: #888;
+    color: #888888;
     line-height: 1.6;
   }
 
@@ -515,13 +519,13 @@ import Footer from "../shared/Footer.astro";
 
   .footer p {
     font-size: 0.72rem;
-    color: #aaa;
+    color: #999999;
   }
 
   .footer a {
-    color: #888;
+    color: #888888;
     text-decoration: none;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #e8e6e2;
     transition:
       color 0.2s ease,
       border-color 0.2s ease;

@@ -1,0 +1,250 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-04-29T00:00:00.000Z",
+  "title": "Design System: random",
+  "extensions": {
+    "colorMeta": {
+      "dependable-blue": {
+        "role": "primary",
+        "displayName": "Dependable Blue",
+        "canonical": "oklch(49% 0.13 260)",
+        "tonalRamp": [
+          "#142B4D",
+          "#1E3F6B",
+          "#295389",
+          "#3573C6",
+          "#5A93DA",
+          "#82B2E6",
+          "#ADD1F0",
+          "#D6EBF8"
+        ]
+      },
+      "desk-brown": {
+        "role": "secondary",
+        "displayName": "Desk Brown",
+        "canonical": "oklch(52% 0.06 65)",
+        "tonalRamp": [
+          "#3F2D1A",
+          "#5A4029",
+          "#75553A",
+          "#8B6D4F",
+          "#A4896B",
+          "#BCA58A",
+          "#D4C2A9",
+          "#EBE0CE"
+        ]
+      },
+      "page": {
+        "role": "neutral",
+        "displayName": "Page Warm",
+        "canonical": "oklch(98% 0.004 85)",
+        "tonalRamp": [
+          "#2A2A28",
+          "#4A4947",
+          "#6E6D6A",
+          "#93918E",
+          "#B8B6B2",
+          "#D5D3CF",
+          "#EAE8E4",
+          "#FAF9F7"
+        ]
+      },
+      "text": {
+        "role": "neutral",
+        "displayName": "Text Primary",
+        "canonical": "oklch(12% 0.01 60)",
+        "tonalRamp": [
+          "#0A0A0A",
+          "#1A1A1A",
+          "#333333",
+          "#555555",
+          "#777777",
+          "#999999",
+          "#CCCCCC",
+          "#F0F0F0"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Homepage title only. The serif establishes brand warmth on arrival."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Tool page h1. A label for the task, not a billboard."
+      },
+      "card-title": {
+        "displayName": "Card Title",
+        "purpose": "Homepage card headings. Serif warmth at small scale."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Descriptions, form labels, results. Compact but breathable."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Form field labels, table headers, tab text. Semibold for scanability."
+      },
+      "mono": {
+        "displayName": "Mono",
+        "purpose": "Homepage tagline A.I. text only. Nowhere else."
+      }
+    },
+    "shadows": [
+      {
+        "name": "card-hover",
+        "value": "0 2px 12px rgba(0, 0, 0, 0.06)",
+        "purpose": "Subtle lift on card hover, confirming interactivity."
+      },
+      {
+        "name": "panel",
+        "value": "0 1px 3px rgba(0, 0, 0, 0.1)",
+        "purpose": "Form containers and calculator panels."
+      },
+      {
+        "name": "tab-active",
+        "value": "0 1px 2px rgba(0, 0, 0, 0.08)",
+        "purpose": "Active segmented tab, barely perceptible lift."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-standard",
+        "value": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "purpose": "Default easing for state transitions (hover, focus)."
+      },
+      {
+        "name": "ease-out-quart",
+        "value": "cubic-bezier(0.25, 1, 0.5, 1)",
+        "purpose": "Hover reveals and arrow slides. Snappy exit, no bounce."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "600px",
+        "purpose": "Single-column mobile layout. Cards stack, inputs full-width."
+      },
+      {
+        "name": "md",
+        "value": "768px",
+        "purpose": "Tablet. Header padding increases, two-column grid available."
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Primary action button. Dependable Blue background, white text, confident shape.",
+      "html": "<button class=\"ds-btn-primary\">Calculate</button>",
+      "css": ".ds-btn-primary { background: #3573C6; color: #FFFFFF; border: none; border-radius: 8px; padding: 12px 24px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; font-weight: 600; cursor: pointer; min-height: 44px; transition: background 0.15s cubic-bezier(0.4, 0, 0.2, 1); } .ds-btn-primary:hover { background: #2960AD; } .ds-btn-primary:active { background: #1E4D94; } .ds-btn-primary:focus-visible { outline: 2px solid rgba(53, 115, 198, 0.5); outline-offset: 2px; }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": null,
+      "description": "Secondary action. Blue text with blue border on white background.",
+      "html": "<button class=\"ds-btn-ghost\">Cancel</button>",
+      "css": ".ds-btn-ghost { background: #FFFFFF; color: #3573C6; border: 1px solid #3573C6; border-radius: 8px; padding: 12px 24px; font-family: system-ui, -apple-system, sans-serif; font-size: 0.85rem; font-weight: 600; cursor: pointer; min-height: 44px; transition: background 0.15s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.15s cubic-bezier(0.4, 0, 0.2, 1); } .ds-btn-ghost:hover { background: #EBF2FA; border-color: #2960AD; } .ds-btn-ghost:focus-visible { outline: 2px solid rgba(53, 115, 198, 0.5); outline-offset: 2px; }"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "refersTo": "input-text",
+      "description": "Standard text/number input with warm border and blue focus ring.",
+      "html": "<input type=\"text\" class=\"ds-input\" placeholder=\"Enter amount\" />",
+      "css": ".ds-input { width: 100%; padding: 10px 13px; border: 1px solid #E8E6E2; border-radius: 6px; font-size: 1.1rem; font-family: system-ui, -apple-system, sans-serif; color: #1A1A1A; background: #FFFFFF; min-height: 44px; transition: border-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.15s cubic-bezier(0.4, 0, 0.2, 1); } .ds-input::placeholder { color: #999999; } .ds-input:hover { border-color: #D0CDC7; } .ds-input:focus { outline: none; border-color: #3573C6; box-shadow: 0 0 0 2px rgba(53, 115, 198, 0.18); }"
+    },
+    {
+      "name": "Segmented Tabs",
+      "kind": "button",
+      "refersTo": "tab-active",
+      "description": "Pill tabs for tool sub-navigation. Active tab is white with shadow, inactive is transparent.",
+      "html": "<div class=\"ds-tabs\"><a href=\"#\" class=\"ds-tab ds-tab-active\">Cost</a><a href=\"#\" class=\"ds-tab\">Time</a></div>",
+      "css": ".ds-tabs { display: flex; gap: 4px; background: #F0F0F0; border-radius: 6px; padding: 4px; } .ds-tab { flex: 1; padding: 8px 12px; border: none; background: transparent; border-radius: 4px; font-size: 0.85rem; font-family: system-ui, -apple-system, sans-serif; cursor: pointer; color: #666666; text-decoration: none; text-align: center; transition: background 0.15s cubic-bezier(0.4, 0, 0.2, 1), color 0.15s cubic-bezier(0.4, 0, 0.2, 1); min-height: 44px; display: flex; align-items: center; justify-content: center; } .ds-tab:hover { color: #333333; } .ds-tab-active { background: #FFFFFF; color: #1A1A1A; font-weight: 600; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08); } .ds-tab-active:hover { background: #FFFFFF; color: #1A1A1A; }"
+    },
+    {
+      "name": "Page Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Homepage card linking to a tool. Warm border, hover lift, serif title.",
+      "html": "<a href=\"#\" class=\"ds-card\"><h2 class=\"ds-card-title\">Calculator</h2><p class=\"ds-card-desc\">Basic calculator with arithmetic operations</p><span class=\"ds-card-arrow\">→</span></a>",
+      "css": ".ds-card { display: block; padding: 16px; background: #FFFFFF; border: 1px solid #E8E6E2; border-radius: 8px; text-decoration: none; color: inherit; position: relative; transition: border-color 0.25s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.25s cubic-bezier(0.25, 1, 0.5, 1); } .ds-card:hover { border-color: #D0CDC7; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06); } .ds-card-title { font-family: \"Newsreader\", Georgia, serif; font-size: 1.1rem; font-weight: 400; margin: 0 0 4px 0; line-height: 1.3; } .ds-card-desc { font-size: 0.78rem; color: #888888; line-height: 1.6; margin: 0; } .ds-card-arrow { position: absolute; top: 16px; right: 16px; color: #8B6D4F; font-size: 1.1rem; opacity: 0; transform: translateX(-4px); transition: opacity 0.25s cubic-bezier(0.25, 1, 0.5, 1), transform 0.25s cubic-bezier(0.25, 1, 0.5, 1); } .ds-card:hover .ds-card-arrow { opacity: 1; transform: translateX(0); }"
+    },
+    {
+      "name": "Result Panel",
+      "kind": "card",
+      "refersTo": "result-panel",
+      "description": "Blue-tinted panel for calculation results. Visual grouping via temperature shift.",
+      "html": "<div class=\"ds-result\"><div class=\"ds-result-row\"><span>Monthly payment</span><span class=\"ds-result-value\">RM 1,234</span></div></div>",
+      "css": ".ds-result { background: #EBF2FA; border: 1px solid rgba(53, 115, 198, 0.15); border-radius: 8px; padding: 16px; } .ds-result-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; font-size: 0.85rem; color: #555555; } .ds-result-row + .ds-result-row { border-top: 1px solid rgba(53, 115, 198, 0.12); } .ds-result-value { font-weight: 600; color: #1A1A1A; }"
+    },
+    {
+      "name": "Calculator Key",
+      "kind": "button",
+      "refersTo": null,
+      "description": "Grid button for calculator. Digit, function, operator, and equals variants with distinct visual roles.",
+      "html": "<div style=\"display:grid; grid-template-columns: repeat(4,1fr); gap:8px; max-width:320px;\"><button class=\"ds-calc-key\">7</button><button class=\"ds-calc-key ds-calc-key-fn\">AC</button><button class=\"ds-calc-key ds-calc-key-op\">+</button><button class=\"ds-calc-key ds-calc-key-eq\">=</button></div>",
+      "css": ".ds-calc-key { display: flex; align-items: center; justify-content: center; height: 48px; border: 1px solid #E8E6E2; border-radius: 8px; background: #FFFFFF; font-size: 1.15rem; font-family: system-ui, -apple-system, sans-serif; cursor: pointer; color: #1A1A1A; transition: background 0.1s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.1s cubic-bezier(0.4, 0, 0.2, 1); } .ds-calc-key:hover { background: #FAF9F7; border-color: #D0CDC7; } .ds-calc-key:active { background: #F0EFED; } .ds-calc-key-fn { background: #EBF2FA; color: #3573C6; font-weight: 500; border-color: rgba(53, 115, 198, 0.2); } .ds-calc-key-fn:hover { background: #D6E3F4; border-color: rgba(53, 115, 198, 0.35); } .ds-calc-key-op { background: #EBF2FA; color: #3573C6; font-size: 1.3rem; font-weight: 500; border-color: rgba(53, 115, 198, 0.2); } .ds-calc-key-op:hover { background: #D6E3F4; } .ds-calc-key-eq { background: #3573C6; color: #FFFFFF; font-weight: 600; border-color: #3573C6; } .ds-calc-key-eq:hover { background: #2960AD; border-color: #2960AD; }"
+    },
+    {
+      "name": "Site Header",
+      "kind": "nav",
+      "refersTo": null,
+      "description": "Fixed header with translucent warm-white background and blur. Brand: flask icon + serif wordmark.",
+      "html": "<header class=\"ds-header\"><a href=\"/\" class=\"ds-brand\"><svg class=\"ds-brand-icon\" viewBox=\"0 0 128 128\" width=\"28\" height=\"28\"><path d=\"M44 16h40v4H44z\" fill=\"#3573C6\"/><path d=\"M48 20v30l-20 50a8 8 0 0 0 7.4 11h57.2a8 8 0 0 0 7.4-11L80 50V20\" fill=\"none\" stroke=\"#3573C6\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg><span class=\"ds-brand-text\">random</span></a></header>",
+      "css": ".ds-header { position: fixed; top: 0; left: 0; right: 0; z-index: 50; background: rgba(250, 249, 247, 0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(139, 109, 79, 0.12); } .ds-brand { display: flex; align-items: center; gap: 8px; text-decoration: none; color: inherit; transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1); } .ds-brand:hover { opacity: 0.8; } .ds-brand-icon { flex-shrink: 0; } .ds-brand-text { font-family: \"Newsreader\", Georgia, serif; font-size: 1.25rem; font-weight: 400; letter-spacing: -0.02em; color: #1A1A1A; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Daylight Desk",
+    "overview": "A well-lit workspace where everything is visible, trustworthy, and ready to hand. The surface is warm like a wooden desk, the instruments are confident blue like a quality pen, and nothing hides in shadow. Daylight means no guessing: if you can see it, you can tell what it does. The design serves the task, not the other way around.\n\nThis system rejects ambiguity. Anti-reference: skillsmp.com, where dark mode obscures boundaries, buttons are indistinguishable from text, and interactive elements lack affordance. The Daylight Desk is the opposite: surfaces are warm and bright, interactive elements announce themselves, and the accent color is reserved for action and state.",
+    "keyCharacteristics": [
+      "Warm light surfaces with barely-tinted backgrounds that feel like natural light on wood",
+      "Confident blue accent that earns trust through consistency and restraint",
+      "Tactile interactivity where every clickable element looks and feels clickable",
+      "Serif-display warmth for personality, system-sans clarity for tools",
+      "Flat-by-default elevation with state-triggered lift"
+    ],
+    "rules": [
+      {
+        "name": "The One Voice Rule",
+        "body": "The dependable blue accent appears on no more than 10% of any tool screen at rest. It emerges in action: focus, active, selected, primary buttons. At rest, the palette is warm neutrals. Blue is the instrument you pick up, not the desk you sit at.",
+        "section": "colors"
+      },
+      {
+        "name": "The Quiet Headline Rule",
+        "body": "Headlines are weight 400, same size or just above body. This is a tool, not a magazine. If the hierarchy needs shouting, use spacing and color, not font-weight escalation.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat-By-Default Rule",
+        "body": "Surfaces are flat at rest. Shadows and lifts appear only as a response to state change (hover, elevation). If a stationary element casts a shadow, it had better need the affordance.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Use Dependable Blue exclusively for interactive elements and active states. If it is clickable, selected, or primary, it should be blue.",
+      "Keep the accent below 10% of any tool surface at rest. Blue appears when the user acts, not before.",
+      "Use warm neutral borders (#E8E6E2) that announce edges without shouting.",
+      "Make interactive elements obviously interactive with clear hover states, focus rings, and color changes.",
+      "Use Serif-display (Newsreader) only for homepage brand moments and card titles. Everything else is system-sans.",
+      "Ensure minimum 44px touch targets for all interactive elements.",
+      "Use temperature contrast (warm page + cool surface) for depth instead of heavy shadows.",
+      "Use Dependable Blue focus rings (2px, rgba(53, 115, 198, 0.18)) on all focusable elements."
+    ],
+    "donts": [
+      "Don't make buttons that look like text. Every interactive element needs background, border, or both, sufficient to distinguish it from static content at a glance. (Anti-reference: skillsmp.com)",
+      "Don't use dark mode by default. The Daylight Desk is warm and bright.",
+      "Don't use border-left or border-right greater than 1px as a colored accent stripe on cards, list items, callouts, or alerts.",
+      "Don't use gradient text (background-clip: text). Emphasis comes from weight and size, not color effects.",
+      "Don't use glassmorphism as decoration. The header blur is structural, not aesthetic.",
+      "Don't create hero-metric patterns (big number, small label, gradient accent). The calculator results show financial figures with table clarity.",
+      "Don't mix indigo (#4F46E5) or violet (#7C3AED) with Dependable Blue. The old accent colors are replaced. One blue, one system.",
+      "Don't animate layout properties. Transitions apply to color, shadow, and transform only."
+    ]
+  }
+}

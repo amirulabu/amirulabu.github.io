@@ -1,72 +1,26 @@
 ---
+import ToolLayout from "../layouts/ToolLayout.astro";
 import Counter from "../components/Counter";
 import TodoList from "../components/TodoList";
 import Greeting from "../components/Greeting";
-import Head from "../shared/Head.astro";
-import Header from "../shared/Header.astro";
-import Footer from "../shared/Footer.astro";
 ---
 
-<html lang="en">
-  <head>
-    <Head title="Preact Demo" />
-  </head>
-  <body>
-    <Header />
-    <main>
-      <h1>Preact Demo Components</h1>
-      <p class="subtitle">Interactive Preact components running inside Astro</p>
-
-      <div class="grid">
-        <Counter client:visible />
-        <Greeting name="Mirul" client:visible />
-        <TodoList client:visible />
-      </div>
-    </main>
-    <Footer />
-  </body>
-</html>
+<ToolLayout
+  title="Preact Demo Components"
+  subtitle="Interactive Preact components running inside Astro"
+  maxWidth="800px"
+>
+  <div class="grid">
+    <Counter client:visible />
+    <Greeting name="Mirul" client:visible />
+    <TodoList client:visible />
+  </div>
+</ToolLayout>
 
 <style>
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-
-  body {
-    font-family:
-      system-ui,
-      -apple-system,
-      sans-serif;
-    background: #f5f5f5;
-    color: #1a1a1a;
-    min-height: 100vh;
-  }
-
-  main {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 5rem 1rem 2rem;
-  }
-
-  h1 {
-    font-size: 2rem;
-    margin-bottom: 0.25rem;
-  }
-
-  .subtitle {
-    color: #666;
-    margin-bottom: 2rem;
-  }
-
   .grid {
     display: grid;
     gap: 1.5rem;
-  }
-
-  .back-link {
-    display: none;
   }
 </style>
 
@@ -84,17 +38,17 @@ import Footer from "../shared/Footer.astro";
   }
 
   .demo-card button {
-    background: #4f46e5;
+    background: #3573c6;
     color: white;
     border: none;
     padding: 0.4rem 0.9rem;
-    border-radius: 4px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 0.9rem;
   }
 
   .demo-card button:hover {
-    background: #4338ca;
+    background: #2960ad;
   }
 
   .button-group {
@@ -110,14 +64,20 @@ import Footer from "../shared/Footer.astro";
 
   .input-group input {
     flex: 1;
-    padding: 0.4rem 0.6rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    padding: 10px 13px;
+    border: 1px solid #e8e6e2;
+    border-radius: 6px;
     font-size: 0.9rem;
   }
 
+  .input-group input:focus {
+    outline: none;
+    border-color: #3573c6;
+    box-shadow: 0 0 0 2px rgba(53, 115, 198, 0.18);
+  }
+
   .empty-state {
-    color: #999;
+    color: #999999;
     font-style: italic;
   }
 
@@ -131,7 +91,7 @@ import Footer from "../shared/Footer.astro";
     justify-content: space-between;
     align-items: center;
     padding: 0.4rem 0;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #e8e6e2;
   }
 
   .demo-card li:last-child {
