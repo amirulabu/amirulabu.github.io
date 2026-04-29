@@ -1,4 +1,8 @@
 <footer class="site-footer">
+  <a href="https://github.com/amirulabu" target="_blank" rel="noopener"
+    >Amirul&#8239;Abu</a
+  >
+  <span class="sep" aria-hidden="true">/</span>
   <a
     href="https://amirulabugithubio.goatcounter.com/"
     target="_blank"
@@ -11,15 +15,27 @@
     text-align: center;
     padding: 1.5rem;
     font-size: 0.8rem;
-    color: #999;
+    color: #888;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
   }
 
   .site-footer a {
-    color: #999;
+    color: #888;
     text-decoration: none;
+    transition: color 0.2s ease;
   }
 
   .site-footer a:hover {
-    color: #555555;
+    color: #3573c6;
+  }
+
+  .site-footer .sep {
+    color: #d0cdc7;
+    font-size: 0.7rem;
+    user-select: none;
   }
 </style>
