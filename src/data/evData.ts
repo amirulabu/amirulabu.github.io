@@ -105,13 +105,28 @@ export const CHARGING_COST_PROVIDERS = [
 // avgEfficiency: real-world charging efficiency (accounts for losses, taper above 80%)
 export const CHARGER_TYPES = [
   {
-    name: "Portable / Granny (2.3 kW · 10A 3-pin)",
+    name: "Portable / Granny (8A · 1.8 kW)",
+    maxKw: 1.84,
+    category: "home",
+  },
+  {
+    name: "Portable / Granny (10A · 2.3 kW)",
     maxKw: 2.3,
     category: "home",
   },
   {
-    name: "Portable / Granny (3.0 kW · 13A 3-pin)",
-    maxKw: 3.0,
+    name: "Portable / Granny (12A UK plug max · 2.8 kW)",
+    maxKw: 2.76,
+    category: "home",
+  },
+  {
+    name: "Portable / Granny (13A · 3.0 kW)",
+    maxKw: 2.99,
+    category: "home",
+  },
+  {
+    name: "Portable / Granny (16A · 3.7 kW)",
+    maxKw: 3.68,
     category: "home",
   },
   { name: "Home Wallbox (7.4 kW AC)", maxKw: 7.4, category: "home" },
