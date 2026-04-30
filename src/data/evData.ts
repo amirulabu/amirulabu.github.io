@@ -104,6 +104,16 @@ export const CHARGING_COST_PROVIDERS = [
 // maxKw: maximum power this charger type can deliver
 // avgEfficiency: real-world charging efficiency (accounts for losses, taper above 80%)
 export const CHARGER_TYPES = [
+  {
+    name: "Portable / Granny (2.3 kW · 10A 3-pin)",
+    maxKw: 2.3,
+    category: "home",
+  },
+  {
+    name: "Portable / Granny (3.0 kW · 13A 3-pin)",
+    maxKw: 3.0,
+    category: "home",
+  },
   { name: "Home Wallbox (7.4 kW AC)", maxKw: 7.4, category: "home" },
   { name: "Home Wallbox (11 kW AC)", maxKw: 11, category: "home" },
   { name: "Home Wallbox (22 kW AC)", maxKw: 22, category: "home" },
