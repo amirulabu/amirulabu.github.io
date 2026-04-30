@@ -7,6 +7,7 @@ Please do this:
 
 - after completing a feature, run "npm run precommit" to check for issues
 - if you are adding a page, add the link to index.astro
+- **always `git add docs/` before committing.** The `docs/` directory is the built output that gets deployed directly — there is no build step in deploy. Every commit must include the latest `docs/` files or the deployed site will be stale.
 
 ## Shared Styles & Layouts
 
