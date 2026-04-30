@@ -119,16 +119,6 @@ export const CHARGER_TYPES = [
     maxKw: 2.76,
     category: "home",
   },
-  {
-    name: "Portable / Granny (13A · 3.0 kW)",
-    maxKw: 2.99,
-    category: "home",
-  },
-  {
-    name: "Portable / Granny (16A · 3.7 kW)",
-    maxKw: 3.68,
-    category: "home",
-  },
   { name: "Home Wallbox (7.4 kW AC)", maxKw: 7.4, category: "home" },
   { name: "Home Wallbox (11 kW AC)", maxKw: 11, category: "home" },
   { name: "Home Wallbox (22 kW AC)", maxKw: 22, category: "home" },
