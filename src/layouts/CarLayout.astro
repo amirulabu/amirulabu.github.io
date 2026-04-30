@@ -235,6 +235,107 @@ const { title, activeTab } = Astro.props;
     color: #3573c6;
   }
 
+  .amort-chart-wrap {
+    margin-top: 1.5rem;
+    background: white;
+    border-radius: 8px;
+    padding: 1rem 1rem 0.75rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+
+  .amort-chart-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 0.5rem;
+  }
+
+  .amort-chart {
+    width: 100%;
+    height: auto;
+    display: block;
+    cursor: crosshair;
+  }
+
+  .amort-legend {
+    display: flex;
+    gap: 1.25rem;
+    justify-content: center;
+    margin-top: 0.5rem;
+    font-size: 0.78rem;
+    color: #555;
+  }
+
+  .amort-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .amort-legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    display: inline-block;
+  }
+
+  .amort-legend-line {
+    width: 16px;
+    height: 2px;
+    display: inline-block;
+  }
+
+  .amort-legend-line.balance-line {
+    border-top: 2px dashed #2e7d32;
+  }
+
+  .amort-tooltip {
+    background: #1a1a1a;
+    color: #fff;
+    border-radius: 6px;
+    padding: 0.6rem 0.8rem;
+    font-size: 0.78rem;
+    line-height: 1.5;
+    margin-top: 0.5rem;
+  }
+
+  .amort-tooltip strong {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 0.82rem;
+  }
+
+  .amort-tooltip-row {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .amort-tooltip-row.total {
+    margin-top: 0.25rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    padding-top: 0.25rem;
+    font-weight: 600;
+  }
+
+  .amort-tooltip-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+
+  .amort-tooltip-val {
+    margin-left: auto;
+    font-weight: 600;
+    padding-left: 0.5rem;
+  }
+
+  .amort-tooltip-row:not(.total) .amort-tooltip-val {
+    font-weight: 500;
+  }
+
   .note {
     font-size: 0.72rem;
     color: #999999;

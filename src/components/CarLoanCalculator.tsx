@@ -1,4 +1,4 @@
-import { useState, useEffect } from "preact/hooks";
+import { useState, useEffect, useMemo } from "preact/hooks";
 
 const STORAGE_KEY_PRICE = "carLoanCalc_price";
 const STORAGE_KEY_MONTHLY = "carLoanCalc_monthly";
@@ -169,10 +169,287 @@ export function PriceToMonthlyCalc() {
         </div>
       </div>
 
+      <AmortizationChart
+        loanAmount={loanAmount}
+        totalInterest={totalInterest}
+        loanYears={loanYears}
+      />
+
       <p class="note">
         * Uses flat rate calculation (hire purchase), common for Malaysian car
         loans.
       </p>
+    </div>
+  );
+}
+
+/* ---------- Amortization Chart ---------- */
+
+function AmortizationChart({
+  loanAmount,
+  totalInterest,
+  loanYears,
+}: {
+  loanAmount: number;
+  totalInterest: number;
+  loanYears: number;
+}) {
+  const totalPayable = loanAmount + totalInterest;
+
+  const data = useMemo(() => {
+    const years: number[] = [];
+    const cumPrincipal: number[] = [];
+    const cumInterest: number[] = [];
+    const balanceRemaining: number[] = [];
+    for (let y = 0; y <= loanYears; y++) {
+      years.push(y);
+      const cp = (loanAmount / loanYears) * y;
+      const ci = (totalInterest / loanYears) * y;
+      cumPrincipal.push(cp);
+      cumInterest.push(ci);
+      balanceRemaining.push(totalPayable - cp - ci);
+    }
+    return { years, cumPrincipal, cumInterest, balanceRemaining };
+  }, [loanAmount, totalInterest, loanYears, totalPayable]);
+
+  const w = 480;
+  const h = 260;
+  const pad = { top: 20, right: 16, bottom: 34, left: 62 };
+  const plotW = w - pad.left - pad.right;
+  const plotH = h - pad.top - pad.bottom;
+
+  const maxY = totalPayable;
+  const xScale = (year: number) => pad.left + (year / loanYears) * plotW;
+  const yScale = (val: number) => pad.top + plotH - (val / maxY) * plotH;
+
+  // Build stacked area path strings
+  const principals = data.cumPrincipal;
+  const interests = data.cumInterest;
+  const n = data.years.length;
+
+  // Area: cumulative principal (bottom layer)
+  let principalArea = `M ${xScale(0)} ${yScale(0)}`;
+  for (let i = 0; i < n; i++) {
+    principalArea += ` L ${xScale(data.years[i])} ${yScale(principals[i])}`;
+  }
+  principalArea += ` L ${xScale(data.years[n - 1])} ${yScale(0)} Z`;
+
+  // Area: cumulative interest (top layer, stacked on principal)
+  let interestArea = `M ${xScale(0)} ${yScale(principals[0])}`;
+  for (let i = 0; i < n; i++) {
+    interestArea += ` L ${xScale(data.years[i])} ${yScale(principals[i] + interests[i])}`;
+  }
+  interestArea += ` L ${xScale(data.years[n - 1])} ${yScale(principals[n - 1])} Z`;
+
+  // Line: balance remaining
+  const balances = data.balanceRemaining;
+  let balanceLine = `M ${xScale(0)} ${yScale(balances[0])}`;
+  for (let i = 1; i < n; i++) {
+    balanceLine += ` L ${xScale(data.years[i])} ${yScale(balances[i])}`;
+  }
+
+  // Y-axis gridlines (5 lines)
+  const gridLines = 5;
+  const yTicks = Array.from({ length: gridLines + 1 }, (_, i) =>
+    Math.round((maxY / gridLines) * i),
+  );
+
+  const fmtK = (n: number) => {
+    if (n >= 1000) return `${(n / 1000).toFixed(n % 1000 === 0 ? 0 : 1)}k`;
+    return String(n);
+  };
+
+  // Tooltip state
+  const [hoverIdx, setHoverIdx] = useState<number | null>(null);
+
+  const getIndexFromX = (clientX: number, svg: SVGSVGElement) => {
+    const rect = svg.getBoundingClientRect();
+    const x = clientX - rect.left;
+    const svgX = (x / rect.width) * w;
+    const dataX = ((svgX - pad.left) / plotW) * loanYears;
+    const idx = Math.round(dataX);
+    if (idx >= 0 && idx <= loanYears) return idx;
+    return null;
+  };
+
+  const handleMouseMove = (e: JSX.TargetedMouseEvent<SVGSVGElement>) => {
+    setHoverIdx(getIndexFromX(e.clientX, e.currentTarget));
+  };
+
+  const handleTouchMove = (e: JSX.TargetedTouchEvent<SVGSVGElement>) => {
+    e.preventDefault();
+    const touch = e.touches[0];
+    setHoverIdx(getIndexFromX(touch.clientX, e.currentTarget));
+  };
+
+  const handleTouchEnd = () => {
+    setHoverIdx(null);
+  };
+
+  const hoverX = hoverIdx !== null ? xScale(data.years[hoverIdx]) : null;
+
+  return (
+    <div class="amort-chart-wrap">
+      <div class="amort-chart-title">Interest vs Principal Over Time</div>
+      <svg
+        viewBox={`0 0 ${w} ${h}`}
+        class="amort-chart"
+        onMouseMove={handleMouseMove}
+        onMouseLeave={() => setHoverIdx(null)}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        onTouchCancel={handleTouchEnd}
+      >
+        {/* Grid lines */}
+        {yTicks.map((tick) => (
+          <line
+            x1={pad.left}
+            y1={yScale(tick)}
+            x2={w - pad.right}
+            y2={yScale(tick)}
+            stroke="#e5e5e5"
+            stroke-width="1"
+          />
+        ))}
+
+        {/* X-axis ticks */}
+        {data.years
+          .filter(
+            (y) =>
+              y === 0 || y === loanYears || y % Math.ceil(loanYears / 5) === 0,
+          )
+          .map((y) => (
+            <g>
+              <line
+                x1={xScale(y)}
+                y1={pad.top + plotH}
+                x2={xScale(y)}
+                y2={pad.top + plotH + 4}
+                stroke="#999"
+                stroke-width="1"
+              />
+              <text
+                x={xScale(y)}
+                y={pad.top + plotH + 18}
+                text-anchor="middle"
+                font-size="11"
+                fill="#777"
+              >
+                {y}yr
+              </text>
+            </g>
+          ))}
+
+        {/* Y-axis labels */}
+        {yTicks.map((tick) => (
+          <text
+            x={pad.left - 6}
+            y={yScale(tick) + 4}
+            text-anchor="end"
+            font-size="10"
+            fill="#777"
+          >
+            {fmtK(tick)}
+          </text>
+        ))}
+
+        {/* Stacked areas */}
+        <path d={principalArea} fill="#3573C6" opacity="0.85" />
+        <path d={interestArea} fill="#E8634A" opacity="0.75" />
+
+        {/* Balance remaining line */}
+        <path
+          d={balanceLine}
+          fill="none"
+          stroke="#2E7D32"
+          stroke-width="2"
+          stroke-dasharray="6 3"
+        />
+
+        {/* Hover crosshair */}
+        {hoverX !== null && (
+          <line
+            x1={hoverX}
+            y1={pad.top}
+            x2={hoverX}
+            y2={pad.top + plotH}
+            stroke="#333"
+            stroke-width="1"
+            stroke-dasharray="4 2"
+            opacity="0.6"
+          />
+        )}
+
+        {/* Axes */}
+        <line
+          x1={pad.left}
+          y1={pad.top + plotH}
+          x2={w - pad.right}
+          y2={pad.top + plotH}
+          stroke="#999"
+          stroke-width="1"
+        />
+        <line
+          x1={pad.left}
+          y1={pad.top}
+          x2={pad.left}
+          y2={pad.top + plotH}
+          stroke="#999"
+          stroke-width="1"
+        />
+      </svg>
+
+      {/* Legend */}
+      <div class="amort-legend">
+        <span class="amort-legend-item">
+          <span class="amort-legend-dot" style="background:#3573C6" />
+          Principal
+        </span>
+        <span class="amort-legend-item">
+          <span class="amort-legend-dot" style="background:#E8634A" />
+          Interest
+        </span>
+        <span class="amort-legend-item">
+          <span class="amort-legend-line balance-line" />
+          Balance
+        </span>
+      </div>
+
+      {/* Hover tooltip */}
+      {hoverIdx !== null && (
+        <div class="amort-tooltip">
+          <strong>Year {data.years[hoverIdx]}</strong>
+          <div class="amort-tooltip-row">
+            <span class="amort-tooltip-dot" style="background:#3573C6" />
+            <span>Principal paid</span>
+            <span class="amort-tooltip-val">
+              {formatRM(data.cumPrincipal[hoverIdx])}
+            </span>
+          </div>
+          <div class="amort-tooltip-row">
+            <span class="amort-tooltip-dot" style="background:#E8634A" />
+            <span>Interest paid</span>
+            <span class="amort-tooltip-val">
+              {formatRM(data.cumInterest[hoverIdx])}
+            </span>
+          </div>
+          <div class="amort-tooltip-row total">
+            <span>Total paid</span>
+            <span class="amort-tooltip-val">
+              {formatRM(
+                data.cumPrincipal[hoverIdx] + data.cumInterest[hoverIdx],
+              )}
+            </span>
+          </div>
+          <div class="amort-tooltip-row">
+            <span class="amort-tooltip-dot" style="background:#2E7D32" />
+            <span>Balance left</span>
+            <span class="amort-tooltip-val">
+              {formatRM(data.balanceRemaining[hoverIdx])}
+            </span>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
