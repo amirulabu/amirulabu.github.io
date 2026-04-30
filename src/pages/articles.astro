@@ -1,0 +1,95 @@
+---
+import ToolLayout from "../layouts/ToolLayout.astro";
+---
+
+<ToolLayout
+  title="Articles"
+  subtitle="Saved references for future recall"
+  maxWidth="720px"
+>
+  <ul class="article-list">
+    <li class="article-entry">
+      <a href="/articles/abc-mindset/" class="article-link">
+        <span class="article-date">Apr 29, 2026</span>
+        <span class="article-title">
+          The "Always Be Charging" Mindset: How EV Ownership Flips Everything
+          You Know About Refueling
+        </span>
+        <span class="article-desc">
+          Why opportunity charging is the single most important habit that
+          separates a stressed EV owner from a happy one.
+        </span>
+      </a>
+    </li>
+    <li class="article-entry">
+      <a href="/articles/abc-mindset-ms/" class="article-link">
+        <span class="article-date">Apr 29, 2026</span>
+        <span class="article-title">
+          Fikiran "Sentiasa Cas": Cara Memandu EV Menukar Segala-galanya Yang
+          Anda Tahu Tentang Mengisi Minyak
+        </span>
+        <span class="article-desc">
+          Versi Bahasa Melayu — kenapa pengecasan peluang adalah amalan paling
+          penting untuk pemilik EV.
+        </span>
+      </a>
+    </li>
+  </ul>
+</ToolLayout>
+
+<style is:global>
+  .article-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .article-entry {
+    margin: 0;
+  }
+
+  .article-link {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 1rem;
+    background: #fff;
+    border: 1px solid #e8e6e2;
+    border-radius: 8px;
+    text-decoration: none;
+    color: inherit;
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .article-link:hover {
+    border-color: #d0cdc7;
+    box-shadow: 0 3px 14px rgba(0, 0, 0, 0.06);
+    transform: translateY(-1px);
+  }
+
+  .article-date {
+    font-size: 0.75rem;
+    color: #8b6d4f;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .article-title {
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.4;
+    color: #1a1a1a;
+  }
+
+  .article-desc {
+    font-size: 0.82rem;
+    color: #888;
+    line-height: 1.5;
+  }
+</style>
