@@ -80,8 +80,7 @@ export default function EvComparisonCalculator() {
   };
 
   const cheaperCar = costA.yearly <= costB.yearly ? carA.name : carB.name;
-  const moreExpensiveCar =
-    costA.yearly <= costB.yearly ? carB.name : carA.name;
+  const moreExpensiveCar = costA.yearly <= costB.yearly ? carB.name : carA.name;
 
   const maxMonthly = Math.max(costA.monthly, costB.monthly) || 1;
 
@@ -101,9 +100,7 @@ export default function EvComparisonCalculator() {
           <select
             value={providerIndex}
             onChange={(e) =>
-              setProviderIndex(
-                parseInt((e.target as HTMLSelectElement).value),
-              )
+              setProviderIndex(parseInt((e.target as HTMLSelectElement).value))
             }
           >
             {CHARGING_COST_PROVIDERS.map((p, i) => (
@@ -145,9 +142,7 @@ export default function EvComparisonCalculator() {
                 min={0.1}
                 step={0.1}
                 onInput={(e) => {
-                  const v = parseFloat(
-                    (e.target as HTMLInputElement).value,
-                  );
+                  const v = parseFloat((e.target as HTMLInputElement).value);
                   if (!isNaN(v) && v > 0) setCarAEfficiency(v);
                 }}
               />
@@ -184,9 +179,7 @@ export default function EvComparisonCalculator() {
                 min={0.1}
                 step={0.1}
                 onInput={(e) => {
-                  const v = parseFloat(
-                    (e.target as HTMLInputElement).value,
-                  );
+                  const v = parseFloat((e.target as HTMLInputElement).value);
                   if (!isNaN(v) && v > 0) setCarBEfficiency(v);
                 }}
               />
@@ -211,9 +204,7 @@ export default function EvComparisonCalculator() {
               min={0}
               step={1}
               onInput={(e) => {
-                const v = parseFloat(
-                  (e.target as HTMLInputElement).value,
-                );
+                const v = parseFloat((e.target as HTMLInputElement).value);
                 if (!isNaN(v) && v >= 0) setDailyDistance(v);
               }}
             />
@@ -226,9 +217,7 @@ export default function EvComparisonCalculator() {
               min={0}
               step={1}
               onInput={(e) => {
-                const v = parseFloat(
-                  (e.target as HTMLInputElement).value,
-                );
+                const v = parseFloat((e.target as HTMLInputElement).value);
                 if (!isNaN(v) && v >= 0) setDailyDistance(v / 7);
               }}
             />
@@ -241,9 +230,7 @@ export default function EvComparisonCalculator() {
               min={0}
               step={1}
               onInput={(e) => {
-                const v = parseFloat(
-                  (e.target as HTMLInputElement).value,
-                );
+                const v = parseFloat((e.target as HTMLInputElement).value);
                 if (!isNaN(v) && v >= 0) setDailyDistance(v / 30);
               }}
             />
