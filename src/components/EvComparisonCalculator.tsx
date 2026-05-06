@@ -92,6 +92,18 @@ export default function EvComparisonCalculator() {
 
   return (
     <div>
+      {/* Instructions */}
+      <div class="calc instructions">
+        <p>
+          <strong>How to use:</strong> Pick two EVs, adjust their{" "}
+          <strong>efficiency</strong> if you know the real-world km/kWh (the
+          default <strong>6.5 km/kWh</strong> is a reasonable average for
+          Malaysian conditions), set your daily distance, and choose a charging
+          rate. The tool estimates running costs — it doesn't account for free
+          charging, occasional DC fast charging spikes, or battery degradation.
+        </p>
+      </div>
+
       {/* Charging Provider */}
       <div class="calc">
         <h2 class="section-title">Charging Provider</h2>
