@@ -13,6 +13,7 @@ const DEFAULTS = {
   carAEfficiency: 6.5,
   carBModelIndex: 1,
   carBEfficiency: 6.5,
+  unit: "kmpkwh" as "kmpkwh" | "kwhp100km",
   providerIndex: 0,
   dailyDistance: 50,
 };
@@ -26,6 +27,7 @@ export default function EvComparisonCalculator() {
   const [carAEfficiency, setCarAEfficiency] = useState(init.carAEfficiency);
   const [carBModelIndex, setCarBModelIndex] = useState(init.carBModelIndex);
   const [carBEfficiency, setCarBEfficiency] = useState(init.carBEfficiency);
+  const [unit, setUnit] = useState<"kmpkwh" | "kwhp100km">(init.unit);
   const [providerIndex, setProviderIndex] = useState(init.providerIndex);
   const [dailyDistance, setDailyDistance] = useState(init.dailyDistance);
 
@@ -39,6 +41,7 @@ export default function EvComparisonCalculator() {
           carAEfficiency,
           carBModelIndex,
           carBEfficiency,
+          unit,
           providerIndex,
           dailyDistance,
         }),
@@ -49,6 +52,7 @@ export default function EvComparisonCalculator() {
     carAEfficiency,
     carBModelIndex,
     carBEfficiency,
+    unit,
     providerIndex,
     dailyDistance,
   ]);
@@ -57,6 +61,15 @@ export default function EvComparisonCalculator() {
   const carB = CAR_MODELS[carBModelIndex];
   const provider = CHARGING_COST_PROVIDERS[providerIndex];
   const rate = provider.rate;
+
+  // Convert displayed efficiency to km/kWh for calculation
+  const getKmPerKwh = (eff: number) => {
+    const safeEff = Math.max(eff, 0.01);
+    return unit === "kmpkwh" ? safeEff : 100 / safeEff;
+  };
+
+  const effA = getKmPerKwh(carAEfficiency);
+  const effB = getKmPerKwh(carBEfficiency);
 
   const calcCost = (eff: number) => {
     const kWhPerDay = dailyDistance / Math.max(eff, 0.01);
@@ -69,8 +82,8 @@ export default function EvComparisonCalculator() {
     };
   };
 
-  const costA = calcCost(carAEfficiency);
-  const costB = calcCost(carBEfficiency);
+  const costA = calcCost(effA);
+  const costB = calcCost(effB);
 
   const savings = {
     daily: Math.abs(costA.daily - costB.daily),
@@ -85,8 +98,8 @@ export default function EvComparisonCalculator() {
   const maxMonthly = Math.max(costA.monthly, costB.monthly) || 1;
 
   // Extra info
-  const rangeA = carA.kWh * carAEfficiency;
-  const rangeB = carB.kWh * carBEfficiency;
+  const rangeA = carA.kWh * effA;
+  const rangeB = carB.kWh * effB;
   const fullChargeCostA = carA.kWh * rate;
   const fullChargeCostB = carB.kWh * rate;
 
@@ -96,7 +109,7 @@ export default function EvComparisonCalculator() {
       <div class="calc instructions">
         <p>
           <strong>How to use:</strong> Pick two EVs, adjust their{" "}
-          <strong>efficiency</strong> if you know the real-world km/kWh (the
+          <strong>efficiency</strong> if you know the real-world figure (the
           default <strong>6.5 km/kWh</strong> is a reasonable average for
           Malaysian conditions), set your daily distance, and choose a charging
           rate. The tool estimates running costs — it doesn't account for free
@@ -124,6 +137,25 @@ export default function EvComparisonCalculator() {
         </div>
       </div>
 
+      {/* Efficiency Unit */}
+      <div class="calc">
+        <h2 class="section-title">Efficiency Unit</h2>
+        <div class="unit-toggle">
+          <button
+            class={unit === "kmpkwh" ? "active" : ""}
+            onClick={() => setUnit("kmpkwh")}
+          >
+            km/kWh
+          </button>
+          <button
+            class={unit === "kwhp100km" ? "active" : ""}
+            onClick={() => setUnit("kwhp100km")}
+          >
+            kWh/100km
+          </button>
+        </div>
+      </div>
+
       {/* Car Selectors */}
       <div class="calc cars-section">
         <h2 class="section-title">Compare Two EVs</h2>
@@ -147,7 +179,9 @@ export default function EvComparisonCalculator() {
               </select>
             </div>
             <div class="field">
-              <label>Efficiency (km/kWh)</label>
+              <label>
+                Efficiency ({unit === "kmpkwh" ? "km/kWh" : "kWh/100km"})
+              </label>
               <input
                 type="number"
                 value={carAEfficiency}
@@ -159,6 +193,16 @@ export default function EvComparisonCalculator() {
                 }}
               />
             </div>
+            {unit === "kwhp100km" && (
+              <p class="converted">
+                ≈ {(100 / carAEfficiency).toFixed(1)} km/kWh
+              </p>
+            )}
+            {unit === "kmpkwh" && (
+              <p class="converted">
+                ≈ {(100 / carAEfficiency).toFixed(1)} kWh/100km
+              </p>
+            )}
             <p class="converted">
               Range: ~{rangeA.toFixed(0)} km &middot; Full charge:{" "}
               {formatRM(fullChargeCostA)}
@@ -184,7 +228,9 @@ export default function EvComparisonCalculator() {
               </select>
             </div>
             <div class="field">
-              <label>Efficiency (km/kWh)</label>
+              <label>
+                Efficiency ({unit === "kmpkwh" ? "km/kWh" : "kWh/100km"})
+              </label>
               <input
                 type="number"
                 value={carBEfficiency}
@@ -196,6 +242,16 @@ export default function EvComparisonCalculator() {
                 }}
               />
             </div>
+            {unit === "kwhp100km" && (
+              <p class="converted">
+                ≈ {(100 / carBEfficiency).toFixed(1)} km/kWh
+              </p>
+            )}
+            {unit === "kmpkwh" && (
+              <p class="converted">
+                ≈ {(100 / carBEfficiency).toFixed(1)} kWh/100km
+              </p>
+            )}
             <p class="converted">
               Range: ~{rangeB.toFixed(0)} km &middot; Full charge:{" "}
               {formatRM(fullChargeCostB)}
