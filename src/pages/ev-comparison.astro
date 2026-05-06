@@ -1,0 +1,271 @@
+---
+import ToolLayout from "../layouts/ToolLayout.astro";
+import EvComparisonCalculator from "../components/EvComparisonCalculator";
+---
+
+<ToolLayout
+  title="EV Cost Comparison"
+  subtitle="Compare charging costs between two electric vehicles"
+>
+  <EvComparisonCalculator client:only="preact" />
+</ToolLayout>
+
+<style is:global>
+  .calc {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
+  }
+
+  .section-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #1a1a1a;
+  }
+
+  .field {
+    margin-bottom: 1.25rem;
+  }
+
+  .field:last-child {
+    margin-bottom: 0;
+  }
+
+  .field label {
+    display: block;
+    font-size: 0.85rem;
+    color: #555555;
+    margin-bottom: 0.4rem;
+  }
+
+  .field input[type="number"],
+  .field input[type="text"] {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 13px;
+    border: 1px solid #e8e6e2;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-family: inherit;
+  }
+
+  .field input[type="number"]:focus,
+  .field input[type="text"]:focus {
+    outline: none;
+    border-color: #3573c6;
+    box-shadow: 0 0 0 2px rgba(53, 115, 198, 0.18);
+  }
+
+  .field select {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 13px;
+    border: 1px solid #e8e6e2;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-family: inherit;
+    background: white;
+    cursor: pointer;
+  }
+
+  .field select:focus {
+    outline: none;
+    border-color: #3573c6;
+    box-shadow: 0 0 0 2px rgba(53, 115, 198, 0.18);
+  }
+
+  .text-input {
+    font-size: 1rem !important;
+  }
+
+  /* Distance grid */
+  .distance-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+  }
+
+  /* Cars section */
+  .cars-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .car-card {
+    background: #fafaf9;
+    border-radius: 8px;
+    padding: 1rem;
+    border: 1px solid #e8e6e2;
+  }
+
+  .converted {
+    font-size: 0.78rem;
+    color: #888888;
+    margin-top: -0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  /* Results */
+  .fuel-price-display {
+    font-size: 0.85rem;
+    color: #555555;
+    margin-bottom: 1rem;
+  }
+
+  /* Bar chart */
+  .bar-chart {
+    margin-bottom: 1.5rem;
+  }
+
+  .bar-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .bar-label {
+    width: 80px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .bar-track {
+    flex: 1;
+    height: 28px;
+    background: #f0f0f0;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+  }
+
+  .bar-fill.car-a {
+    background: #3573c6;
+  }
+
+  .bar-fill.car-b {
+    background: #06b6d4;
+  }
+
+  .bar-value {
+    width: 80px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .bar-caption {
+    font-size: 0.75rem;
+    color: #999999;
+    text-align: center;
+    margin-top: 0.25rem;
+  }
+
+  /* Savings banner */
+  .savings-banner {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+    color: #065f46;
+  }
+
+  .savings-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    flex-shrink: 0;
+    color: #059669;
+  }
+
+  /* Results table */
+  .results-table {
+    border: 1px solid #e8e6e2;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .results-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    padding: 0.6rem 0.85rem;
+    font-size: 0.72rem;
+    color: #999999;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: #fafaf9;
+    border-bottom: 1px solid #e8e6e2;
+    font-weight: 600;
+  }
+
+  .results-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    align-items: center;
+    padding: 0.6rem 0.85rem;
+    font-size: 0.85rem;
+  }
+
+  .results-row + .results-row {
+    border-top: 1px solid #f0efed;
+  }
+
+  .results-row .period {
+    font-weight: 500;
+    color: #1a1a1a;
+  }
+
+  .results-row .savings {
+    font-weight: 600;
+    color: #059669;
+  }
+
+  @media (max-width: 600px) {
+    main {
+      padding: 5rem 0.75rem 2rem;
+    }
+
+    .distance-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .cars-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .bar-label {
+      width: 60px;
+      font-size: 0.75rem;
+    }
+
+    .bar-value {
+      width: 65px;
+      font-size: 0.75rem;
+    }
+
+    .results-header,
+    .results-row {
+      grid-template-columns: 0.8fr 1fr 1fr 1fr;
+      font-size: 0.78rem;
+    }
+  }
+</style>
