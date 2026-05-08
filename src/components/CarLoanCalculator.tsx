@@ -28,6 +28,8 @@ function loadSaved<T extends Record<string, unknown>>(
   return defaults;
 }
 
+const sanitizeNum = (raw: string) => raw.replace(/[,\s]/g, "");
+
 const formatRM = (n: number) =>
   "RM " +
   n.toLocaleString("en-MY", {
@@ -67,7 +69,8 @@ export function PriceToMonthlyCalc() {
           min={0}
           step={1000}
           onInput={(e) => {
-            const v = parseFloat((e.target as HTMLInputElement).value);
+            const raw = (e.target as HTMLInputElement).value;
+            const v = parseFloat(sanitizeNum(raw));
             if (!isNaN(v) && v >= 0) setCarPrice(v);
           }}
         />
@@ -139,7 +142,8 @@ export function PriceToMonthlyCalc() {
             min={0}
             step={1000}
             onChange={(e) => {
-              const v = parseFloat((e.target as HTMLInputElement).value);
+              const raw = (e.target as HTMLInputElement).value;
+              const v = parseFloat(sanitizeNum(raw));
               if (!isNaN(v) && v >= 0 && carPrice > 0) {
                 setDepositPercent(
                   Math.min(50, Math.round((v / carPrice) * 100)),
@@ -498,7 +502,8 @@ export function MonthlyToPriceCalc() {
           min={0}
           step={100}
           onInput={(e) => {
-            const v = parseFloat((e.target as HTMLInputElement).value);
+            const raw = (e.target as HTMLInputElement).value;
+            const v = parseFloat(sanitizeNum(raw));
             if (!isNaN(v) && v >= 0) setMonthlyBudget(v);
           }}
         />
@@ -570,7 +575,8 @@ export function MonthlyToPriceCalc() {
             min={0}
             step={1000}
             onChange={(e) => {
-              const v = parseFloat((e.target as HTMLInputElement).value);
+              const raw = (e.target as HTMLInputElement).value;
+              const v = parseFloat(sanitizeNum(raw));
               if (!isNaN(v) && v >= 0 && loanAmount > 0) {
                 setDepositPercent(
                   Math.min(50, Math.round((v / (loanAmount + v)) * 100)),
