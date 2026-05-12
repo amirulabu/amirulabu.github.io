@@ -1,0 +1,153 @@
+---
+import ToolLayout from "../layouts/ToolLayout.astro";
+import MedicineTimer from "../components/MedicineTimer";
+---
+
+<ToolLayout
+  title="Medicine Timer"
+  subtitle="Calculate your daily medication schedule — evenly spaced doses across 24 hours"
+>
+  <MedicineTimer client:load />
+</ToolLayout>
+
+<style is:global>
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+
+  .field {
+    margin-bottom: 0.75rem;
+  }
+
+  .field label {
+    display: block;
+    font-size: 0.85rem;
+    color: #555555;
+    margin-bottom: 0.4rem;
+  }
+
+  .field label strong {
+    color: #1a1a1a;
+  }
+
+  .field select,
+  .field input[type="time"] {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 13px;
+    border: 1px solid #e8e6e2;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    font-family: inherit;
+    background: white;
+    color: #1a1a1a;
+  }
+
+  .field select {
+    appearance: auto;
+  }
+
+  .field select:focus,
+  .field input[type="time"]:focus {
+    outline: none;
+    border-color: #3573c6;
+    box-shadow: 0 0 0 2px rgba(53, 115, 198, 0.18);
+  }
+
+  .presets {
+    display: flex;
+    gap: 0.4rem;
+    margin-bottom: 1rem;
+  }
+
+  .preset-btn {
+    flex: 1;
+    padding: 0.4rem 0.5rem;
+    font-size: 0.8rem;
+    font-family: inherit;
+    background: white;
+    border: 1px solid #e8e6e2;
+    border-radius: 6px;
+    color: #555555;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .preset-btn:hover {
+    border-color: #3573c6;
+    color: #3573c6;
+  }
+
+  .preset-btn.active {
+    background: #ebf2fa;
+    border-color: #3573c6;
+    color: #3573c6;
+    font-weight: 500;
+  }
+
+  .results {
+    background: #ebf2fa;
+    border: 1px solid #d6e2f2;
+    border-radius: 8px;
+    padding: 1rem;
+  }
+
+  .summary {
+    font-size: 0.9rem;
+    color: #555555;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.65rem;
+    border-bottom: 1px solid #d6e2f2;
+  }
+
+  .summary strong {
+    color: #1a1a1a;
+  }
+
+  .dose-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.55rem 0;
+  }
+
+  .dose-row + .dose-row {
+    border-top: 1px solid #d6e2f2;
+  }
+
+  .dose-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: #555555;
+  }
+
+  .dose-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    background: rgba(53, 115, 198, 0.1);
+    color: #3573c6;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  .dose-time {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: #1a1a1a;
+  }
+
+  .interval {
+    font-size: 0.8rem;
+    color: #888888;
+    margin-top: 0.75rem;
+    text-align: center;
+  }
+</style>
