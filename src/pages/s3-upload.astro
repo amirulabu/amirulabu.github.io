@@ -1,0 +1,367 @@
+---
+import ToolLayout from "../layouts/ToolLayout.astro";
+---
+
+<ToolLayout
+  title="S3 Upload"
+  subtitle="Upload files directly to an S3 bucket from your browser"
+  maxWidth="520px"
+>
+  <form id="s3-form" class="card" onsubmit="return false">
+    <div class="field">
+      <label for="access-key">AWS Access Key ID</label>
+      <input
+        type="text"
+        id="access-key"
+        placeholder="AKIAIOSFODNN7EXAMPLE"
+        autocomplete="off"
+        required
+      />
+    </div>
+
+    <div class="field">
+      <label for="secret-key">AWS Secret Access Key</label>
+      <input
+        type="password"
+        id="secret-key"
+        placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;"
+        autocomplete="off"
+        required
+      />
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="bucket">S3 Bucket</label>
+        <input type="text" id="bucket" placeholder="my-bucket" required />
+      </div>
+      <div class="field region-field">
+        <label for="region">Region</label>
+        <input type="text" id="region" value="ap-southeast-1" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="file">File to Upload</label>
+      <input type="file" id="file" required />
+    </div>
+
+    <button type="submit" id="upload-btn" disabled>
+      <span class="btn-icon">&#x2B06;</span>
+      Upload to S3
+    </button>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-bar">
+        <div id="progress-fill" class="progress-fill"></div>
+      </div>
+      <span id="progress-text">Initialising&hellip;</span>
+    </div>
+
+    <div id="status" class="status" hidden></div>
+  </form>
+</ToolLayout>
+
+<script type="module">
+  const form = document.getElementById("s3-form");
+  const accessKey = document.getElementById("access-key");
+  const secretKey = document.getElementById("secret-key");
+  const bucket = document.getElementById("bucket");
+  const region = document.getElementById("region");
+  const fileInput = document.getElementById("file");
+  const uploadBtn = document.getElementById("upload-btn");
+  const progress = document.getElementById("progress");
+  const progressFill = document.getElementById("progress-fill");
+  const progressText = document.getElementById("progress-text");
+  const status = document.getElementById("status");
+
+  // ---- lazy-load AWS SDK ----
+  let S3ClientClass = null;
+  let PutObjectCommandClass = null;
+
+  function setProgress(pct, text) {
+    progress.hidden = false;
+    progressFill.style.width = pct + "%";
+    progressText.textContent = text;
+  }
+
+  function showStatus(msg, type) {
+    status.hidden = false;
+    status.textContent = msg;
+    status.className = "status " + (type || "");
+  }
+
+  function hideStatus() {
+    status.hidden = true;
+    status.className = "status";
+  }
+
+  async function loadSDK() {
+    setProgress(5, "Loading AWS SDK&hellip;");
+    try {
+      const mod = await import(
+        "https://esm.sh/@aws-sdk/client-s3@3.758.0"
+      );
+      S3ClientClass = mod.S3Client;
+      PutObjectCommandClass = mod.PutObjectCommand;
+      uploadBtn.disabled = false;
+      uploadBtn.textContent = "\u2B06  Upload to S3";
+      hideStatus();
+      progress.hidden = true;
+    } catch (err) {
+      showStatus("Failed to load AWS SDK: " + err.message, "error");
+      uploadBtn.disabled = true;
+    }
+  }
+
+  // kick off SDK load as soon as the page is ready
+  loadSDK();
+
+  // ---- enable upload btn when all fields are filled ----
+  function checkForm() {
+    const ok =
+      accessKey.value.trim() &&
+      secretKey.value.trim() &&
+      bucket.value.trim() &&
+      region.value.trim() &&
+      fileInput.files.length > 0 &&
+      !uploadBtn.disabled;
+    uploadBtn.disabled = !ok;
+  }
+
+  [accessKey, secretKey, bucket, region].forEach((el) =>
+    el.addEventListener("input", checkForm)
+  );
+  fileInput.addEventListener("change", checkForm);
+
+  // ---- upload ----
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const file = fileInput.files[0];
+    if (!file) return;
+
+    uploadBtn.disabled = true;
+    uploadBtn.textContent = "\u23F3  Uploading&hellip;";
+    hideStatus();
+
+    try {
+      setProgress(10, "Connecting to S3&hellip;");
+
+      const client = new S3ClientClass({
+        region: region.value.trim(),
+        credentials: {
+          accessKeyId: accessKey.value.trim(),
+          secretAccessKey: secretKey.value.trim(),
+        },
+      });
+
+      setProgress(30, "Uploading " + file.name + "&hellip;");
+
+      const command = new PutObjectCommandClass({
+        Bucket: bucket.value.trim(),
+        Key: file.name,
+        Body: file,
+        ContentType: file.type || "application/octet-stream",
+      });
+
+      await client.send(command);
+
+      setProgress(100, "Done!");
+      showStatus(
+        "&#x2705; " +
+          file.name +
+          " uploaded to s3://" +
+          bucket.value.trim() +
+          "/" +
+          file.name,
+        "success"
+      );
+    } catch (err) {
+      showStatus("&#x274C; Upload failed: " + (err.message || err), "error");
+    } finally {
+      uploadBtn.disabled = false;
+      uploadBtn.textContent = "\u2B06  Upload to S3";
+    }
+  });
+
+  // ---- hide SDK loading state once loaded ----
+  // loadSDK already handles this
+</script>
+
+<style is:global>
+  .card {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+
+  .field {
+    margin-bottom: 1.25rem;
+  }
+
+  .field:last-of-type {
+    margin-bottom: 1.5rem;
+  }
+
+  .field label {
+    display: block;
+    font-size: 0.85rem;
+    color: #555555;
+    margin-bottom: 0.4rem;
+  }
+
+  .field input[type="text"],
+  .field input[type="password"] {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 13px;
+    border: 1px solid #e8e6e2;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    background: #fafafa;
+    transition:
+      border-color 0.15s ease,
+      box-shadow 0.15s ease;
+  }
+
+  .field input[type="text"]:focus,
+  .field input[type="password"]:focus {
+    outline: none;
+    border-color: #3573c6;
+    box-shadow: 0 0 0 2px rgba(53, 115, 198, 0.18);
+    background: white;
+  }
+
+  .field input[type="file"] {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px 0;
+    font-size: 0.9rem;
+    font-family: inherit;
+    color: #555555;
+    cursor: pointer;
+  }
+
+  .field input[type="file"]::file-selector-button {
+    padding: 8px 16px;
+    border: 1px solid #d0cdc7;
+    border-radius: 6px;
+    background: #f5f5f4;
+    font-size: 0.85rem;
+    font-family: inherit;
+    cursor: pointer;
+    margin-right: 0.75rem;
+    transition: background 0.15s ease;
+  }
+
+  .field input[type="file"]::file-selector-button:hover {
+    background: #e8e6e2;
+  }
+
+  .field-row {
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  .field-row .field {
+    flex: 1;
+  }
+
+  .field-row .region-field {
+    flex: 0 0 160px;
+  }
+
+  button#upload-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    width: 100%;
+    padding: 12px 20px;
+    background: #3573c6;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+
+  button#upload-btn:hover:not(:disabled) {
+    background: #2960ad;
+  }
+
+  button#upload-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  .btn-icon {
+    font-size: 1.15rem;
+    line-height: 1;
+  }
+
+  .progress {
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .progress-bar {
+    flex: 1;
+    height: 6px;
+    background: #f0efed;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: #3573c6;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+  }
+
+  #progress-text {
+    font-size: 0.85rem;
+    color: #555555;
+    white-space: nowrap;
+  }
+
+  .status {
+    margin-top: 1rem;
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  .status.success {
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    color: #065f46;
+  }
+
+  .status.error {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #991b1b;
+  }
+
+  @media (max-width: 480px) {
+    .field-row {
+      flex-direction: column;
+    }
+
+    .field-row .region-field {
+      flex: 1;
+    }
+  }
+</style>
