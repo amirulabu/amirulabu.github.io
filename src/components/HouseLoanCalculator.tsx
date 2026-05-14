@@ -171,9 +171,7 @@ export function PriceToMonthlyCalc() {
           step={0.05}
           value={interestRate}
           onInput={(e) =>
-            setInterestRate(
-              parseFloat((e.target as HTMLInputElement).value),
-            )
+            setInterestRate(parseFloat((e.target as HTMLInputElement).value))
           }
         />
         <div class="range-labels">
@@ -214,9 +212,7 @@ export function PriceToMonthlyCalc() {
             step={1}
             value={depositPercent}
             onInput={(e) =>
-              setDepositPercent(
-                parseInt((e.target as HTMLInputElement).value),
-              )
+              setDepositPercent(parseInt((e.target as HTMLInputElement).value))
             }
           />
           <div class="range-labels">
@@ -234,10 +230,7 @@ export function PriceToMonthlyCalc() {
               const v = parseFloat(sanitizeNum(raw));
               if (!isNaN(v) && v >= 0 && housePrice > 0) {
                 setDepositPercent(
-                  Math.min(
-                    30,
-                    Math.round((v / housePrice) * 100),
-                  ),
+                  Math.min(30, Math.round((v / housePrice) * 100)),
                 );
               }
             }}
@@ -269,7 +262,10 @@ export function PriceToMonthlyCalc() {
           <span>Stamp Duty (approx.)</span>
           <span class="value">{formatRM(stampDuty)}</span>
         </div>
-        <div class="result-row" style="border-top: 1px solid #d6e2f2; padding-top: 0.5rem; font-style: italic;">
+        <div
+          class="result-row"
+          style="border-top: 1px solid #d6e2f2; padding-top: 0.5rem; font-style: italic;"
+        >
           <span>Upfront cost</span>
           <span class="value">{formatRM(depositAmount + stampDuty)}</span>
         </div>
@@ -284,7 +280,8 @@ export function PriceToMonthlyCalc() {
 
       <p class="note">
         * Uses reducing balance calculation (monthly rest), standard for
-        Malaysian housing loans. Stamp duty follows Malaysian tiered rates (1–4%).
+        Malaysian housing loans. Stamp duty follows Malaysian tiered rates
+        (1–4%).
       </p>
     </div>
   );
@@ -361,9 +358,7 @@ export function MonthlyToPriceCalc() {
           step={0.05}
           value={interestRate}
           onInput={(e) =>
-            setInterestRate(
-              parseFloat((e.target as HTMLInputElement).value),
-            )
+            setInterestRate(parseFloat((e.target as HTMLInputElement).value))
           }
         />
         <div class="range-labels">
@@ -404,9 +399,7 @@ export function MonthlyToPriceCalc() {
             step={1}
             value={depositPercent}
             onInput={(e) =>
-              setDepositPercent(
-                parseInt((e.target as HTMLInputElement).value),
-              )
+              setDepositPercent(parseInt((e.target as HTMLInputElement).value))
             }
           />
           <div class="range-labels">
@@ -424,10 +417,7 @@ export function MonthlyToPriceCalc() {
               const v = parseFloat(sanitizeNum(raw));
               if (!isNaN(v) && v >= 0 && housePrice > 0) {
                 setDepositPercent(
-                  Math.min(
-                    30,
-                    Math.round((v / housePrice) * 100),
-                  ),
+                  Math.min(30, Math.round((v / housePrice) * 100)),
                 );
               }
             }}
@@ -491,7 +481,12 @@ function AmortizationChart({
 
   const data = useMemo(() => {
     if (loanAmount <= 0 || monthlyPayment <= 0) {
-      return { years: [] as number[], cumPrincipal: [] as number[], cumInterest: [] as number[], balanceRemaining: [] as number[] };
+      return {
+        years: [] as number[],
+        cumPrincipal: [] as number[],
+        cumInterest: [] as number[],
+        balanceRemaining: [] as number[],
+      };
     }
     const schedule = generateAmortSchedule(
       loanAmount,
@@ -519,9 +514,7 @@ function AmortizationChart({
       years.push(y);
       cumPrincipal.push(loanAmount - entry.balance);
       cumInterest.push(
-        schedule
-          .slice(0, monthEnd)
-          .reduce((sum, m) => sum + m.interest, 0),
+        schedule.slice(0, monthEnd).reduce((sum, m) => sum + m.interest, 0),
       );
       balanceRemaining.push(entry.balance);
     }
@@ -545,8 +538,7 @@ function AmortizationChart({
 
   const xScale = (year: number) =>
     pad.left + (year / Math.max(loanYears, 1)) * plotW;
-  const yScale = (val: number) =>
-    pad.top + plotH - (val / chartMax) * plotH;
+  const yScale = (val: number) => pad.top + plotH - (val / chartMax) * plotH;
 
   const n = data.years.length;
   const principals = data.cumPrincipal;

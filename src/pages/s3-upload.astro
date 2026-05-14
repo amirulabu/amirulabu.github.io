@@ -1,5 +1,15 @@
 ---
 import ToolLayout from "../layouts/ToolLayout.astro";
+
+const corsPolicy = JSON.stringify(
+  {
+    AllowedOrigins: ["https://amirulabu.github.io"],
+    AllowedMethods: ["PUT", "POST"],
+    AllowedHeaders: ["*"],
+  },
+  null,
+  2,
+);
 ---
 
 <ToolLayout
@@ -24,7 +34,7 @@ import ToolLayout from "../layouts/ToolLayout.astro";
       <input
         type="password"
         id="secret-key"
-        placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;"
+        placeholder="••••••••"
         autocomplete="off"
         required
       />
@@ -60,6 +70,15 @@ import ToolLayout from "../layouts/ToolLayout.astro";
 
     <div id="status" class="status" hidden></div>
   </form>
+
+  <aside class="cors-note">
+    <strong>Prerequisite:</strong> Your S3 bucket must have a CORS policy allowing
+    requests from this domain. Without it, the upload will fail with a CORS error.
+    Example policy:
+    <pre>{corsPolicy}</pre>
+    Configure this in your S3 bucket's Permissions &rarr; Cross-origin resource
+    sharing (CORS).
+  </aside>
 </ToolLayout>
 
 <script type="module">
@@ -99,9 +118,7 @@ import ToolLayout from "../layouts/ToolLayout.astro";
   async function loadSDK() {
     setProgress(5, "Loading AWS SDK&hellip;");
     try {
-      const mod = await import(
-        "https://esm.sh/@aws-sdk/client-s3@3.758.0"
-      );
+      const mod = await import("https://esm.sh/@aws-sdk/client-s3@3.758.0");
       S3ClientClass = mod.S3Client;
       PutObjectCommandClass = mod.PutObjectCommand;
       uploadBtn.disabled = false;
@@ -130,7 +147,7 @@ import ToolLayout from "../layouts/ToolLayout.astro";
   }
 
   [accessKey, secretKey, bucket, region].forEach((el) =>
-    el.addEventListener("input", checkForm)
+    el.addEventListener("input", checkForm),
   );
   fileInput.addEventListener("change", checkForm);
 
@@ -175,7 +192,7 @@ import ToolLayout from "../layouts/ToolLayout.astro";
           bucket.value.trim() +
           "/" +
           file.name,
-        "success"
+        "success",
       );
     } catch (err) {
       showStatus("&#x274C; Upload failed: " + (err.message || err), "error");
@@ -353,6 +370,26 @@ import ToolLayout from "../layouts/ToolLayout.astro";
     background: #fef2f2;
     border: 1px solid #fecaca;
     color: #991b1b;
+  }
+
+  .cors-note {
+    margin-top: 1.5rem;
+    padding: 0.75rem 1rem;
+    background: #fff9e5;
+    border: 1px solid #f5d98e;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    color: #7c5c0a;
+    line-height: 1.6;
+  }
+
+  .cors-note pre {
+    margin: 0.5rem 0;
+    padding: 0.5rem 0.75rem;
+    background: rgba(0, 0, 0, 0.04);
+    border-radius: 4px;
+    overflow-x: auto;
+    font-size: 0.75rem;
   }
 
   @media (max-width: 480px) {

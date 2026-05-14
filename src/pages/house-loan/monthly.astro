@@ -3,6 +3,9 @@ import HouseLoanLayout from "../../layouts/HouseLoanLayout.astro";
 import { MonthlyToPriceCalc } from "../../components/HouseLoanCalculator";
 ---
 
-<HouseLoanLayout title="Monthly to Price - Home Loan Calculator" activeTab="monthly">
+<HouseLoanLayout
+  title="Monthly to Price - Home Loan Calculator"
+  activeTab="monthly"
+>
   <MonthlyToPriceCalc client:visible />
 </HouseLoanLayout>
