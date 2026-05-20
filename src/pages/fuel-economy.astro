@@ -1,0 +1,236 @@
+---
+import ToolLayout from "../layouts/ToolLayout.astro";
+import FuelEconomyConverter from "../components/FuelEconomyConverter";
+---
+
+<ToolLayout
+  title="Fuel Economy Converter"
+  subtitle="Convert between km/L, L/100km, US MPG, and Imperial MPG"
+>
+  <FuelEconomyConverter client:visible />
+</ToolLayout>
+
+<style is:global>
+  .converter {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    --accent: #3573c6;
+  }
+
+  .calc {
+    background: white;
+    border-radius: 10px;
+    padding: 1.25rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .field {
+    transition: opacity 0.15s ease;
+  }
+
+  .field label {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin-bottom: 0.35rem;
+    font-size: 0.85rem;
+  }
+
+  .field label strong {
+    color: #1a1a1a;
+  }
+
+  .unit-desc {
+    color: #888888;
+    font-size: 0.75rem;
+  }
+
+  .input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .input-wrap input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 4rem 10px 13px;
+    border: 1px solid #e8e6e2;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    font-family: inherit;
+    background: #fafaf9;
+    transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .field.active input {
+    background: white;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(53, 115, 198, 0.18);
+  }
+
+  .input-wrap input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(53, 115, 198, 0.18);
+    background: white;
+  }
+
+  /* Hide number input spinners */
+  .input-wrap input[type="number"]::-webkit-inner-spin-button,
+  .input-wrap input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  .input-wrap input[type="number"] {
+    -moz-appearance: textfield;
+  }
+
+  .unit-suffix {
+    position: absolute;
+    right: 12px;
+    font-size: 0.8rem;
+    color: #888888;
+    font-weight: 500;
+    pointer-events: none;
+  }
+
+  .derived-indicator {
+    position: absolute;
+    left: -1.2rem;
+    color: #3573c6;
+    font-size: 0.7rem;
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  /* Examples */
+  .examples-section {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+
+  .examples-summary {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #555555;
+    cursor: pointer;
+    user-select: none;
+    list-style: none;
+  }
+
+  .examples-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .examples-summary::before {
+    content: "▶ ";
+    font-size: 0.65rem;
+    color: #3573c6;
+    transition: transform 0.15s ease;
+    display: inline-block;
+    margin-right: 0.25rem;
+  }
+
+  details[open] .examples-summary::before {
+    transform: rotate(90deg);
+  }
+
+  .examples-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0 1.25rem 1rem;
+  }
+
+  .example-chip {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.15rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid #e8e6e2;
+    border-radius: 8px;
+    background: #fafaf9;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.12s ease, border-color 0.12s ease;
+    min-width: 80px;
+  }
+
+  .example-chip:hover {
+    background: #ebf2fa;
+    border-color: #d6e2f2;
+  }
+
+  .example-chip:active {
+    background: #dae8f5;
+  }
+
+  .ex-label {
+    font-size: 0.75rem;
+    color: #555555;
+  }
+
+  .ex-value {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  /* Eco rating */
+  .ecosystem {
+    display: flex;
+    justify-content: center;
+  }
+
+  .eco-tag {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.25rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+
+  .eco-tag.thirsty {
+    background: #fef2f2;
+    border: 1px solid #fca5a5;
+    color: #991b1b;
+  }
+
+  .eco-tag.moderate {
+    background: #fff7ed;
+    border: 1px solid #fdba74;
+    color: #9a3412;
+  }
+
+  .eco-tag.efficient {
+    background: #f0fdf4;
+    border: 1px solid #86efac;
+    color: #166534;
+  }
+
+  .eco-tag.very-efficient {
+    background: #ebf2fa;
+    border: 1px solid #93c5fd;
+    color: #1e40af;
+  }
+
+  .eco-label {
+    font-weight: 600;
+  }
+
+  .eco-desc {
+    font-size: 0.75rem;
+    opacity: 0.8;
+  }
+</style>
