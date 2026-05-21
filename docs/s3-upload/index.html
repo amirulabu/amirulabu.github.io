@@ -20,127 +20,16 @@ Upload to S3
 }</pre>
 Configure this in your S3 bucket's Permissions &rarr; Cross-origin resource sharing
     (CORS).
-</aside>  </main> <footer class="site-footer" data-astro-cid-v6jvrmeb> <a href="https://github.com/amirulabu" target="_blank" rel="noopener" data-astro-cid-v6jvrmeb>Amirul&#8239;Abu</a> <span class="sep" aria-hidden="true" data-astro-cid-v6jvrmeb>/</span> <a href="https://amirulabugithubio.goatcounter.com/" target="_blank" rel="noopener noreferrer" data-astro-cid-v6jvrmeb>Page stats</a> </footer></body></html> <script type="module">
-  const form = document.getElementById("s3-form");
-  const accessKey = document.getElementById("access-key");
-  const secretKey = document.getElementById("secret-key");
-  const bucket = document.getElementById("bucket");
-  const region = document.getElementById("region");
-  const fileInput = document.getElementById("file");
-  const uploadBtn = document.getElementById("upload-btn");
-  const progress = document.getElementById("progress");
-  const progressFill = document.getElementById("progress-fill");
-  const progressText = document.getElementById("progress-text");
-  const status = document.getElementById("status");
+</aside>  </main> <footer class="site-footer" data-astro-cid-v6jvrmeb> <a href="https://github.com/amirulabu" target="_blank" rel="noopener" data-astro-cid-v6jvrmeb>Amirul&#8239;Abu</a> <span class="sep" aria-hidden="true" data-astro-cid-v6jvrmeb>/</span> <a href="https://amirulabugithubio.goatcounter.com/" target="_blank" rel="noopener noreferrer" data-astro-cid-v6jvrmeb>Page stats</a> </footer></body></html> <script type="module">const Z=document.getElementById("s3-form"),f=document.getElementById("access-key"),h=document.getElementById("secret-key"),d=document.getElementById("bucket"),A=document.getElementById("region"),S=document.getElementById("file"),a=document.getElementById("upload-btn"),z=document.getElementById("progress"),K=document.getElementById("progress-fill"),R=document.getElementById("progress-text"),r=document.getElementById("status");function w(e){return Array.from(new Uint8Array(e)).map(t=>t.toString(16).padStart(2,"0")).join("")}async function k(e){return crypto.subtle.digest("SHA-256",e)}async function o(e,t){const s=await crypto.subtle.importKey("raw",e,{name:"HMAC",hash:"SHA-256"},!1,["sign"]);return crypto.subtle.sign("HMAC",s,new TextEncoder().encode(t))}async function G(e,t,s,u){const l=await o(new TextEncoder().encode("AWS4"+e),t),c=await o(new Uint8Array(l),s),i=await o(new Uint8Array(c),u);return await o(new Uint8Array(i),"aws4_request")}async function J({accessKeyId:e,secretAccessKey:t,region:s,bucket:u,key:l,file:c,onProgress:i}){const E=new Date,m=E.toISOString().slice(0,10).replace(/-/g,""),y=m+"T"+E.toISOString().slice(11,19)+"Z",H="s3",x=await c.arrayBuffer(),g=w(new Uint8Array(await k(x))),I=u+".s3."+s+".amazonaws.com",b="/"+l.split("/").map(encodeURIComponent).join("/"),v=c.type||"application/octet-stream",P="content-type:"+v+`
+host:`+I+`
+x-amz-content-sha256:`+g+`
+x-amz-date:`+y+`
+`,B="content-type;host;x-amz-content-sha256;x-amz-date",D=`PUT
+`+b+`
 
-  // ---- lazy-load AWS SDK ----
-  let S3ClientClass = null;
-  let PutObjectCommandClass = null;
-
-  function setProgress(pct, text) {
-    progress.hidden = false;
-    progressFill.style.width = pct + "%";
-    progressText.textContent = text;
-  }
-
-  function showStatus(msg, type) {
-    status.hidden = false;
-    status.textContent = msg;
-    status.className = "status " + (type || "");
-  }
-
-  function hideStatus() {
-    status.hidden = true;
-    status.className = "status";
-  }
-
-  async function loadSDK() {
-    setProgress(5, "Loading AWS SDK&hellip;");
-    try {
-      const mod = await import("https://esm.sh/@aws-sdk/client-s3@3.758.0");
-      S3ClientClass = mod.S3Client;
-      PutObjectCommandClass = mod.PutObjectCommand;
-      uploadBtn.disabled = false;
-      uploadBtn.textContent = "\u2B06  Upload to S3";
-      hideStatus();
-      progress.hidden = true;
-    } catch (err) {
-      showStatus("Failed to load AWS SDK: " + err.message, "error");
-      uploadBtn.disabled = true;
-    }
-  }
-
-  // kick off SDK load as soon as the page is ready
-  loadSDK();
-
-  // ---- enable upload btn when all fields are filled ----
-  function checkForm() {
-    const ok =
-      accessKey.value.trim() &&
-      secretKey.value.trim() &&
-      bucket.value.trim() &&
-      region.value.trim() &&
-      fileInput.files.length > 0 &&
-      !uploadBtn.disabled;
-    uploadBtn.disabled = !ok;
-  }
-
-  [accessKey, secretKey, bucket, region].forEach((el) =>
-    el.addEventListener("input", checkForm),
-  );
-  fileInput.addEventListener("change", checkForm);
-
-  // ---- upload ----
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    const file = fileInput.files[0];
-    if (!file) return;
-
-    uploadBtn.disabled = true;
-    uploadBtn.textContent = "\u23F3  Uploading&hellip;";
-    hideStatus();
-
-    try {
-      setProgress(10, "Connecting to S3&hellip;");
-
-      const client = new S3ClientClass({
-        region: region.value.trim(),
-        credentials: {
-          accessKeyId: accessKey.value.trim(),
-          secretAccessKey: secretKey.value.trim(),
-        },
-      });
-
-      setProgress(30, "Uploading " + file.name + "&hellip;");
-
-      const command = new PutObjectCommandClass({
-        Bucket: bucket.value.trim(),
-        Key: file.name,
-        Body: file,
-        ContentType: file.type || "application/octet-stream",
-      });
-
-      await client.send(command);
-
-      setProgress(100, "Done!");
-      showStatus(
-        "&#x2705; " +
-          file.name +
-          " uploaded to s3://" +
-          bucket.value.trim() +
-          "/" +
-          file.name,
-        "success",
-      );
-    } catch (err) {
-      showStatus("&#x274C; Upload failed: " + (err.message || err), "error");
-    } finally {
-      uploadBtn.disabled = false;
-      uploadBtn.textContent = "\u2B06  Upload to S3";
-    }
-  });
-
-  // ---- hide SDK loading state once loaded ----
-  // loadSDK already handles this
-</script>
+`+P+`
+`+B+`
+`+g,C=m+"/"+s+"/"+H+"/aws4_request",L=w(new Uint8Array(await k(new TextEncoder().encode(D)))),N=`AWS4-HMAC-SHA256
+`+y+`
+`+C+`
+`+L,O=await G(t,m,s,H),W=await o(new Uint8Array(O),N),X=w(new Uint8Array(W)),j="AWS4-HMAC-SHA256 Credential="+e+"/"+C+", SignedHeaders="+B+", Signature="+X,F="https://"+I+b;return new Promise((_,U)=>{const n=new XMLHttpRequest;n.open("PUT",F,!0),n.setRequestHeader("Content-Type",v),n.setRequestHeader("X-Amz-Date",y),n.setRequestHeader("X-Amz-Content-SHA256",g),n.setRequestHeader("Authorization",j),n.upload.onprogress=p=>{p.lengthComputable&&i&&i(Math.round(p.loaded/p.total*100))},n.onload=()=>{n.status>=200&&n.status<300?_(n):U(new Error("HTTP "+n.status+": "+n.statusText))},n.onerror=()=>U(new Error("Network error")),n.send(x)})}function M(){const e=f.value.trim()&&h.value.trim()&&d.value.trim()&&A.value.trim()&&S.files.length>0;a.disabled=!e}[f,h,d,A].forEach(e=>e.addEventListener("input",M));S.addEventListener("change",M);Z.addEventListener("submit",async e=>{e.preventDefault();const t=S.files[0];if(t){a.disabled=!0,a.textContent="⏳  Uploading&hellip;",Q(),z.hidden=!1;try{T(10,"Signing request&hellip;"),await J({accessKeyId:f.value.trim(),secretAccessKey:h.value.trim(),region:A.value.trim(),bucket:d.value.trim(),key:t.name,file:t,onProgress:s=>{K.style.width=s+"%",R.textContent=s+"%"}}),T(100,"Done!"),q("✅ "+t.name+" uploaded to s3://"+d.value.trim()+"/"+t.name,"success")}catch(s){q("❌ Upload failed: "+(s.message||s),"error")}finally{a.disabled=!1,a.textContent="⬆  Upload to S3"}}});function T(e,t){z.hidden=!1,K.style.width=e+"%",R.textContent=t}function q(e,t){r.hidden=!1,r.textContent=e,r.className="status "+(t||"")}function Q(){r.hidden=!0,r.className="status"}</script>
