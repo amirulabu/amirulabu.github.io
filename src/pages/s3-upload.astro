@@ -136,8 +136,9 @@ const corsPolicy = JSON.stringify(
     onProgress,
   }) {
     const now = new Date();
-    const datestamp = now.toISOString().slice(0, 10).replace(/-/g, "");
-    const timestamp = datestamp + "T" + now.toISOString().slice(11, 19) + "Z";
+    const iso = now.toISOString().replace(/[:-]/g, "");
+    const datestamp = iso.slice(0, 8);
+    const timestamp = iso.slice(0, 15) + "Z";
     const service = "s3";
 
     const fileBuf = await file.arrayBuffer();
