@@ -2,7 +2,10 @@
 import ToolLayout from "../layouts/ToolLayout.astro";
 ---
 
-<ToolLayout title="Tetris" subtitle="Classic block-stacking puzzle — swipe &amp; tap to play">
+<ToolLayout
+  title="Tetris"
+  subtitle="Classic block-stacking puzzle — swipe & tap to play"
+>
   <div id="tetris-root">
     <div id="tetris-container">
       <div id="game-area">
@@ -28,10 +31,17 @@ import ToolLayout from "../layouts/ToolLayout.astro";
         </div>
       </div>
       <div id="controls">
-        <button id="btn-left" class="tbtn tbtn-dir" aria-label="Move Left">◀</button>
-        <button id="btn-rotate" class="tbtn tbtn-dir" aria-label="Rotate">↻</button>
-        <button id="btn-right" class="tbtn tbtn-dir" aria-label="Move Right">▶</button>
-        <button id="btn-drop" class="tbtn tbtn-drop" aria-label="Drop">⤓</button>
+        <button id="btn-left" class="tbtn tbtn-dir" aria-label="Move Left"
+          >◀</button
+        >
+        <button id="btn-rotate" class="tbtn tbtn-dir" aria-label="Rotate"
+          >↻</button
+        >
+        <button id="btn-right" class="tbtn tbtn-dir" aria-label="Move Right"
+          >▶</button
+        >
+        <button id="btn-drop" class="tbtn tbtn-drop" aria-label="Drop">⤓</button
+        >
       </div>
     </div>
   </div>
@@ -47,15 +57,64 @@ import ToolLayout from "../layouts/ToolLayout.astro";
 
     // Classic 7-bag tetrominoes
     const SHAPES = {
-      I: { cells: [[0,0,0,0],[1,1,1,1],[0,0,0,0],[0,0,0,0]], color: "#36C5F4" },
-      O: { cells: [[1,1],[1,1]], color: "#F4C542" },
-      T: { cells: [[0,1,0],[1,1,1],[0,0,0]], color: "#A463E0" },
-      S: { cells: [[0,1,1],[1,1,0],[0,0,0]], color: "#4CAF50" },
-      Z: { cells: [[1,1,0],[0,1,1],[0,0,0]], color: "#E53935" },
-      J: { cells: [[1,0,0],[1,1,1],[0,0,0]], color: "#1E88E5" },
-      L: { cells: [[0,0,1],[1,1,1],[0,0,0]], color: "#FB8C00" },
+      I: {
+        cells: [
+          [0, 0, 0, 0],
+          [1, 1, 1, 1],
+          [0, 0, 0, 0],
+          [0, 0, 0, 0],
+        ],
+        color: "#36C5F4",
+      },
+      O: {
+        cells: [
+          [1, 1],
+          [1, 1],
+        ],
+        color: "#F4C542",
+      },
+      T: {
+        cells: [
+          [0, 1, 0],
+          [1, 1, 1],
+          [0, 0, 0],
+        ],
+        color: "#A463E0",
+      },
+      S: {
+        cells: [
+          [0, 1, 1],
+          [1, 1, 0],
+          [0, 0, 0],
+        ],
+        color: "#4CAF50",
+      },
+      Z: {
+        cells: [
+          [1, 1, 0],
+          [0, 1, 1],
+          [0, 0, 0],
+        ],
+        color: "#E53935",
+      },
+      J: {
+        cells: [
+          [1, 0, 0],
+          [1, 1, 1],
+          [0, 0, 0],
+        ],
+        color: "#1E88E5",
+      },
+      L: {
+        cells: [
+          [0, 0, 1],
+          [1, 1, 1],
+          [0, 0, 0],
+        ],
+        color: "#FB8C00",
+      },
     };
-    const PIECE_NAMES = ["I","O","T","S","Z","J","L"];
+    const PIECE_NAMES = ["I", "O", "T", "S", "Z", "J", "L"];
 
     // ── DOM refs ──
     const canvas = document.getElementById("game-canvas");
@@ -104,8 +163,8 @@ import ToolLayout from "../layouts/ToolLayout.astro";
       nextBlockSize = npSize;
       nextCanvas.width = npSize * PREVIEW_COLS;
       nextCanvas.height = npSize * PREVIEW_ROWS;
-      nextCanvas.style.width = (npSize * PREVIEW_COLS) + "px";
-      nextCanvas.style.height = (npSize * PREVIEW_ROWS) + "px";
+      nextCanvas.style.width = npSize * PREVIEW_COLS + "px";
+      nextCanvas.style.height = npSize * PREVIEW_ROWS + "px";
     }
 
     // ── Game state ──
@@ -132,7 +191,7 @@ import ToolLayout from "../layouts/ToolLayout.astro";
 
     function spawnPiece(name) {
       const shape = SHAPES[name];
-      const cells = shape.cells.map(row => [...row]);
+      const cells = shape.cells.map((row) => [...row]);
       return {
         name,
         cells,
@@ -190,7 +249,7 @@ import ToolLayout from "../layouts/ToolLayout.astro";
     function clearLines(boardState) {
       let cleared = 0;
       for (let r = ROWS - 1; r >= 0; r--) {
-        if (boardState[r].every(cell => cell !== null)) {
+        if (boardState[r].every((cell) => cell !== null)) {
           boardState.splice(r, 1);
           boardState.unshift(Array(COLS).fill(null));
           cleared++;
@@ -292,7 +351,9 @@ import ToolLayout from "../layouts/ToolLayout.astro";
 
     function hardDrop() {
       if (!running || gameOver) return;
-      while (!collides(currentPiece, board, currentPiece.x, currentPiece.y + 1)) {
+      while (
+        !collides(currentPiece, board, currentPiece.x, currentPiece.y + 1)
+      ) {
         currentPiece.y++;
       }
       tick(); // lock and process
@@ -350,7 +411,14 @@ import ToolLayout from "../layouts/ToolLayout.astro";
             for (let r = 0; r < cells.length; r++) {
               for (let c = 0; c < cells[r].length; c++) {
                 if (!cells[r][c]) continue;
-                drawBlock(ctx, currentPiece.x + c, ghostY + r, color, blockSize, 0.25);
+                drawBlock(
+                  ctx,
+                  currentPiece.x + c,
+                  ghostY + r,
+                  color,
+                  blockSize,
+                  0.25,
+                );
               }
             }
           }
@@ -362,7 +430,13 @@ import ToolLayout from "../layouts/ToolLayout.astro";
           for (let r = 0; r < cells.length; r++) {
             for (let c = 0; c < cells[r].length; c++) {
               if (!cells[r][c]) continue;
-              drawBlock(ctx, currentPiece.x + c, currentPiece.y + r, color, blockSize);
+              drawBlock(
+                ctx,
+                currentPiece.x + c,
+                currentPiece.y + r,
+                color,
+                blockSize,
+              );
             }
           }
         }
@@ -375,10 +449,18 @@ import ToolLayout from "../layouts/ToolLayout.astro";
           ctx.font = `bold ${blockSize * 1.2}px system-ui, sans-serif`;
           ctx.textAlign = "center";
           ctx.textBaseline = "middle";
-          ctx.fillText("GAME OVER", canvas.width / 2, canvas.height / 2 - blockSize);
+          ctx.fillText(
+            "GAME OVER",
+            canvas.width / 2,
+            canvas.height / 2 - blockSize,
+          );
           ctx.font = `${blockSize * 0.6}px system-ui, sans-serif`;
           ctx.fillStyle = "#aaa";
-          ctx.fillText("Tap Start to play again", canvas.width / 2, canvas.height / 2 + blockSize * 0.8);
+          ctx.fillText(
+            "Tap Start to play again",
+            canvas.width / 2,
+            canvas.height / 2 + blockSize * 0.8,
+          );
         }
 
         // Next piece
@@ -392,7 +474,13 @@ import ToolLayout from "../layouts/ToolLayout.astro";
           for (let r = 0; r < cells.length; r++) {
             for (let c = 0; c < cells[r].length; c++) {
               if (!cells[r][c]) continue;
-              drawBlock(nextCtx, offsetX + c, offsetY + r, color, nextBlockSize);
+              drawBlock(
+                nextCtx,
+                offsetX + c,
+                offsetY + r,
+                color,
+                nextBlockSize,
+              );
             }
           }
         }
@@ -507,16 +595,32 @@ import ToolLayout from "../layouts/ToolLayout.astro";
         return;
       }
       switch (e.key) {
-        case "ArrowLeft": e.preventDefault(); move(-1); break;
-        case "ArrowRight": e.preventDefault(); move(1); break;
-        case "ArrowDown": e.preventDefault(); softDrop(); break;
+        case "ArrowLeft":
+          e.preventDefault();
+          move(-1);
+          break;
+        case "ArrowRight":
+          e.preventDefault();
+          move(1);
+          break;
+        case "ArrowDown":
+          e.preventDefault();
+          softDrop();
+          break;
         case "ArrowUp":
         case "w":
-        case "W": e.preventDefault(); rotateActive(); break;
+        case "W":
+          e.preventDefault();
+          rotateActive();
+          break;
         case " ":
-        case "Space": e.preventDefault(); hardDrop(); break;
+        case "Space":
+          e.preventDefault();
+          hardDrop();
+          break;
         case "p":
-        case "P": /* pause not implemented */ break;
+        case "P":
+          /* pause not implemented */ break;
       }
     });
 
@@ -527,15 +631,23 @@ import ToolLayout from "../layouts/ToolLayout.astro";
 
     // Button events
     startBtn.addEventListener("click", toggleStart);
-    document.getElementById("btn-left").addEventListener("click", () => move(-1));
-    document.getElementById("btn-right").addEventListener("click", () => move(1));
-    document.getElementById("btn-rotate").addEventListener("click", rotateActive);
+    document
+      .getElementById("btn-left")
+      .addEventListener("click", () => move(-1));
+    document
+      .getElementById("btn-right")
+      .addEventListener("click", () => move(1));
+    document
+      .getElementById("btn-rotate")
+      .addEventListener("click", rotateActive);
     document.getElementById("btn-drop").addEventListener("click", hardDrop);
 
     // Prevent touch-scrolling on game area
     canvas.addEventListener("touchstart", handleTouchStart, { passive: true });
     canvas.addEventListener("touchend", handleTouchEnd, { passive: false });
-    canvas.addEventListener("touchmove", (e) => e.preventDefault(), { passive: false });
+    canvas.addEventListener("touchmove", (e) => e.preventDefault(), {
+      passive: false,
+    });
 
     // Resize
     let resizeTimeout;
@@ -572,7 +684,7 @@ import ToolLayout from "../layouts/ToolLayout.astro";
   }
   #game-canvas {
     border-radius: 8px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
     touch-action: none;
     max-width: 100%;
   }
@@ -586,7 +698,7 @@ import ToolLayout from "../layouts/ToolLayout.astro";
     background: #fff;
     border-radius: 8px;
     padding: 0.5rem 0.75rem;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   }
   .stat-label {
     font-size: 0.65rem;
@@ -621,7 +733,9 @@ import ToolLayout from "../layouts/ToolLayout.astro";
     font-family: inherit;
     font-size: 1rem;
     cursor: pointer;
-    transition: background 0.1s ease, border-color 0.1s ease;
+    transition:
+      background 0.1s ease,
+      border-color 0.1s ease;
     color: #1a1a1a;
     padding: 0.5rem 1rem;
     user-select: none;
@@ -709,14 +823,16 @@ import ToolLayout from "../layouts/ToolLayout.astro";
     #controls {
       gap: 0.35rem;
     }
-    .tbtn-dir, .tbtn-drop {
+    .tbtn-dir,
+    .tbtn-drop {
       height: 44px;
       font-size: 1.15rem;
     }
   }
 
   @media (max-width: 360px) {
-    .tbtn-dir, .tbtn-drop {
+    .tbtn-dir,
+    .tbtn-drop {
       height: 40px;
       font-size: 1rem;
     }

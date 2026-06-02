@@ -134,7 +134,9 @@ export default function FuelEconomyConverter() {
                 />
                 <span class="unit-suffix">{def.unit}</span>
                 {isValid && activeField !== key && (
-                  <span class="derived-indicator" title="Auto-converted">↻</span>
+                  <span class="derived-indicator" title="Auto-converted">
+                    ↻
+                  </span>
                 )}
               </div>
             </div>
@@ -143,9 +145,7 @@ export default function FuelEconomyConverter() {
       </div>
 
       <details class="examples-section">
-        <summary class="examples-summary">
-          Quick examples
-        </summary>
+        <summary class="examples-summary">Quick examples</summary>
         <div class="examples-grid">
           {examples.map((ex) => (
             <button
@@ -166,12 +166,28 @@ export default function FuelEconomyConverter() {
             const kmpl = parseFloat(values.kmpl);
             const rating =
               kmpl < 8
-                ? { band: "thirsty", label: "Thirsty", desc: "High fuel consumption" }
+                ? {
+                    band: "thirsty",
+                    label: "Thirsty",
+                    desc: "High fuel consumption",
+                  }
                 : kmpl < 12
-                  ? { band: "moderate", label: "Moderate", desc: "Average for larger vehicles" }
+                  ? {
+                      band: "moderate",
+                      label: "Moderate",
+                      desc: "Average for larger vehicles",
+                    }
                   : kmpl < 16
-                    ? { band: "efficient", label: "Efficient", desc: "Good fuel economy" }
-                    : { band: "very-efficient", label: "Very Efficient", desc: "Excellent fuel economy" };
+                    ? {
+                        band: "efficient",
+                        label: "Efficient",
+                        desc: "Good fuel economy",
+                      }
+                    : {
+                        band: "very-efficient",
+                        label: "Very Efficient",
+                        desc: "Excellent fuel economy",
+                      };
             return (
               <div class={`eco-tag ${rating.band}`}>
                 <span class="eco-label">{rating.label}</span>
