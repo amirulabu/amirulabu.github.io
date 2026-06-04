@@ -1,42 +1,37 @@
-<!DOCTYPE html><html lang="en" data-astro-cid-mqzpnqfb> <head><meta charset="utf-8"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="icon" href="/favicon.svg"><meta name="viewport" content="width=device-width"><meta name="generator" content="Astro v6.0.5"><title>StaticAuth: Design Notes on a Static-Site Auth SaaS</title><script data-goatcounter="https://amirulabugithubio.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script><style>.article-content{line-height:1.7;font-size:.95rem;color:#2a2a2a}.article-content .lede{font-size:1.05rem;color:#1a1a1a}.article-content .quick-take{font-size:.95rem;color:#1a1a1a;background:#f0f4f9;border-left:3px solid #3573c6;padding:.85rem 1rem;margin-bottom:1.25rem;border-radius:0 4px 4px 0}.article-content .quick-take a{color:#3573c6;text-decoration:none;font-weight:500}.article-content .quick-take a:hover{text-decoration:underline}.article-content .note{font-size:.85rem;color:#666;background:#f8f7f5;border-left:3px solid #3573c6;padding:.75rem 1rem;margin-bottom:1.25rem;border-radius:0 4px 4px 0}.article-content p{margin-bottom:1.25rem}.article-content h2{font-size:1.35rem;font-weight:500;margin-top:2rem;margin-bottom:.75rem;line-height:1.3;color:#1a1a1a}.article-content h3{font-size:1.05rem;font-weight:500;margin-top:1.5rem;margin-bottom:.5rem;line-height:1.3;color:#1a1a1a}.article-content ul{margin-bottom:1.25rem;padding-left:1.25rem}.article-content li{margin-bottom:.5rem}.article-content .table-wrap{overflow-x:auto;margin:1.5rem 0}.article-content table{width:100%;border-collapse:collapse;font-size:.85rem}.article-content th,.article-content td{text-align:left;padding:.6rem .75rem;border:1px solid #e8e6e2;vertical-align:top}.article-content th{background:#f5f4f1;font-weight:500;color:#1a1a1a}.article-content td{color:#444}.article-content td:first-child{white-space:nowrap;color:#1a1a1a}.article-content code{background:#f5f4f1;padding:.1rem .35rem;border-radius:3px;font-size:.88em;color:#1a1a1a}
+<!DOCTYPE html><html lang="en" data-astro-cid-mqzpnqfb> <head><meta charset="utf-8"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="icon" href="/favicon.svg"><meta name="viewport" content="width=device-width"><meta name="generator" content="Astro v6.4.4"><title>StaticAuth: Design Notes on a Static-Site Auth SaaS</title><script data-goatcounter="https://amirulabugithubio.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script><style>.article-content{line-height:1.7;font-size:.95rem;color:#2a2a2a}.article-content .lede{font-size:1.05rem;color:#1a1a1a}.article-content .quick-take{font-size:.95rem;color:#1a1a1a;background:#f0f4f9;border-left:3px solid #3573c6;padding:.85rem 1rem;margin-bottom:1.25rem;border-radius:0 4px 4px 0}.article-content .quick-take a{color:#3573c6;text-decoration:none;font-weight:500}.article-content .quick-take a:hover{text-decoration:underline}.article-content .note{font-size:.85rem;color:#666;background:#f8f7f5;border-left:3px solid #3573c6;padding:.75rem 1rem;margin-bottom:1.25rem;border-radius:0 4px 4px 0}.article-content p{margin-bottom:1.25rem}.article-content h2{font-size:1.35rem;font-weight:500;margin-top:2rem;margin-bottom:.75rem;line-height:1.3;color:#1a1a1a}.article-content h3{font-size:1.05rem;font-weight:500;margin-top:1.5rem;margin-bottom:.5rem;line-height:1.3;color:#1a1a1a}.article-content ul{margin-bottom:1.25rem;padding-left:1.25rem}.article-content li{margin-bottom:.5rem}.article-content .table-wrap{overflow-x:auto;margin:1.5rem 0}.article-content table{width:100%;border-collapse:collapse;font-size:.85rem}.article-content th,.article-content td{text-align:left;padding:.6rem .75rem;border:1px solid #e8e6e2;vertical-align:top}.article-content th{background:#f5f4f1;font-weight:500;color:#1a1a1a}.article-content td{color:#444}.article-content td:first-child{white-space:nowrap;color:#1a1a1a}.article-content code{background:#f5f4f1;padding:.1rem .35rem;border-radius:3px;font-size:.88em;color:#1a1a1a}
 .site-header[data-astro-cid-djnp5gro]{position:fixed;top:0;left:0;right:0;z-index:50;background:#faf9f7eb;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(139,109,79,.12)}.header-inner[data-astro-cid-djnp5gro]{max-width:1200px;margin:0 auto;padding:.75rem 1.5rem;display:flex;align-items:center}.brand[data-astro-cid-djnp5gro]{display:flex;align-items:center;gap:.5rem;text-decoration:none;color:inherit;flex-shrink:0;transition:opacity .2s ease}.brand[data-astro-cid-djnp5gro]:hover{opacity:.8}.brand-icon[data-astro-cid-djnp5gro]{width:1.75rem;height:1.75rem;flex-shrink:0}.brand-text[data-astro-cid-djnp5gro]{font-family:Newsreader,Georgia,serif;font-size:1.25rem;font-weight:400;letter-spacing:-.02em;color:#1a1a1a}@media(max-width:768px){.header-inner[data-astro-cid-djnp5gro]{padding:.625rem 1rem}.brand-icon[data-astro-cid-djnp5gro]{width:1.5rem;height:1.5rem}.brand-text[data-astro-cid-djnp5gro]{font-size:1.15rem}}@media(min-width:769px){.header-inner[data-astro-cid-djnp5gro]{padding:.875rem 2rem}}.site-footer[data-astro-cid-v6jvrmeb]{text-align:center;padding:1.5rem;font-size:.8rem;color:#888;display:flex;align-items:center;justify-content:center;gap:.5rem;flex-wrap:wrap}.site-footer[data-astro-cid-v6jvrmeb] a[data-astro-cid-v6jvrmeb]{color:#888;text-decoration:none;transition:color .2s ease}.site-footer[data-astro-cid-v6jvrmeb] a[data-astro-cid-v6jvrmeb]:hover{color:#3573c6}.site-footer[data-astro-cid-v6jvrmeb] .sep[data-astro-cid-v6jvrmeb]{color:#d0cdc7;font-size:.7rem;user-select:none}
 [data-astro-cid-mqzpnqfb]{box-sizing:border-box;margin:0;padding:0}body{font-family:system-ui,-apple-system,sans-serif;background:#faf9f7;color:#1a1a1a;min-height:100vh}main[data-astro-cid-mqzpnqfb]{max-width:var(--tool-max-width, 640px);margin:0 auto;padding:5rem 1.5rem 2rem}h1[data-astro-cid-mqzpnqfb]{font-size:2rem;font-weight:400;line-height:1.2;margin-bottom:.25rem}.subtitle[data-astro-cid-mqzpnqfb]{font-size:.85rem;color:#555;margin-bottom:2rem}
 </style></head> <body data-astro-cid-mqzpnqfb> <header class="site-header" data-astro-cid-djnp5gro> <div class="header-inner" data-astro-cid-djnp5gro> <a href="/" class="brand" aria-label="Home" data-astro-cid-djnp5gro> <svg class="brand-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" aria-hidden="true" data-astro-cid-djnp5gro> <path d="M44 16h40v4H44z" fill="#3573c6" data-astro-cid-djnp5gro></path> <path d="M48 20v30l-20 50a8 8 0 0 0 7.4 11h57.2a8 8 0 0 0 7.4-11L80 50V20" fill="none" stroke="#3573c6" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-djnp5gro></path> <path d="M34.8 97a8 8 0 0 0 7.4 11h43.6a8 8 0 0 0 7.4-11L76 60H52L34.8 97Z" fill="#8bb5e8" opacity="0.5" data-astro-cid-djnp5gro></path> <circle cx="56" cy="82" r="5" fill="#a8cbf0" opacity="0.8" data-astro-cid-djnp5gro></circle> <circle cx="72" cy="74" r="3.5" fill="#a8cbf0" opacity="0.7" data-astro-cid-djnp5gro></circle> <circle cx="64" cy="90" r="4" fill="#c5dbf5" opacity="0.6" data-astro-cid-djnp5gro></circle> <circle cx="60" cy="64" r="2.5" fill="#a8cbf0" opacity="0.5" data-astro-cid-djnp5gro></circle> <circle cx="70" cy="56" r="2" fill="#c5dbf5" opacity="0.4" data-astro-cid-djnp5gro></circle> </svg> <span class="brand-text" data-astro-cid-djnp5gro>random</span> </a> </div> </header> <main style="--tool-max-width: 720px" data-astro-cid-mqzpnqfb> <h1 data-astro-cid-mqzpnqfb>StaticAuth: Design Notes on a Static-Site Auth SaaS</h1> <p class="subtitle" data-astro-cid-mqzpnqfb>Why I spent a Sunday evening designing a micro-SaaS that probably won&#39;t get built</p>  <article class="article-content"> <p class="lede">
 I have a folder on my machine called <code>static-auth-saas/</code>. It
       contains an architectural design for a small product: deploy a static site
       behind Google authentication with one command. Think
-<code>surge.sh</code> with identity bolted on. It is unlikely this will
-      ever be built. That is exactly why the design doc is interesting — there
-      is no commercial pressure to lie about how well the parts fit together.
-      This is the article I wish I could read before I had written the doc
-      myself.
+<code>surge.sh</code> with identity bolted on. It is unlikely this will ever
+      be built. That is exactly why the design doc is interesting — there is no commercial
+      pressure to lie about how well the parts fit together. This is the article I
+      wish I could read before I had written the doc myself.
 </p> <p class="note"> <strong>Note:</strong> The full design doc lives at
 <code>~/openclaw-backup/workspace/static-auth-saas/</code>
-(~30 KB, 600 lines, 4 ADRs, 12 sections). This article is a
-      working-through-the-ideas version, not a re-statement of the spec. The
-      numbers and architecture are real; the opinions about them are mine.
+(~30 KB, 600 lines, 4 ADRs, 12 sections). This article is a working-through-the-ideas
+      version, not a re-statement of the spec. The numbers and architecture are real;
+      the opinions about them are mine.
 </p> <h2>The Idea</h2> <p>
-Static sites are easy. <code>surge.sh</code>, Vercel, Netlify,
-      Cloudflare Pages — pick your poison, run one command, get a URL. The hard
-      part is <em>putting something in front of it</em> — a sign-in wall, a
-      private docs portal, an internal staging environment. Today the options
-      are:
-</p> <ul> <li> <strong>Cloudflare Access</strong> — works well, but requires
-        click-ops in the Cloudflare dashboard. Not one-command. Not
-        infrastructure-as-code.
-</li> <li> <strong>Vercel Authentication</strong> — enterprise-only, $20/seat, and
-        tied to Vercel.
-</li> <li> <strong>Clerk / Auth0</strong> — great for full apps with user
-        management, but expensive for "gate this HTML folder." Clerk runs
-        $0.02/MAU past 10k free; at 50k MAU you are paying $800/month just for
-        auth.
-</li> <li> <strong>Roll your own</strong> — Cognito User Pool, a Lambda, a
-        CloudFront function. Doable, but three days of work and a maintenance
-        burden you do not want.
+Static sites are easy. <code>surge.sh</code>, Vercel, Netlify, Cloudflare
+      Pages — pick your poison, run one command, get a URL. The hard part is <em>putting something in front of it</em> — a sign-in wall, a private docs portal, an internal staging environment.
+      Today the options are:
+</p> <ul> <li> <strong>Cloudflare Access</strong> — works well, but requires click-ops in
+        the Cloudflare dashboard. Not one-command. Not infrastructure-as-code.
+</li> <li> <strong>Vercel Authentication</strong> — enterprise-only, $20/seat, and tied
+        to Vercel.
+</li> <li> <strong>Clerk / Auth0</strong> — great for full apps with user management,
+        but expensive for "gate this HTML folder." Clerk runs $0.02/MAU past 10k free;
+        at 50k MAU you are paying $800/month just for auth.
+</li> <li> <strong>Roll your own</strong> — Cognito User Pool, a Lambda, a CloudFront
+        function. Doable, but three days of work and a maintenance burden you do not
+        want.
 </li> </ul> <p>
 The gap is: a tool that gives you the <strong>surge.sh experience</strong>
-(one command, declarative config in git, no dashboard) for static sites
-      that need <strong>identity</strong>. The target market is the long tail of
+(one command, declarative config in git, no dashboard) for static sites that
+      need <strong>identity</strong>. The target market is the long tail of
       internal docs portals, pre-launch landing pages with email-restricted
       sign-in, and small SaaS staging environments.
 </p> <h2>Cost-First Architecture</h2> <p>
@@ -46,181 +41,179 @@ The most important design constraint is cost. A static-site auth SaaS at
       "what is the cleanest design" — it is "what is the
 <em>cheapest sustainable</em> design."
 </p> <h3>One CloudFront distribution, many sites</h3> <p>
-The v1 design gave every customer their own CloudFront distribution. It
-      is the obvious design — full isolation, native custom domains, no
-      coupling between tenants. The problem is the price tag: every
-      distribution carries a $1/month minimum, billed even if the site gets
-      zero traffic.
-</p> <div class="table-wrap"> <table> <thead> <tr> <th>Approach</th> <th>Cost (100 sites)</th> <th>Cost (1,000 sites)</th> <th>Custom domains</th> </tr> </thead> <tbody> <tr> <td><strong>Per-site distribution (v1)</strong></td> <td>$100/mo</td> <td>$1,000+/mo</td> <td>Native CNAME per dist</td> </tr> <tr> <td><strong>Shared distribution (v2)</strong></td> <td>$1.00/mo</td> <td>$1.00/mo</td> <td>Shared dist, multiple aliases (quota 250, raisable to 2,500)</td> </tr> </tbody> </table> </div> <p> <strong>How to read this:</strong> per-site = one distribution per
-      customer (default AWS pattern). Shared = one distribution with a wildcard
-      cert on <code>*.staticauth.dev</code>, path-based routing in
-      Lambda@Edge.
+The v1 design gave every customer their own CloudFront distribution. It is
+      the obvious design — full isolation, native custom domains, no coupling
+      between tenants. The problem is the price tag: every distribution carries
+      a $1/month minimum, billed even if the site gets zero traffic.
+</p> <div class="table-wrap"> <table> <thead> <tr> <th>Approach</th> <th>Cost (100 sites)</th> <th>Cost (1,000 sites)</th> <th>Custom domains</th> </tr> </thead> <tbody> <tr> <td><strong>Per-site distribution (v1)</strong></td> <td>$100/mo</td> <td>$1,000+/mo</td> <td>Native CNAME per dist</td> </tr> <tr> <td><strong>Shared distribution (v2)</strong></td> <td>$1.00/mo</td> <td>$1.00/mo</td> <td>Shared dist, multiple aliases (quota 250, raisable to 2,500)</td> </tr> </tbody> </table> </div> <p> <strong>How to read this:</strong> per-site = one distribution per customer
+      (default AWS pattern). Shared = one distribution with a wildcard cert on <code>*.staticauth.dev</code>, path-based routing in Lambda@Edge.
 </p> <p>
 The v2 design puts every customer behind a single
-<code>*.staticauth.dev</code> wildcard cert, then routes by subdomain
-      inside a single Lambda@Edge function. The function reads the
-<code>Host</code> header, looks up the site config from DynamoDB
-      (60-second in-memory cache), and rewrites the URI to
-<code>/sites/&lt;slug&gt;&lt;path&gt;</code> before forwarding to a single S3 bucket.
+<code>*.staticauth.dev</code> wildcard cert, then routes by subdomain inside
+      a single Lambda@Edge function. The function reads the
+<code>Host</code> header, looks up the site config from DynamoDB (60-second
+      in-memory cache), and rewrites the URI to
+<code>/sites/&lt;slug&gt;&lt;path&gt;</code> before forwarding to a single S3
+      bucket.
 </p> <p>
-The cost saving is roughly <strong>80%+ at 100 sites, 99% at 1,000
-      sites</strong>. The trade-off is real though: one misconfigured
-      Lambda@Edge takes down every site, and "noisy neighbour" traffic spikes
-      are now a shared problem. The mitigation is canary deployment of the
-      edge function — version it, route 5% of traffic, monitor, then ramp.
-      CloudFront does not offer a native blue/green for Lambda@Edge
-      associations, so this is closer to a manual staged rollout than a true
-      canary, but it is enough.
+The cost saving is roughly <strong>80%+ at 100 sites, 99% at 1,000 sites</strong>. The trade-off is real though: one misconfigured Lambda@Edge takes down
+      every site, and "noisy neighbour" traffic spikes are now a shared problem.
+      The mitigation is canary deployment of the edge function — version it,
+      route 5% of traffic, monitor, then ramp. CloudFront does not offer a
+      native blue/green for Lambda@Edge associations, so this is closer to a
+      manual staged rollout than a true canary, but it is enough.
 </p> <h2>Auth: Lambda@Edge, Not Signed Cookies</h2> <p>
-CloudFront signed cookies are tempting because they are free and have
-      no cold start. The catch is they only answer "does this request have a
-      valid signed cookie" — they do not give you a login flow, an OAuth
-      handshake, or per-user identity. For a "sign in with Google" experience
-      you have to build all of that yourself anyway, which negates the
-      simplicity advantage.
+CloudFront signed cookies are tempting because they are free and have no
+      cold start. The catch is they only answer "does this request have a valid
+      signed cookie" — they do not give you a login flow, an OAuth handshake, or
+      per-user identity. For a "sign in with Google" experience you have to
+      build all of that yourself anyway, which negates the simplicity advantage.
 </p> <p>
 Lambda@Edge Viewer Request is the right call, despite the constraints:
-</p> <ul> <li><strong>5-second timeout</strong> for Viewer Request. Manageable if the JWT check and config lookup are both cached.</li> <li><strong>1 MB bundle size</strong>. The <code>jose</code> library fits; <code>aws-sdk</code> v2 does not — use v3 modular imports or nothing.</li> <li><strong>$0.60/million requests</strong>. At 50k views per site per month, that is roughly $0.03 per site per month in invocation costs.</li> <li><strong>Cold starts</strong> of 100-500 ms. Acceptable for a static site. The first request to a new region pays the cold-start tax; subsequent requests are warm.</li> </ul> <p>
+</p> <ul> <li> <strong>5-second timeout</strong> for Viewer Request. Manageable if the JWT
+        check and config lookup are both cached.
+</li> <li> <strong>1 MB bundle size</strong>. The <code>jose</code> library fits; <code>aws-sdk</code> v2 does not — use v3 modular imports or nothing.
+</li> <li> <strong>$0.60/million requests</strong>. At 50k views per site per
+        month, that is roughly $0.03 per site per month in invocation costs.
+</li> <li> <strong>Cold starts</strong> of 100-500 ms. Acceptable for a static site.
+        The first request to a new region pays the cold-start tax; subsequent requests
+        are warm.
+</li> </ul> <p>
 The interesting engineering is keeping the bundle small and the p99 low.
-      The auth function does four things: read the host header, look up the
-      site config, validate the JWT, return a redirect or a rewrite. There is
-      no reason this should exceed 200 ms on a warm path.
+      The auth function does four things: read the host header, look up the site
+      config, validate the JWT, return a redirect or a rewrite. There is no
+      reason this should exceed 200 ms on a warm path.
 </p> <h2>The Custom Sign-In Page</h2> <p>
-This is the part of the design I am most curious about. Cognito gives
-      you a hosted UI for free — it handles the OAuth dance, the JWKS
-      endpoint, the token refresh. The problem is it is <em>ugly</em> and it
-      shows AWS branding. URL looks like
+This is the part of the design I am most curious about. Cognito gives you
+      a hosted UI for free — it handles the OAuth dance, the JWKS endpoint, the
+      token refresh. The problem is it is <em>ugly</em> and it shows AWS branding.
+      URL looks like
 <code>auth.us-east-1.amazoncognito.com</code>. The hosted UI is also
-      visually unchangeable beyond a logo and a handful of CSS variables, so
-      you cannot match the look of the site you are protecting.
+      visually unchangeable beyond a logo and a handful of CSS variables, so you
+      cannot match the look of the site you are protecting.
 </p> <p>
 The v2 design splits the problem: Cognito handles the
 <em>crypto and OAuth plumbing</em>, and a custom HTML page hosted in S3
       handles the <em>login UX</em>. The Lambda@Edge auth check redirects
-      unauthenticated visitors to <code>/__auth/login.html</code>, which
-      renders "Sign in with Google" buttons, kicks off the OAuth flow, and
-      lands on <code>/__auth/callback.html</code> to set the cookie and
-      redirect back to the original page.
+      unauthenticated visitors to <code>/__auth/login.html</code>, which renders
+      "Sign in with Google" buttons, kicks off the OAuth flow, and lands on <code>/__auth/callback.html</code> to set the cookie and redirect back to the original page.
 </p> <p>
-The unavoidable wrinkle: even with a custom sign-in page, the user
-      briefly touches a Cognito URL when the OAuth code exchange happens. It
-      lasts under a second, and the user sees Google's consent screen rather
-      than Cognito's, but it is not a fully branded experience. That is the
-      trade-off you make for not implementing JWKS, token rotation, and
-      refresh-token handling yourself.
+The unavoidable wrinkle: even with a custom sign-in page, the user briefly
+      touches a Cognito URL when the OAuth code exchange happens. It lasts under
+      a second, and the user sees Google's consent screen rather than Cognito's,
+      but it is not a fully branded experience. That is the trade-off you make
+      for not implementing JWKS, token rotation, and refresh-token handling
+      yourself.
 </p> <p>
 The honest summary: if your priority is "the login page looks like the
-      rest of my product," Cognito's hosted UI is a dead end. If your
-      priority is "I do not want to maintain an OAuth server in 2026," a
-      custom front-end on top of Cognito is the sweet spot.
+      rest of my product," Cognito's hosted UI is a dead end. If your priority
+      is "I do not want to maintain an OAuth server in 2026," a custom front-end
+      on top of Cognito is the sweet spot.
 </p> <h2>Silent Token Refresh</h2> <p>
-The first version of the design said "re-authenticate on token
-      expiry." That is a great way to get a user yanked to a Google login
-      screen in the middle of reading documentation. v2 adds a silent refresh
-      flow that I expect will save more support tickets than every other
-      improvement combined.
+The first version of the design said "re-authenticate on token expiry."
+      That is a great way to get a user yanked to a Google login screen in the
+      middle of reading documentation. v2 adds a silent refresh flow that I
+      expect will save more support tickets than every other improvement
+      combined.
 </p> <p>
-The pattern is borrowed from OIDC silent renew: a hidden iframe points
-      at <code>/__auth/refresh.html</code>, which uses the
-<code>prompt=none</code> parameter to get fresh tokens from Cognito
-      without user interaction. If it works, the cookies are updated silently.
-      If it fails (the Google session itself expired), a banner appears:
-      "Session expired, click to re-authenticate."
+The pattern is borrowed from OIDC silent renew: a hidden iframe points at <code>/__auth/refresh.html</code>, which uses the
+<code>prompt=none</code> parameter to get fresh tokens from Cognito without
+      user interaction. If it works, the cookies are updated silently. If it fails
+      (the Google session itself expired), a banner appears: "Session expired, click
+      to re-authenticate."
 </p> <p>
-The cookie strategy is worth noting: <code>auth-token</code> is
-      short-lived (1 hour, HttpOnly) and validated on every request;
-<code>refresh-token</code> is long-lived (30 days, HttpOnly, path-
-      restricted to <code>/__auth/</code>); and a separate
-<code>auth-expiry</code> cookie holds the JS-readable expiry timestamp
-      so the refresh checker can detect impending expiry without parsing
-      JWTs.
+The cookie strategy is worth noting: <code>auth-token</code> is short-lived
+      (1 hour, HttpOnly) and validated on every request;
+<code>refresh-token</code> is long-lived (30 days, HttpOnly, path- restricted
+      to <code>/__auth/</code>); and a separate
+<code>auth-expiry</code> cookie holds the JS-readable expiry timestamp so the
+      refresh checker can detect impending expiry without parsing JWTs.
 </p> <h2>The Cost Model Has Hidden Costs</h2> <p>
 The visible cost of the architecture is roughly $1.50/month fixed
       (CloudFront + Route 53 + S3 + DynamoDB below free tier) plus $0.11 to
-      $1.88 per site depending on traffic. That is the number you put in a
-      pitch deck. The real number is higher, and the difference is mostly
-      CloudWatch Logs.
+      $1.88 per site depending on traffic. That is the number you put in a pitch
+      deck. The real number is higher, and the difference is mostly CloudWatch
+      Logs.
 </p> <p>
-Lambda@Edge logs every invocation to CloudWatch in the region where
-      the function runs. At 50k requests per site per month, with even a
-      minimal 1 KB log line per request, you are looking at 1.5 GB of logs
-      per site per month. CloudWatch ingest is $0.50/GB. That is
-<strong>$0.75 per site per month, just for logs</strong> — more than
-      the rest of the infrastructure combined for a low-traffic site.
+Lambda@Edge logs every invocation to CloudWatch in the region where the
+      function runs. At 50k requests per site per month, with even a minimal 1
+      KB log line per request, you are looking at 1.5 GB of logs per site per
+      month. CloudWatch ingest is $0.50/GB. That is
+<strong>$0.75 per site per month, just for logs</strong> — more than the rest
+      of the infrastructure combined for a low-traffic site.
 </p> <p>
 The mitigation is structured logging with a log level that defaults to
       WARN, sampling in production, and a hard rule against logging request
-      bodies or token contents. The takeaway: if you build this, the cost
-      model is not the AWS service prices. It is the AWS service prices plus
-      the implicit cost of observability. Budget accordingly.
+      bodies or token contents. The takeaway: if you build this, the cost model
+      is not the AWS service prices. It is the AWS service prices plus the
+      implicit cost of observability. Budget accordingly.
 </p> <h2>AWS Quotas That Will Bite You</h2> <p>
-The design document has a table of every AWS quota that matters. The
-      three I would plan for first:
+The design document has a table of every AWS quota that matters. The three
+      I would plan for first:
 </p> <ul> <li> <strong>CloudFront alternate domain names: 250 per distribution.</strong>
-Shared distribution supports 250 sites out of the box. Raise the
-        quota to 2,500 before you hit it, and plan for multi-distribution
-        sharding past that.
-</li> <li> <strong>Cognito App Clients: 1,000 per User Pool.</strong> One client
-        per site. Raise to 10,000 at 500+ sites, and start thinking about
-        sharding User Pools at 5,000+.
+Shared distribution supports 250 sites out of the box. Raise the quota to
+        2,500 before you hit it, and plan for multi-distribution sharding past that.
+</li> <li> <strong>Cognito App Clients: 1,000 per User Pool.</strong> One client per
+        site. Raise to 10,000 at 500+ sites, and start thinking about sharding User
+        Pools at 5,000+.
 </li> <li> <strong>Lambda@Edge: 1,000 concurrent executions per region.</strong>
-Scales automatically at CloudFront POPs, but the per-region cap is
-        real. Watch for hot regions.
+Scales automatically at CloudFront POPs, but the per-region cap is real. Watch
+        for hot regions.
 </li> </ul> <p>
-None of these are dealbreakers. All of them are things you find out
-      about at 2 AM when a customer cannot sign in and you do not know why.
-      Reading the quota table before the design goes to production is the
-      difference between a Tuesday incident and a Sunday incident.
+None of these are dealbreakers. All of them are things you find out about
+      at 2 AM when a customer cannot sign in and you do not know why. Reading
+      the quota table before the design goes to production is the difference
+      between a Tuesday incident and a Sunday incident.
 </p> <h2>Why Not Cloudflare?</h2> <p>
 The honest comparison section in the design doc goes through this in
       detail. The short version: Cloudflare Access + Cloudflare Pages is a
       genuinely good product for the right customer. If you are already on
       Cloudflare, it is almost certainly the right answer.
-</p> <p>
-The cases where StaticAuth is the better fit:
-</p> <ul> <li>You are AWS-native and want your auth to live in the same account as the rest of your infrastructure.</li> <li>You want a <code>staticauth.json</code> file in git, not click-ops in a dashboard.</li> <li>You need Google Workspace domain restriction (only <code>@yourcompany.com</code> can sign in) without paying for Cloudflare's enterprise tier.</li> </ul> <p>
-Vendor lock-in is a real cost. The argument for StaticAuth is not
-      "Cloudflare is bad" — it is "some teams have already made the AWS
-      bet, and this gives them an auth option that does not require a second
-      vendor relationship."
-</p> <h2>What the Design Doc Does Not Tell You</h2> <p>
-A few things I noticed that the spec punts on:
-</p> <ul> <li> <strong>CDN cache invalidation cost.</strong> Wildcard
-        invalidations are free, but per-path invalidations are free only for
-        the first 1,000 paths per month. After that it is $0.005 per path.
-        At 1,000 deploys per month across all customers, that is
-        non-trivial.
-</li> <li> <strong>CDK deploy blocking.</strong> Every stack update on the
-        shared distribution takes 15-30 minutes to propagate. During that
-        window you cannot deploy other changes. The mitigation is a
-        separate CDK stack for the edge function, so function updates do not
-        block distribution updates. Not great, not terrible.
-</li> <li> <strong>OAuth verification friction.</strong> "This app is not
-        verified" warnings on the Google consent screen will scare users.
-        Submit for OAuth verification early, use test mode during
-        development, and document the timeline for new customers.
+</p> <p>The cases where StaticAuth is the better fit:</p> <ul> <li>
+You are AWS-native and want your auth to live in the same account as the
+        rest of your infrastructure.
+</li> <li>
+You want a <code>staticauth.json</code> file in git, not click-ops in a dashboard.
+</li> <li>
+You need Google Workspace domain restriction (only <code>@yourcompany.com</code> can sign in) without paying for Cloudflare's enterprise tier.
 </li> </ul> <p>
-None of these change the architecture. They are the day-2
-      operational gotchas that the ADRs do not capture.
+Vendor lock-in is a real cost. The argument for StaticAuth is not
+      "Cloudflare is bad" — it is "some teams have already made the AWS bet, and
+      this gives them an auth option that does not require a second vendor
+      relationship."
+</p> <h2>What the Design Doc Does Not Tell You</h2> <p>A few things I noticed that the spec punts on:</p> <ul> <li> <strong>CDN cache invalidation cost.</strong> Wildcard invalidations are free,
+        but per-path invalidations are free only for the first 1,000 paths per month.
+        After that it is $0.005 per path. At 1,000 deploys per month across all customers,
+        that is non-trivial.
+</li> <li> <strong>CDK deploy blocking.</strong> Every stack update on the shared distribution
+        takes 15-30 minutes to propagate. During that window you cannot deploy other
+        changes. The mitigation is a separate CDK stack for the edge function, so
+        function updates do not block distribution updates. Not great, not terrible.
+</li> <li> <strong>OAuth verification friction.</strong> "This app is not verified" warnings
+        on the Google consent screen will scare users. Submit for OAuth verification
+        early, use test mode during development, and document the timeline for new
+        customers.
+</li> </ul> <p>
+None of these change the architecture. They are the day-2 operational
+      gotchas that the ADRs do not capture.
 </p> <h2>My Honest Take</h2> <p>
 The design is sound. The cost model is tight but workable. The
-      authentication path is well-trodden — Cognito + Lambda@Edge +
-      CloudFront is not a novel combination, and that is a feature, not a
-      bug. The novel part is the developer experience: one command, one
-      config file, no dashboard.
+      authentication path is well-trodden — Cognito + Lambda@Edge + CloudFront
+      is not a novel combination, and that is a feature, not a bug. The novel
+      part is the developer experience: one command, one config file, no
+      dashboard.
 </p> <p>
 The reason this is unlikely to be built is not the design — it is the
       market. The customers who would use it are small (one to five sites,
       $5-29/month) and price-sensitive. The customers with bigger budgets
-      already have Vercel or Cloudflare or Okta. The narrow band of "I want
-      a private static site on AWS with Google auth and I do not want to
-      wire it up myself" is real, but it might be too narrow to support a
-      business.
+      already have Vercel or Cloudflare or Okta. The narrow band of "I want a
+      private static site on AWS with Google auth and I do not want to wire it
+      up myself" is real, but it might be too narrow to support a business.
 </p> <p>
 Which is exactly why the design doc is useful as a design doc, even
-      without a product behind it. The constraints are tight, the trade-offs
-      are honest, and the parts that are not novel (Cognito, Lambda@Edge,
-      CloudFront) are described in enough detail to be a useful starting
-      point for someone who actually needs to build this. Maybe that is
-      you. The folder is on this machine.
+      without a product behind it. The constraints are tight, the trade-offs are
+      honest, and the parts that are not novel (Cognito, Lambda@Edge,
+      CloudFront) are described in enough detail to be a useful starting point
+      for someone who actually needs to build this. Maybe that is you. The
+      folder is on this machine.
 </p> </article>  </main> <footer class="site-footer" data-astro-cid-v6jvrmeb> <a href="https://github.com/amirulabu" target="_blank" rel="noopener" data-astro-cid-v6jvrmeb>Amirul&#8239;Abu</a> <span class="sep" aria-hidden="true" data-astro-cid-v6jvrmeb>/</span> <a href="https://amirulabugithubio.goatcounter.com/" target="_blank" rel="noopener noreferrer" data-astro-cid-v6jvrmeb>Page stats</a> </footer></body></html>
