@@ -8,6 +8,7 @@ const PRICE_DEFAULTS = {
   interestRate: 3,
   loanYears: 9,
   depositPercent: 10,
+  rebate: 0,
 };
 
 const MONTHLY_DEFAULTS = {
@@ -15,6 +16,7 @@ const MONTHLY_DEFAULTS = {
   interestRate: 3,
   loanYears: 9,
   depositPercent: 10,
+  rebate: 0,
 };
 
 function loadSaved<T extends Record<string, unknown>>(
@@ -43,18 +45,26 @@ export function PriceToMonthlyCalc() {
   const [interestRate, setInterestRate] = useState(init.interestRate);
   const [loanYears, setLoanYears] = useState(init.loanYears);
   const [depositPercent, setDepositPercent] = useState(init.depositPercent);
+  const [rebate, setRebate] = useState(init.rebate);
 
   useEffect(() => {
     try {
       localStorage.setItem(
         STORAGE_KEY_PRICE,
-        JSON.stringify({ carPrice, interestRate, loanYears, depositPercent }),
+        JSON.stringify({
+          carPrice,
+          interestRate,
+          loanYears,
+          depositPercent,
+          rebate,
+        }),
       );
     } catch {}
-  }, [carPrice, interestRate, loanYears, depositPercent]);
+  }, [carPrice, interestRate, loanYears, depositPercent, rebate]);
 
-  const depositAmount = carPrice * (depositPercent / 100);
-  const loanAmount = carPrice - depositAmount;
+  const priceAfterRebate = Math.max(0, carPrice - rebate);
+  const depositAmount = priceAfterRebate * (depositPercent / 100);
+  const loanAmount = priceAfterRebate - depositAmount;
   const totalInterest = loanAmount * (interestRate / 100) * loanYears;
   const totalPayable = loanAmount + totalInterest;
   const monthlyPayment = totalPayable / (loanYears * 12);
@@ -72,6 +82,23 @@ export function PriceToMonthlyCalc() {
             const raw = (e.target as HTMLInputElement).value;
             const v = parseFloat(sanitizeNum(raw));
             if (!isNaN(v) && v >= 0) setCarPrice(v);
+          }}
+        />
+      </div>
+
+      <div class="field">
+        <label htmlFor="price-rebate">Rebate (RM, optional)</label>
+        <input
+          id="price-rebate"
+          type="number"
+          value={rebate || ""}
+          min={0}
+          step={1000}
+          placeholder="0"
+          onInput={(e) => {
+            const raw = (e.target as HTMLInputElement).value;
+            const v = parseFloat(sanitizeNum(raw));
+            if (!isNaN(v) && v >= 0) setRebate(v);
           }}
         />
       </div>
@@ -144,9 +171,9 @@ export function PriceToMonthlyCalc() {
             onChange={(e) => {
               const raw = (e.target as HTMLInputElement).value;
               const v = parseFloat(sanitizeNum(raw));
-              if (!isNaN(v) && v >= 0 && carPrice > 0) {
+              if (!isNaN(v) && v >= 0 && priceAfterRebate > 0) {
                 setDepositPercent(
-                  Math.min(50, Math.round((v / carPrice) * 100)),
+                  Math.min(50, Math.round((v / priceAfterRebate) * 100)),
                 );
               }
             }}
@@ -158,6 +185,10 @@ export function PriceToMonthlyCalc() {
         <div class="result-row monthly">
           <span>Monthly Payment</span>
           <span class="value">{formatRM(monthlyPayment)}</span>
+        </div>
+        <div class="result-row">
+          <span>Price After Rebate</span>
+          <span class="value">{formatRM(priceAfterRebate)}</span>
         </div>
         <div class="result-row">
           <span>Loan Amount</span>
@@ -180,8 +211,8 @@ export function PriceToMonthlyCalc() {
       />
 
       <p class="note">
-        * Uses flat rate calculation (hire purchase), common for Malaysian car
-        loans.
+        * Rebate is subtracted before calculating the down payment and loan.
+        Uses the flat rate hire purchase method common for Malaysian car loans.
       </p>
     </div>
   );
@@ -466,6 +497,7 @@ export function MonthlyToPriceCalc() {
   const [interestRate, setInterestRate] = useState(init.interestRate);
   const [loanYears, setLoanYears] = useState(init.loanYears);
   const [depositPercent, setDepositPercent] = useState(init.depositPercent);
+  const [rebate, setRebate] = useState(init.rebate);
 
   useEffect(() => {
     try {
@@ -476,19 +508,21 @@ export function MonthlyToPriceCalc() {
           interestRate,
           loanYears,
           depositPercent,
+          rebate,
         }),
       );
     } catch {}
-  }, [monthlyBudget, interestRate, loanYears, depositPercent]);
+  }, [monthlyBudget, interestRate, loanYears, depositPercent, rebate]);
 
   // monthly = loanAmt * (1 + rate * years) / (years * 12)
   // loanAmt = monthly * years * 12 / (1 + rate * years)
-  // carPrice = loanAmt / (1 - depositPct)
+  // priceAfterRebate = loanAmt / (1 - depositPct)
   const totalMonths = loanYears * 12;
   const loanAmount =
     (monthlyBudget * totalMonths) / (1 + (interestRate / 100) * loanYears);
-  const carPrice = loanAmount / (1 - depositPercent / 100);
-  const depositAmount = carPrice * (depositPercent / 100);
+  const priceAfterRebate = loanAmount / (1 - depositPercent / 100);
+  const carPrice = priceAfterRebate + rebate;
+  const depositAmount = priceAfterRebate * (depositPercent / 100);
   const totalInterest = loanAmount * (interestRate / 100) * loanYears;
   const totalPayable = loanAmount + totalInterest;
 
@@ -505,6 +539,23 @@ export function MonthlyToPriceCalc() {
             const raw = (e.target as HTMLInputElement).value;
             const v = parseFloat(sanitizeNum(raw));
             if (!isNaN(v) && v >= 0) setMonthlyBudget(v);
+          }}
+        />
+      </div>
+
+      <div class="field">
+        <label htmlFor="monthly-rebate">Rebate (RM, optional)</label>
+        <input
+          id="monthly-rebate"
+          type="number"
+          value={rebate || ""}
+          min={0}
+          step={1000}
+          placeholder="0"
+          onInput={(e) => {
+            const raw = (e.target as HTMLInputElement).value;
+            const v = parseFloat(sanitizeNum(raw));
+            if (!isNaN(v) && v >= 0) setRebate(v);
           }}
         />
       </div>
@@ -593,6 +644,10 @@ export function MonthlyToPriceCalc() {
           <span class="value">{formatRM(carPrice)}</span>
         </div>
         <div class="result-row">
+          <span>Price After Rebate</span>
+          <span class="value">{formatRM(priceAfterRebate)}</span>
+        </div>
+        <div class="result-row">
           <span>Down Payment</span>
           <span class="value">{formatRM(depositAmount)}</span>
         </div>
@@ -611,8 +666,8 @@ export function MonthlyToPriceCalc() {
       </div>
 
       <p class="note">
-        * Uses flat rate calculation (hire purchase), common for Malaysian car
-        loans.
+        * Rebate is subtracted before calculating the down payment and loan.
+        Uses the flat rate hire purchase method common for Malaysian car loans.
       </p>
     </div>
   );

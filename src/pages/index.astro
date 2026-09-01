@@ -247,6 +247,9 @@ import Footer from "../shared/Footer.astro";
               <span class="card-arrow" aria-hidden="true">&rarr;</span>
             </a>
           </div>
+          <a class="category-more" href="/car/payment-table/"
+            >Compare all car monthly payments &rarr;</a
+          >
         </div>
 
         <!-- Calculate -->
@@ -420,29 +423,6 @@ import Footer from "../shared/Footer.astro";
               </p>
               <span class="card-arrow" aria-hidden="true">&rarr;</span>
             </a>
-
-            <a href="/timer/" class="page-card">
-              <h3 class="card-title">
-                <svg
-                  class="card-icon"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  ><circle cx="12" cy="13" r="8"></circle><path
-                    d="M12 13V9m0 4 3 2M9 2h6M15 5l1.5-1.5M9 5 7.5 3.5"
-                  ></path></svg
-                >
-                Countdown Timer
-              </h3>
-              <p class="card-desc">
-                Start a quick countdown with presets, custom minutes and
-                seconds, pause, reset, and add-a-minute controls.
-              </p>
-              <span class="card-arrow" aria-hidden="true">&rarr;</span>
-            </a>
           </div>
         </div>
 
@@ -585,301 +565,314 @@ import Footer from "../shared/Footer.astro";
       </section>
     </main>
     <Footer />
+
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        background: #faf9f7;
+        color: #1a1a1a;
+      }
+
+      body {
+        font-family:
+          system-ui,
+          -apple-system,
+          sans-serif;
+        min-height: 100vh;
+      }
+
+      main {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 5rem 2rem 2rem;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* ─── Hero ─── */
+
+      .hero {
+        position: relative;
+        margin-bottom: 3rem;
+        padding-top: 1rem;
+      }
+
+      .hero-ambient {
+        position: absolute;
+        top: -5rem;
+        left: 50%;
+        transform: translateX(-50%);
+        width: clamp(400px, 80vw, 700px);
+        height: clamp(400px, 80vw, 700px);
+        border-radius: 50%;
+        background: radial-gradient(
+          circle at 40% 40%,
+          rgba(139, 109, 79, 0.035) 0%,
+          rgba(53, 115, 198, 0.025) 35%,
+          transparent 65%
+        );
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .title-row {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        position: relative;
+        z-index: 1;
+      }
+
+      .favicon {
+        width: clamp(2.4rem, 6vw, 3.2rem);
+        height: clamp(2.4rem, 6vw, 3.2rem);
+        flex-shrink: 0;
+      }
+
+      .title {
+        font-family: "Newsreader", Georgia, serif;
+        font-weight: 400;
+        font-size: clamp(2.4rem, 7vw, 3.6rem);
+        line-height: 1;
+        letter-spacing: -0.02em;
+      }
+
+      .tagline {
+        position: relative;
+        z-index: 1;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        color: #555;
+        margin-top: 0.75rem;
+        max-width: 42ch;
+      }
+
+      .slashed {
+        text-decoration: line-through;
+        opacity: 0.5;
+      }
+
+      .ai {
+        color: #3573c6;
+        font-family: "Source Code Pro", monospace;
+        font-weight: 500;
+        margin-left: 0.2em;
+      }
+
+      .brand-statement {
+        position: relative;
+        z-index: 1;
+        font-size: 0.82rem;
+        line-height: 1.5;
+        color: #888;
+        margin-top: 0.4rem;
+        max-width: 45ch;
+      }
+
+      /* ─── Tool Index ─── */
+
+      .tool-index {
+        flex: 1;
+      }
+
+      .category {
+        margin-bottom: 2.5rem;
+      }
+
+      .category:last-child {
+        margin-bottom: 0;
+      }
+
+      .category-label {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-family:
+          system-ui,
+          -apple-system,
+          sans-serif;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #8b6d4f;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        margin-bottom: 0.75rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid #f0efed;
+      }
+
+      .label-dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: #8b6d4f;
+        flex-shrink: 0;
+      }
+
+      .category-more {
+        display: inline-block;
+        margin-top: 0.75rem;
+        color: #3573c6;
+        font-size: 0.78rem;
+        font-weight: 600;
+        text-decoration: none;
+      }
+
+      .category-more:hover {
+        text-decoration: underline;
+      }
+
+      /* ─── Card Grid ─── */
+
+      .card-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.6rem;
+      }
+
+      .page-card {
+        display: block;
+        padding: 1rem;
+        background: #fff;
+        border: 1px solid #e8e6e2;
+        border-radius: 8px;
+        text-decoration: none;
+        color: inherit;
+        position: relative;
+        transition:
+          border-color 0.25s ease,
+          box-shadow 0.25s ease,
+          transform 0.25s ease;
+      }
+
+      .page-card:hover {
+        border-color: #d0cdc7;
+        box-shadow: 0 3px 14px rgba(0, 0, 0, 0.06);
+        transform: translateY(-1px);
+      }
+
+      .card-title {
+        font-family: "Newsreader", Georgia, serif;
+        font-size: 1rem;
+        font-weight: 400;
+        margin-bottom: 0.25rem;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+      }
+
+      .card-icon {
+        width: 1em;
+        height: 1em;
+        flex-shrink: 0;
+        color: #8b6d4f;
+      }
+
+      .card-desc {
+        font-size: 0.78rem;
+        color: #888;
+        line-height: 1.6;
+      }
+
+      .card-arrow {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        color: #8b6d4f;
+        font-size: 1.1rem;
+        opacity: 0;
+        transform: translateX(-4px);
+        transition:
+          opacity 0.25s ease,
+          transform 0.25s ease;
+      }
+
+      .page-card:hover .card-arrow {
+        opacity: 1;
+        transform: translateX(0);
+      }
+
+      /* ─── Entrance Motion ─── */
+
+      @media (prefers-reduced-motion: no-preference) {
+        @keyframes fade-up {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        .page-card {
+          animation: fade-up 0.5s cubic-bezier(0.25, 1, 0.5, 1) both;
+        }
+
+        /* Drive: 4 cards */
+        .category:nth-of-type(1) .page-card:nth-child(1) {
+          animation-delay: 0.1s;
+        }
+        .category:nth-of-type(1) .page-card:nth-child(2) {
+          animation-delay: 0.16s;
+        }
+        .category:nth-of-type(1) .page-card:nth-child(3) {
+          animation-delay: 0.22s;
+        }
+        .category:nth-of-type(1) .page-card:nth-child(4) {
+          animation-delay: 0.28s;
+        }
+        .category:nth-of-type(1) .page-card:nth-child(5) {
+          animation-delay: 0.34s;
+        }
+
+        /* Calculate: 5 cards */
+        .category:nth-of-type(2) .page-card:nth-child(1) {
+          animation-delay: 0.36s;
+        }
+        .category:nth-of-type(2) .page-card:nth-child(2) {
+          animation-delay: 0.42s;
+        }
+        .category:nth-of-type(2) .page-card:nth-child(3) {
+          animation-delay: 0.48s;
+        }
+        .category:nth-of-type(2) .page-card:nth-child(4) {
+          animation-delay: 0.54s;
+        }
+        .category:nth-of-type(2) .page-card:nth-child(5) {
+          animation-delay: 0.6s;
+        }
+
+        /* Explore: 3 cards */
+        .category:nth-of-type(3) .page-card:nth-child(1) {
+          animation-delay: 0.68s;
+        }
+        .category:nth-of-type(3) .page-card:nth-child(2) {
+          animation-delay: 0.74s;
+        }
+        .category:nth-of-type(3) .page-card:nth-child(3) {
+          animation-delay: 0.8s;
+        }
+      }
+
+      /* ─── Mobile ─── */
+
+      @media (max-width: 600px) {
+        main {
+          padding: 5rem 1.25rem 2rem;
+        }
+
+        .card-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
   </body>
 </html>
-
-<style>
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-
-  html {
-    background: #faf9f7;
-    color: #1a1a1a;
-  }
-
-  body {
-    font-family:
-      system-ui,
-      -apple-system,
-      sans-serif;
-    min-height: 100vh;
-  }
-
-  main {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 5rem 2rem 2rem;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
-
-  /* ─── Hero ─── */
-
-  .hero {
-    position: relative;
-    margin-bottom: 3rem;
-    padding-top: 1rem;
-  }
-
-  .hero-ambient {
-    position: absolute;
-    top: -5rem;
-    left: 50%;
-    transform: translateX(-50%);
-    width: clamp(400px, 80vw, 700px);
-    height: clamp(400px, 80vw, 700px);
-    border-radius: 50%;
-    background: radial-gradient(
-      circle at 40% 40%,
-      rgba(139, 109, 79, 0.035) 0%,
-      rgba(53, 115, 198, 0.025) 35%,
-      transparent 65%
-    );
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .title-row {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    position: relative;
-    z-index: 1;
-  }
-
-  .favicon {
-    width: clamp(2.4rem, 6vw, 3.2rem);
-    height: clamp(2.4rem, 6vw, 3.2rem);
-    flex-shrink: 0;
-  }
-
-  .title {
-    font-family: "Newsreader", Georgia, serif;
-    font-weight: 400;
-    font-size: clamp(2.4rem, 7vw, 3.6rem);
-    line-height: 1;
-    letter-spacing: -0.02em;
-  }
-
-  .tagline {
-    position: relative;
-    z-index: 1;
-    font-size: 0.95rem;
-    line-height: 1.6;
-    color: #555;
-    margin-top: 0.75rem;
-    max-width: 42ch;
-  }
-
-  .slashed {
-    text-decoration: line-through;
-    opacity: 0.5;
-  }
-
-  .ai {
-    color: #3573c6;
-    font-family: "Source Code Pro", monospace;
-    font-weight: 500;
-    margin-left: 0.2em;
-  }
-
-  .brand-statement {
-    position: relative;
-    z-index: 1;
-    font-size: 0.82rem;
-    line-height: 1.5;
-    color: #888;
-    margin-top: 0.4rem;
-    max-width: 45ch;
-  }
-
-  /* ─── Tool Index ─── */
-
-  .tool-index {
-    flex: 1;
-  }
-
-  .category {
-    margin-bottom: 2.5rem;
-  }
-
-  .category:last-child {
-    margin-bottom: 0;
-  }
-
-  .category-label {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-family:
-      system-ui,
-      -apple-system,
-      sans-serif;
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: #8b6d4f;
-    text-transform: uppercase;
-    letter-spacing: 0.07em;
-    margin-bottom: 0.75rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid #f0efed;
-  }
-
-  .label-dot {
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: #8b6d4f;
-    flex-shrink: 0;
-  }
-
-  /* ─── Card Grid ─── */
-
-  .card-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.6rem;
-  }
-
-  .page-card {
-    display: block;
-    padding: 1rem;
-    background: #fff;
-    border: 1px solid #e8e6e2;
-    border-radius: 8px;
-    text-decoration: none;
-    color: inherit;
-    position: relative;
-    transition:
-      border-color 0.25s ease,
-      box-shadow 0.25s ease,
-      transform 0.25s ease;
-  }
-
-  .page-card:hover {
-    border-color: #d0cdc7;
-    box-shadow: 0 3px 14px rgba(0, 0, 0, 0.06);
-    transform: translateY(-1px);
-  }
-
-  .card-title {
-    font-family: "Newsreader", Georgia, serif;
-    font-size: 1rem;
-    font-weight: 400;
-    margin-bottom: 0.25rem;
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-  }
-
-  .card-icon {
-    width: 1em;
-    height: 1em;
-    flex-shrink: 0;
-    color: #8b6d4f;
-  }
-
-  .card-desc {
-    font-size: 0.78rem;
-    color: #888;
-    line-height: 1.6;
-  }
-
-  .card-arrow {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    color: #8b6d4f;
-    font-size: 1.1rem;
-    opacity: 0;
-    transform: translateX(-4px);
-    transition:
-      opacity 0.25s ease,
-      transform 0.25s ease;
-  }
-
-  .page-card:hover .card-arrow {
-    opacity: 1;
-    transform: translateX(0);
-  }
-
-  /* ─── Entrance Motion ─── */
-
-  @media (prefers-reduced-motion: no-preference) {
-    @keyframes fade-up {
-      from {
-        opacity: 0;
-        transform: translateY(10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .page-card {
-      animation: fade-up 0.5s cubic-bezier(0.25, 1, 0.5, 1) both;
-    }
-
-    /* Drive: 4 cards */
-    .category:nth-of-type(1) .page-card:nth-child(1) {
-      animation-delay: 0.1s;
-    }
-    .category:nth-of-type(1) .page-card:nth-child(2) {
-      animation-delay: 0.16s;
-    }
-    .category:nth-of-type(1) .page-card:nth-child(3) {
-      animation-delay: 0.22s;
-    }
-    .category:nth-of-type(1) .page-card:nth-child(4) {
-      animation-delay: 0.28s;
-    }
-    .category:nth-of-type(1) .page-card:nth-child(5) {
-      animation-delay: 0.34s;
-    }
-
-    /* Calculate: 5 cards */
-    .category:nth-of-type(2) .page-card:nth-child(1) {
-      animation-delay: 0.36s;
-    }
-    .category:nth-of-type(2) .page-card:nth-child(2) {
-      animation-delay: 0.42s;
-    }
-    .category:nth-of-type(2) .page-card:nth-child(3) {
-      animation-delay: 0.48s;
-    }
-    .category:nth-of-type(2) .page-card:nth-child(4) {
-      animation-delay: 0.54s;
-    }
-    .category:nth-of-type(2) .page-card:nth-child(5) {
-      animation-delay: 0.6s;
-    }
-
-    /* Explore: 3 cards */
-    .category:nth-of-type(3) .page-card:nth-child(1) {
-      animation-delay: 0.68s;
-    }
-    .category:nth-of-type(3) .page-card:nth-child(2) {
-      animation-delay: 0.74s;
-    }
-    .category:nth-of-type(3) .page-card:nth-child(3) {
-      animation-delay: 0.8s;
-    }
-  }
-
-  /* ─── Mobile ─── */
-
-  @media (max-width: 600px) {
-    main {
-      padding: 5rem 1.25rem 2rem;
-    }
-
-    .card-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-</style>
