@@ -1,0 +1,324 @@
+---
+import ToolLayout from "../../layouts/ToolLayout.astro";
+import UsedVsNewCalculator from "../../components/UsedVsNewCalculator";
+---
+
+<ToolLayout
+  title="Used vs New Car"
+  subtitle="Work out if the used car discount beats its higher loan rate"
+  description="Compare used vs new car total cost in Malaysia with flat rate hire purchase interest, upkeep, and resale value."
+  maxWidth="720px"
+>
+  <UsedVsNewCalculator client:only="preact" />
+</ToolLayout>
+
+<style is:global>
+  .calc {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
+  }
+
+  .section-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #1a1a1a;
+  }
+
+  .field {
+    margin-bottom: 1.25rem;
+  }
+
+  .field:last-child {
+    margin-bottom: 0;
+  }
+
+  .field label {
+    display: block;
+    font-size: 0.85rem;
+    color: #555555;
+    margin-bottom: 0.4rem;
+  }
+
+  .field label strong {
+    color: #1a1a1a;
+  }
+
+  .field input[type="number"] {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 13px;
+    border: 1px solid #e8e6e2;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-family: inherit;
+  }
+
+  .field input[type="number"]:focus {
+    outline: none;
+    border-color: #3573c6;
+    box-shadow: 0 0 0 2px rgba(53, 115, 198, 0.18);
+  }
+
+  .field input[type="range"] {
+    width: 100%;
+    accent-color: #3573c6;
+    cursor: pointer;
+  }
+
+  .range-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.72rem;
+    color: #999999;
+    margin-top: 0.15rem;
+  }
+
+  .cars-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .car-card {
+    background: #fafaf9;
+    border-radius: 8px;
+    padding: 1rem;
+    border: 1px solid #e8e6e2;
+  }
+
+  .tenure-field {
+    margin-bottom: 1rem;
+  }
+
+  .advanced {
+    border-top: 1px solid #f0efed;
+    padding-top: 1rem;
+  }
+
+  .advanced summary {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #3573c6;
+    cursor: pointer;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+
+  .advanced-hint {
+    font-size: 0.78rem;
+    color: #888888;
+    margin: 0.25rem 0 1rem;
+  }
+
+  .advanced-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 1rem;
+  }
+
+  .verdict {
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  .verdict.used {
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    color: #065f46;
+  }
+
+  .verdict.new {
+    background: #ebf2fa;
+    border: 1px solid #b8d4f0;
+    color: #1e4f8f;
+  }
+
+  .verdict.tie {
+    background: #fafaf9;
+    border: 1px solid #e8e6e2;
+    color: #555555;
+  }
+
+  .bar-chart {
+    margin-bottom: 1.5rem;
+  }
+
+  .bar-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .bar-label {
+    width: 48px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #1a1a1a;
+  }
+
+  .bar-track {
+    flex: 1;
+    height: 28px;
+    background: #f0f0f0;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+  }
+
+  .bar-fill.car-a {
+    background: #3573c6;
+  }
+
+  .bar-fill.car-b {
+    background: #059669;
+  }
+
+  .bar-value {
+    width: 130px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .bar-caption {
+    font-size: 0.75rem;
+    color: #999999;
+    text-align: center;
+    margin-top: 0.25rem;
+  }
+
+  .results-table {
+    border: 1px solid #e8e6e2;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .results-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    padding: 0.6rem 0.85rem;
+    font-size: 0.72rem;
+    color: #999999;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: #fafaf9;
+    border-bottom: 1px solid #e8e6e2;
+    font-weight: 600;
+  }
+
+  .results-header span:nth-child(2),
+  .results-header span:nth-child(3),
+  .results-row span:nth-child(2),
+  .results-row span:nth-child(3) {
+    text-align: right;
+  }
+
+  .results-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
+    padding: 0.6rem 0.85rem;
+    font-size: 0.85rem;
+  }
+
+  .results-row + .results-row {
+    border-top: 1px solid #f0efed;
+  }
+
+  .results-row .period {
+    font-weight: 500;
+    color: #1a1a1a;
+  }
+
+  .table-note {
+    font-size: 0.75rem;
+    color: #999999;
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+  }
+
+  .break-title {
+    margin-top: 1.5rem;
+  }
+
+  .break-text {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: #1a1a1a;
+    margin-bottom: 1rem;
+  }
+
+  .threshold-table {
+    border: 1px solid #e8e6e2;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .threshold-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 0.6rem 0.85rem;
+    font-size: 0.85rem;
+  }
+
+  .threshold-row span:last-child {
+    text-align: right;
+    font-weight: 600;
+    color: #3573c6;
+  }
+
+  .threshold-row + .threshold-row {
+    border-top: 1px solid #f0efed;
+  }
+
+  .threshold-head {
+    background: #fafaf9;
+    font-size: 0.72rem;
+    color: #999999;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+  }
+
+  .threshold-head span:last-child {
+    color: #999999;
+    font-weight: 600;
+  }
+
+  .note {
+    font-size: 0.72rem;
+    color: #999999;
+    margin-top: 0.25rem;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 600px) {
+    .cars-grid,
+    .advanced-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .bar-value {
+      width: 100px;
+      font-size: 0.75rem;
+    }
+  }
+</style>
