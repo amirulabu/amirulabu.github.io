@@ -1,0 +1,77 @@
+/* Shared by the EV charging cost and time pages. */
+@layer ev-charging {
+  .select-input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 13px;
+    border: 1px solid #e8e6e2;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    background: white;
+    cursor: pointer;
+  }
+
+  .select-input:focus {
+    outline: none;
+    border-color: #3573c6;
+    box-shadow: 0 0 0 2px rgba(53, 115, 198, 0.18);
+  }
+
+  .comparison {
+    margin-top: 1.5rem;
+  }
+
+  .comparison-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 0.15rem;
+  }
+
+  .comparison-subtitle {
+    font-size: 0.75rem;
+    color: #999999;
+    margin-bottom: 0.75rem;
+  }
+
+  .comparison-table {
+    border: 1px solid #e8e6e2;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .comparison-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.55rem 0.85rem;
+    font-size: 0.82rem;
+    transition: background 0.1s ease;
+  }
+
+  .comparison-row + .comparison-row {
+    border-top: 1px solid #f0efed;
+  }
+
+  .comparison-row.selected {
+    background: #ebf2fa;
+  }
+
+  .comparison-name {
+    color: #555555;
+  }
+
+  .comparison-row.selected .comparison-name {
+    color: #1a1a1a;
+    font-weight: 600;
+  }
+
+  .comparison-cost {
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+
+  .comparison-row.selected .comparison-cost {
+    color: #3573c6;
+  }
+}

@@ -4,35 +4,42 @@ import Header from "../shared/Header.astro";
 import Footer from "../shared/Footer.astro";
 import "../styles/tool-form.css";
 
-const { title, activeTab } = Astro.props;
+const {
+  title,
+  headTitle = title,
+  subtitle,
+  description,
+  tabs = [],
+  activeTab,
+  maxWidth = "560px",
+} = Astro.props;
 ---
 
 <html lang="en">
   <head>
-    <Head title={title} />
+    <Head title={headTitle} description={description} />
   </head>
   <body>
     <Header />
-    <main>
-      <h1>Home Loan Calculator</h1>
-      <p class="subtitle">
-        Malaysian housing loan (reducing balance) calculator
-      </p>
+    <main style={`--tool-max-width: ${maxWidth}`}>
+      <h1>{title}</h1>
+      {subtitle && <p class="subtitle">{subtitle}</p>}
 
-      <div class="tabs">
-        <a
-          href="/house-loan/price/"
-          class={`tab ${activeTab === "price" ? "active" : ""}`}
-        >
-          Price &rarr; Monthly
-        </a>
-        <a
-          href="/house-loan/monthly/"
-          class={`tab ${activeTab === "monthly" ? "active" : ""}`}
-        >
-          Monthly &rarr; Price
-        </a>
-      </div>
+      {
+        tabs.length > 0 && (
+          <div class="tabs">
+            {tabs.map((tab) => (
+              <a
+                href={tab.href}
+                class={`tab ${activeTab === tab.key ? "active" : ""}`}
+                aria-current={activeTab === tab.key ? "page" : undefined}
+              >
+                {tab.label}
+              </a>
+            ))}
+          </div>
+        )
+      }
 
       <slot />
     </main>
@@ -58,7 +65,7 @@ const { title, activeTab } = Astro.props;
   }
 
   main {
-    max-width: 560px;
+    max-width: var(--tool-max-width, 560px);
     margin: 0 auto;
     padding: 5rem 1rem 2rem;
   }

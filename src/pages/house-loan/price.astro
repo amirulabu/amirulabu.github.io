@@ -1,11 +1,15 @@
 ---
-import HouseLoanLayout from "../../layouts/HouseLoanLayout.astro";
+import TabbedToolLayout from "../../layouts/TabbedToolLayout.astro";
+import { houseLoanTabs } from "../../data/navigation";
 import { PriceToMonthlyCalc } from "../../components/HouseLoanCalculator";
 ---
 
-<HouseLoanLayout
-  title="Price to Monthly - Home Loan Calculator"
+<TabbedToolLayout
+  title="Home Loan Calculator"
+  headTitle="Price to Monthly - Home Loan Calculator"
+  subtitle="Malaysian housing loan (reducing balance) calculator"
+  tabs={houseLoanTabs}
   activeTab="price"
 >
   <PriceToMonthlyCalc client:visible />
-</HouseLoanLayout>
+</TabbedToolLayout>

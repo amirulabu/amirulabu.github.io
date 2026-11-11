@@ -1,8 +1,16 @@
 ---
-import EvChargingLayout from "../../layouts/EvChargingLayout.astro";
+import TabbedToolLayout from "../../layouts/TabbedToolLayout.astro";
+import { evChargingTabs } from "../../data/navigation";
+import "../../styles/ev-charging.css";
 import EvChargingCalculator from "../../components/EvChargingCalculator";
 ---
 
-<EvChargingLayout title="EV Charging Cost - Malaysia" activeTab="cost">
+<TabbedToolLayout
+  title="EV Charging Calculator"
+  headTitle="EV Charging Cost - Malaysia"
+  subtitle="Estimate your EV charging cost and time in Malaysia"
+  tabs={evChargingTabs}
+  activeTab="cost"
+>
   <EvChargingCalculator client:only="preact" />
-</EvChargingLayout>
+</TabbedToolLayout>

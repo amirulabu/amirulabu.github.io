@@ -1,8 +1,15 @@
 ---
-import CarLayout from "../../layouts/CarLayout.astro";
+import TabbedToolLayout from "../../layouts/TabbedToolLayout.astro";
+import { carLoanTabs } from "../../data/navigation";
 import { PriceToMonthlyCalc } from "../../components/CarLoanCalculator";
 ---
 
-<CarLayout title="Price to Monthly - Car Loan Calculator" activeTab="price">
+<TabbedToolLayout
+  title="Car Loan Calculator"
+  headTitle="Price to Monthly - Car Loan Calculator"
+  subtitle="Malaysian hire purchase (flat rate) calculator"
+  tabs={carLoanTabs}
+  activeTab="price"
+>
   <PriceToMonthlyCalc client:visible />
-</CarLayout>
+</TabbedToolLayout>
