@@ -2,6 +2,7 @@
 import Head from "../shared/Head.astro";
 import Header from "../shared/Header.astro";
 import Footer from "../shared/Footer.astro";
+import "../styles/tool-form.css";
 
 const { title, activeTab } = Astro.props;
 ---
@@ -118,28 +119,6 @@ const { title, activeTab } = Astro.props;
 </style>
 
 <style is:global>
-  .calc {
-    background: white;
-    border-radius: 8px;
-    padding: 1.5rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  }
-
-  .field {
-    margin-bottom: 1.25rem;
-  }
-
-  .field label {
-    display: block;
-    font-size: 0.85rem;
-    color: #555555;
-    margin-bottom: 0.4rem;
-  }
-
-  .field label strong {
-    color: #1a1a1a;
-  }
-
   .field input[type="number"] {
     width: 100%;
     box-sizing: border-box;
@@ -148,18 +127,6 @@ const { title, activeTab } = Astro.props;
     border-radius: 6px;
     font-size: 1.1rem;
     font-family: inherit;
-  }
-
-  .field input[type="number"]:focus {
-    outline: none;
-    border-color: #3573c6;
-    box-shadow: 0 0 0 2px rgba(53, 115, 198, 0.18);
-  }
-
-  .field input[type="range"] {
-    width: 100%;
-    accent-color: #3573c6;
-    cursor: pointer;
   }
 
   .select-input {
@@ -178,55 +145,6 @@ const { title, activeTab } = Astro.props;
     outline: none;
     border-color: #3573c6;
     box-shadow: 0 0 0 2px rgba(53, 115, 198, 0.18);
-  }
-
-  .range-labels {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.72rem;
-    color: #999999;
-    margin-top: 0.15rem;
-  }
-
-  .results {
-    background: #ebf2fa;
-    border: 1px solid #d6e2f2;
-    border-radius: 8px;
-    padding: 1rem;
-    margin-top: 0.5rem;
-  }
-
-  .result-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.5rem 0;
-    font-size: 0.85rem;
-    color: #555555;
-  }
-
-  .result-row + .result-row {
-    border-top: 1px solid #d6e2f2;
-  }
-
-  .result-row .value {
-    font-weight: 600;
-    color: #1a1a1a;
-  }
-
-  .result-row.monthly {
-    font-size: 1.05rem;
-    padding: 0.6rem 0;
-  }
-
-  .result-row.monthly span:first-child {
-    font-weight: 600;
-    color: #1a1a1a;
-  }
-
-  .result-row.monthly .value {
-    font-size: 1.3rem;
-    color: #3573c6;
   }
 
   .comparison {
@@ -284,11 +202,5 @@ const { title, activeTab } = Astro.props;
 
   .comparison-row.selected .comparison-cost {
     color: #3573c6;
-  }
-
-  .note {
-    font-size: 0.72rem;
-    color: #999999;
-    margin-top: 1rem;
   }
 </style>
