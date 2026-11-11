@@ -119,7 +119,7 @@ export default function EvComparisonCalculator() {
 
       {/* Charging Provider */}
       <div class="calc">
-        <h2 class="section-title">Charging Provider</h2>
+        <h2 class="calc-title">Charging Provider</h2>
         <div class="field">
           <label>Provider &amp; Rate</label>
           <select
@@ -139,7 +139,7 @@ export default function EvComparisonCalculator() {
 
       {/* Efficiency Unit */}
       <div class="calc">
-        <h2 class="section-title">Efficiency Unit</h2>
+        <h2 class="calc-title">Efficiency Unit</h2>
         <div class="unit-toggle">
           <button
             class={unit === "kmpkwh" ? "active" : ""}
@@ -158,7 +158,7 @@ export default function EvComparisonCalculator() {
 
       {/* Car Selectors */}
       <div class="calc cars-section">
-        <h2 class="section-title">Compare Two EVs</h2>
+        <h2 class="calc-title">Compare Two EVs</h2>
         <div class="cars-grid">
           <div class="car-card">
             <div class="field">
@@ -262,7 +262,7 @@ export default function EvComparisonCalculator() {
 
       {/* Distance */}
       <div class="calc">
-        <h2 class="section-title">Distance Driven</h2>
+        <h2 class="calc-title">Distance Driven</h2>
         <div class="distance-grid">
           <div class="field">
             <label>Daily (km)</label>
@@ -308,7 +308,7 @@ export default function EvComparisonCalculator() {
 
       {/* Results */}
       <div class="calc results-section">
-        <h2 class="section-title">Cost Comparison</h2>
+        <h2 class="calc-title">Cost Comparison</h2>
         <p class="fuel-price-display">
           Charging rate: <strong>{formatRM(rate)}</strong> / kWh (
           {provider.name})

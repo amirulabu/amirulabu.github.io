@@ -151,7 +151,7 @@ export default function UsedVsNewCalculator() {
   return (
     <div>
       <div class="calc">
-        <h2 class="section-title">Car prices</h2>
+        <h2 class="calc-title">Car prices</h2>
         <div class="cars-grid">
           <div class="car-card">
             <div class="field">
@@ -274,7 +274,7 @@ export default function UsedVsNewCalculator() {
       </div>
 
       <div class="calc results-section">
-        <h2 class="section-title">Result</h2>
+        <h2 class="calc-title">Result</h2>
 
         <div class={`verdict ${tie ? "tie" : usedWins ? "used" : "new"}`}>
           {tie
@@ -343,7 +343,7 @@ export default function UsedVsNewCalculator() {
           Net cost is price plus flat-rate interest plus upkeep minus resale.
         </p>
 
-        <h2 class="section-title break-title">Break-even check</h2>
+        <h2 class="calc-title break-title">Break-even check</h2>
         <p class="break-text">
           This used car is <strong>{ratio.toFixed(1)}%</strong> of the new
           price. On financing alone it stays cheaper below{" "}

@@ -66,7 +66,9 @@ export default function AmortizationChart({
       )
       .map((p) => p.year);
 
-    const yTicks = Array.from({ length: 6 }, (_, i) => (maxY / 5) * i);
+    const yTicks = Array.from({ length: 6 }, (_, i) =>
+      Math.round((maxY / 5) * i),
+    );
 
     return {
       w,
