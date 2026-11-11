@@ -1,4 +1,5 @@
 import { useState } from "preact/hooks";
+import { flatRateQuote } from "../lib/loan";
 
 const PRICES = Array.from({ length: 37 }, (_, index) => 20000 + index * 5000);
 const YEARS = [5, 6, 7, 8, 9];
@@ -12,10 +13,13 @@ const monthlyPayment = (
   years: number,
   rate: number,
   downPayment: number,
-) => {
-  const principal = price * (1 - downPayment / 100);
-  return (principal * (1 + (rate / 100) * years)) / (years * 12);
-};
+) =>
+  flatRateQuote({
+    price,
+    depositPercent: downPayment,
+    annualRate: rate,
+    years,
+  }).monthly;
 
 export default function CarPaymentTable() {
   const [rate, setRate] = useState(2.5);

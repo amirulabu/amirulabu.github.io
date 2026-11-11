@@ -1,4 +1,5 @@
 import { useEffect, useState } from "preact/hooks";
+import { flatRateQuote, totalCostMultiplier } from "../lib/loan";
 
 const STORAGE_KEY = "usedVsNewCar";
 
@@ -109,21 +110,23 @@ export default function UsedVsNewCalculator() {
     resaleUsed,
   ]);
 
-  const rN = rateNew / 100;
-  const rU = rateUsed / 100;
-  const dN = downNew / 100;
-  const dU = downUsed / 100;
-  const t = years;
+  const newQuote = flatRateQuote({
+    price: newPrice,
+    depositPercent: downNew,
+    annualRate: rateNew,
+    years,
+  });
+  const usedQuote = flatRateQuote({
+    price: usedPrice,
+    depositPercent: downUsed,
+    annualRate: rateUsed,
+    years,
+  });
 
-  const loanN = newPrice * (1 - dN);
-  const loanU = usedPrice * (1 - dU);
-  const intN = loanN * rN * t;
-  const intU = loanU * rU * t;
-  const payableN = loanN + intN;
-  const payableU = loanU + intU;
-  const months = Math.max(1, t * 12);
-  const monthlyN = payableN / months;
-  const monthlyU = payableU / months;
+  const intN = newQuote.interest;
+  const intU = usedQuote.interest;
+  const monthlyN = newQuote.monthly;
+  const monthlyU = usedQuote.monthly;
 
   const netN = newPrice + intN + maintNew - resaleNew;
   const netU = usedPrice + intU + maintUsed - resaleUsed;
@@ -131,8 +134,8 @@ export default function UsedVsNewCalculator() {
   const usedWins = delta > 0;
   const tie = Math.abs(delta) < 100;
 
-  const denomU = 1 + (1 - dU) * rU * t;
-  const denomN = 1 + (1 - dN) * rN * t;
+  const denomN = totalCostMultiplier(downNew, rateNew, years);
+  const denomU = totalCostMultiplier(downUsed, rateUsed, years);
   const breakEvenFin = newPrice > 0 ? (newPrice * denomN) / denomU : 0;
   const breakEvenFull = Math.max(0, (netN - maintUsed + resaleUsed) / denomU);
   const ratio = newPrice > 0 ? (usedPrice / newPrice) * 100 : 0;
@@ -140,16 +143,15 @@ export default function UsedVsNewCalculator() {
 
   const maxNet = Math.max(netN, netU, 1);
 
-  const threshold = (yy: number) => {
-    const num = 1 + (1 - dN) * rN * yy;
-    const den = 1 + (1 - dU) * rU * yy;
-    return (num / den) * 100;
-  };
+  const threshold = (yy: number) =>
+    (totalCostMultiplier(downNew, rateNew, yy) /
+      totalCostMultiplier(downUsed, rateUsed, yy)) *
+    100;
 
   return (
     <div>
       <div class="calc">
-        <h2 class="section-title">Car prices</h2>
+        <h2 class="calc-title">Car prices</h2>
         <div class="cars-grid">
           <div class="car-card">
             <div class="field">
@@ -272,7 +274,7 @@ export default function UsedVsNewCalculator() {
       </div>
 
       <div class="calc results-section">
-        <h2 class="section-title">Result</h2>
+        <h2 class="calc-title">Result</h2>
 
         <div class={`verdict ${tie ? "tie" : usedWins ? "used" : "new"}`}>
           {tie
@@ -341,7 +343,7 @@ export default function UsedVsNewCalculator() {
           Net cost is price plus flat-rate interest plus upkeep minus resale.
         </p>
 
-        <h2 class="section-title break-title">Break-even check</h2>
+        <h2 class="calc-title break-title">Break-even check</h2>
         <p class="break-text">
           This used car is <strong>{ratio.toFixed(1)}%</strong> of the new
           price. On financing alone it stays cheaper below{" "}

@@ -11,28 +11,6 @@ import DateCalculator from "../components/DateCalculator";
 </ToolLayout>
 
 <style is:global>
-  .calc {
-    background: white;
-    border-radius: 8px;
-    padding: 1.5rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  }
-
-  .field {
-    margin-bottom: 1.25rem;
-  }
-
-  .field label {
-    display: block;
-    font-size: 0.85rem;
-    color: #555555;
-    margin-bottom: 0.4rem;
-  }
-
-  .field label strong {
-    color: #1a1a1a;
-  }
-
   .field input[type="date"],
   .field input[type="number"] {
     width: 100%;
@@ -115,33 +93,6 @@ import DateCalculator from "../components/DateCalculator";
     outline: none;
     border-color: #3573c6;
     box-shadow: 0 0 0 2px rgba(53, 115, 198, 0.18);
-  }
-
-  .results {
-    background: #ebf2fa;
-    border: 1px solid #d6e2f2;
-    border-radius: 8px;
-    padding: 1rem;
-    margin-top: 0.5rem;
-  }
-
-  .result-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.5rem 0;
-    font-size: 0.85rem;
-    color: #555555;
-  }
-
-  .result-row.monthly {
-    font-size: 1.05rem;
-    padding: 0.6rem 0;
-  }
-
-  .result-row.monthly span:first-child {
-    font-weight: 600;
-    color: #1a1a1a;
   }
 
   .result-row.monthly .value {

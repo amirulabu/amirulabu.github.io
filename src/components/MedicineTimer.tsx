@@ -76,7 +76,7 @@ export default function MedicineTimer() {
 
   return (
     <div>
-      <div class="calc">
+      <div class="medicine-timer">
         <div class="form-row">
           <div class="field">
             <label>

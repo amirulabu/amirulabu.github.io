@@ -103,7 +103,7 @@ export default function FuelComparisonCalculator() {
   return (
     <div>
       <div class="calc">
-        <h2 class="section-title">Fuel Price</h2>
+        <h2 class="calc-title">Fuel Price</h2>
         <div class="field">
           <label>Fuel Type / Price</label>
           <div class="preset-buttons">
@@ -137,7 +137,7 @@ export default function FuelComparisonCalculator() {
           )}
         </div>
 
-        <h2 class="section-title">Distance Driven</h2>
+        <h2 class="calc-title">Distance Driven</h2>
         <div class="distance-grid">
           <div class="field">
             <label>Daily (km)</label>
@@ -180,7 +180,7 @@ export default function FuelComparisonCalculator() {
           </div>
         </div>
 
-        <h2 class="section-title">Efficiency Unit</h2>
+        <h2 class="calc-title">Efficiency Unit</h2>
         <div class="unit-toggle">
           <button
             class={unit === "kmpl" ? "active" : ""}
@@ -198,7 +198,7 @@ export default function FuelComparisonCalculator() {
       </div>
 
       <div class="calc cars-section">
-        <h2 class="section-title">Compare Two Cars</h2>
+        <h2 class="calc-title">Compare Two Cars</h2>
         <div class="cars-grid">
           <div class="car-card">
             <div class="field">
@@ -277,7 +277,7 @@ export default function FuelComparisonCalculator() {
       </div>
 
       <div class="calc results-section">
-        <h2 class="section-title">Cost Comparison</h2>
+        <h2 class="calc-title">Cost Comparison</h2>
         <p class="fuel-price-display">
           Fuel price: <strong>{formatRM(fuelPrice)}</strong> / L
         </p>
