@@ -35,16 +35,28 @@ import { toolCategories } from "../data/tools";
               stroke="#3573c6"
               stroke-width="5"
               stroke-linecap="round"
-              stroke-linejoin="round"></path>
+              stroke-linejoin="round"
+            ></path>
             <path
               d="M34.8 97a8 8 0 0 0 7.4 11h43.6a8 8 0 0 0 7.4-11L76 60H52L34.8 97Z"
               fill="#8bb5e8"
-              opacity="0.5"></path>
+              opacity="0.5"
+            ></path>
             <circle cx="56" cy="82" r="5" fill="#a8cbf0" opacity="0.8"></circle>
-            <circle cx="72" cy="74" r="3.5" fill="#a8cbf0" opacity="0.7"
+            <circle
+              cx="72"
+              cy="74"
+              r="3.5"
+              fill="#a8cbf0"
+              opacity="0.7"
             ></circle>
             <circle cx="64" cy="90" r="4" fill="#c5dbf5" opacity="0.6"></circle>
-            <circle cx="60" cy="64" r="2.5" fill="#a8cbf0" opacity="0.5"
+            <circle
+              cx="60"
+              cy="64"
+              r="2.5"
+              fill="#a8cbf0"
+              opacity="0.5"
             ></circle>
             <circle cx="70" cy="56" r="2" fill="#c5dbf5" opacity="0.4"></circle>
             <line
@@ -54,7 +66,8 @@ import { toolCategories } from "../data/tools";
               y2="50"
               stroke="#3573c6"
               stroke-width="5"
-              stroke-linecap="round"></line>
+              stroke-linecap="round"
+            ></line>
             <line
               x1="80"
               y1="20"
@@ -62,14 +75,14 @@ import { toolCategories } from "../data/tools";
               y2="50"
               stroke="#3573c6"
               stroke-width="5"
-              stroke-linecap="round"></line>
+              stroke-linecap="round"
+            ></line>
           </svg>
           <h1 class="title">random</h1>
         </div>
         <p class="tagline">
-          Experiments, demos, and things <span class="slashed">I</span><span
-            class="ai">A.I.</span
-          > build.
+          Experiments, demos, and things <span class="slashed">I</span>
+          <span class="ai">A.I.</span> build.
         </p>
         <p class="brand-statement">
           Everyday tools for everyday decisions. Quick, clear, yours.
@@ -77,44 +90,42 @@ import { toolCategories } from "../data/tools";
       </header>
 
       <section class="tool-index">
-        {
-          toolCategories.map((category) => (
-            <div class="category">
-              <h2 class="category-label">
-                <span class="label-dot" aria-hidden="true" />
-                {category.label}
-              </h2>
-              <div class="card-grid">
-                {category.tools.map((tool) => (
-                  <a href={tool.href} class="page-card">
-                    <h3 class="card-title">
-                      <svg
-                        class="card-icon"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        set:html={tool.icon}
-                      />
-                      {tool.title}
-                    </h3>
-                    <p class="card-desc">{tool.description}</p>
-                    <span class="card-arrow" aria-hidden="true">
-                      &rarr;
-                    </span>
-                  </a>
-                ))}
-              </div>
-              {category.more && (
-                <a class="category-more" href={category.more.href}>
-                  {category.more.label} &rarr;
+        {toolCategories.map((category) => (
+          <div class="category">
+            <h2 class="category-label">
+              <span class="label-dot" aria-hidden="true" />
+              {category.label}
+            </h2>
+            <div class="card-grid">
+              {category.tools.map((tool) => (
+                <a href={tool.href} class="page-card">
+                  <h3 class="card-title">
+                    <svg
+                      class="card-icon"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      set:html={tool.icon}
+                    />
+                    {tool.title}
+                  </h3>
+                  <p class="card-desc">{tool.description}</p>
+                  <span class="card-arrow" aria-hidden="true">
+                    &rarr;
+                  </span>
                 </a>
-              )}
+              ))}
             </div>
-          ))
-        }
+            {category.more && (
+              <a class="category-more" href={category.more.href}>
+                {category.more.label} &rarr;
+              </a>
+            )}
+          </div>
+        ))}
       </section>
     </main>
     <Footer />

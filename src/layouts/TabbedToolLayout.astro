@@ -25,21 +25,19 @@ const {
       <h1>{title}</h1>
       {subtitle && <p class="subtitle">{subtitle}</p>}
 
-      {
-        tabs.length > 0 && (
-          <div class="tabs">
-            {tabs.map((tab) => (
-              <a
-                href={tab.href}
-                class={`tab ${activeTab === tab.key ? "active" : ""}`}
-                aria-current={activeTab === tab.key ? "page" : undefined}
-              >
-                {tab.label}
-              </a>
-            ))}
-          </div>
-        )
-      }
+      {tabs.length > 0 && (
+        <div class="tabs">
+          {tabs.map((tab) => (
+            <a
+              href={tab.href}
+              class={`tab ${activeTab === tab.key ? "active" : ""}`}
+              aria-current={activeTab === tab.key ? "page" : undefined}
+            >
+              {tab.label}
+            </a>
+          ))}
+        </div>
+      )}
 
       <slot />
     </main>
